@@ -18,6 +18,21 @@ import type { CompanyProfile, NewsletterBrief } from "@/lib/types";
 
 type Step = "website" | "profile" | "report";
 
+const sourceLogos = [
+  { name: "Google", file: "google.svg" },
+  { name: "LinkedIn", file: "linkedin.svg" },
+  { name: "Reddit", file: "reddit.svg" },
+  { name: "YouTube", file: "youtube.svg" },
+  { name: "TikTok", file: "tiktok.svg" },
+  { name: "Amazon", file: "amazon.svg" },
+  { name: "Walmart", file: "walmart.svg" },
+  { name: "Google Maps", file: "googlemaps.svg" },
+  { name: "Zillow", file: "zillow.svg" },
+  { name: "Airbnb", file: "airbnb.svg" },
+  { name: "Tripadvisor", file: "tripadvisor.svg" },
+  { name: "CNN", file: "cnn.svg" }
+] as const;
+
 export default function Home() {
   const [step, setStep] = useState<Step>("website");
   const [website, setWebsite] = useState("https://www.nimbleway.com");
@@ -176,6 +191,19 @@ function WebsiteScreen({
 }) {
   return (
     <section className="onboarding-screen">
+      <div className="source-logo-field" aria-hidden="true">
+        {sourceLogos.map((logo, index) => (
+          <span className={`source-logo source-logo-${index + 1}`} key={logo.name}>
+            <Image
+              src={`/source-logos/${logo.file}`}
+              width={40}
+              height={40}
+              alt=""
+              unoptimized
+            />
+          </span>
+        ))}
+      </div>
       <div className="onboarding-content">
         <h1>Your Market, Clearly Signaled</h1>
         <p className="url-hint">Add your company URL</p>

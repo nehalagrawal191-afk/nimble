@@ -112,6 +112,8 @@ a { color: inherit; }
   display: grid;
   place-items: center;
   padding: 56px 24px 100px;
+  position: relative;
+  overflow: hidden;
   background:
     linear-gradient(#e4e2d5 1px, transparent 1px),
     linear-gradient(90deg, #e4e2d5 1px, transparent 1px),
@@ -124,7 +126,43 @@ a { color: inherit; }
   text-align: center;
   background: rgba(247, 247, 242, 0.95);
   padding: 42px 34px;
+  position: relative;
+  z-index: 1;
 }
+
+.source-logo-field {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.source-logo {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  opacity: 0.5;
+  filter: drop-shadow(0 5px 8px rgba(23, 23, 23, 0.09));
+}
+
+.source-logo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.source-logo-1 { width: 31px; height: 31px; left: 10%; top: 15%; transform: rotate(-7deg); }
+.source-logo-2 { width: 29px; height: 29px; right: 10%; top: 20%; transform: rotate(6deg); }
+.source-logo-3 { width: 35px; height: 35px; left: 5%; top: 44%; transform: rotate(5deg); }
+.source-logo-4 { width: 38px; height: 38px; right: 6%; bottom: 18%; transform: rotate(-5deg); }
+.source-logo-5 { width: 27px; height: 27px; right: 25%; top: 10%; transform: rotate(8deg); }
+.source-logo-6 { width: 38px; height: 38px; left: 14%; bottom: 13%; transform: rotate(-6deg); }
+.source-logo-7 { width: 55px; height: 22px; left: 5%; bottom: 29%; transform: rotate(7deg); }
+.source-logo-8 { width: 28px; height: 28px; left: 18%; top: 25%; transform: rotate(-9deg); }
+.source-logo-9 { width: 32px; height: 32px; right: 7%; top: 48%; transform: rotate(5deg); }
+.source-logo-10 { width: 33px; height: 33px; right: 22%; bottom: 11%; transform: rotate(-7deg); }
+.source-logo-11 { width: 36px; height: 36px; left: 26%; bottom: 8%; transform: rotate(5deg); }
+.source-logo-12 { width: 48px; height: 24px; right: 14%; bottom: 37%; transform: rotate(-5deg); }
 
 .eyebrow, .section-label {
   margin: 0 0 9px;
@@ -368,6 +406,19 @@ a { color: inherit; }
   .approval-bar { align-items: flex-start; flex-direction: column; }
   .approval-bar .button-row { width: 100%; }
   .approval-bar .primary-button { flex: 1; }
+
+  .source-logo {
+    opacity: 0.28;
+  }
+
+  .source-logo-7,
+  .source-logo-8,
+  .source-logo-9,
+  .source-logo-10,
+  .source-logo-11,
+  .source-logo-12 {
+    display: none;
+  }
 }
 
 @media (max-width: 620px) {
@@ -375,6 +426,13 @@ a { color: inherit; }
   .app-header { grid-template-columns: 1fr; }
   .onboarding-screen { padding: 28px 14px 60px; }
   .onboarding-content { padding: 28px 12px; }
+  .source-logo { width: 22px; height: 22px; opacity: 0.22; }
+  .source-logo-1 { left: 6%; top: 12%; }
+  .source-logo-2 { right: 7%; top: 15%; }
+  .source-logo-3 { left: 4%; top: 67%; }
+  .source-logo-4 { right: 6%; bottom: 12%; }
+  .source-logo-5 { right: 22%; top: 7%; }
+  .source-logo-6 { left: 20%; bottom: 8%; }
   .url-control { grid-template-columns: auto minmax(0, 1fr); padding: 10px 12px; }
   .url-control .primary-button { grid-column: 1 / -1; width: 100%; }
   .profile-screen, .report-screen { width: min(100% - 24px, 1180px); padding-top: 30px; }
