@@ -366,7 +366,7 @@ function ReportScreen({
           </button>
           <button className="primary-button" type="button" disabled={sending} onClick={onSend}>
             {sending ? <Loader2 className="spin" size={17} /> : <Send size={17} />}
-            {sending ? "Sending" : "Send newsletter"}
+            {sending ? "Creating newsletter" : "Create daily newsletter"}
           </button>
         </div>
       </div>
