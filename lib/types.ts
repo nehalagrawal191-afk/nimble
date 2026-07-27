@@ -15,7 +15,7 @@ export const signalSchema = z.object({
   summary: z.string(),
   whyNow: z.string(),
   recommendedAction: z.string(),
-  sources: z.array(sourceSchema)
+  sources: z.array(sourceSchema).min(1)
 });
 
 export const moveSchema = z.object({

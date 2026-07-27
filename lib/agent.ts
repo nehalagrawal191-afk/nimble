@@ -55,10 +55,27 @@ async function planQueries(state: typeof AgentState.State) {
 async function searchWithNimble(state: typeof AgentState.State) {
   const batches = await Promise.all(
     state.queries.map((query) =>
-      nimbleSearch(query, 3, { focus: "general", timeRange: "week" })
+      nimbleSearch(query, 3, {
+        focus: "general",
+        timeRange: "month",
+        excludeDomains: [
+          "facebook.com",
+          "instagram.com",
+          "perplexity.ai",
+          "pinterest.com",
+          "tiktok.com",
+          "x.com",
+          "twitter.com"
+        ]
+      })
     )
   );
-  const deduped = dedupeByUrl(batches.flat()).slice(0, 10);
+  const deduped = dedupeByUrl(batches.flat()).filter(isUsableSource).slice(0, 10);
+  if (deduped.length === 0) {
+    throw new Error(
+      "Nimble found no reliable live sources for this company. Try again shortly or broaden the target markets."
+    );
+  }
   return { searchResults: deduped };
 }
 
@@ -101,7 +118,8 @@ async function assembleEvidence(state: typeof AgentState.State) {
 async function synthesize(state: typeof AgentState.State) {
   const brief = await synthesizeNewsletter({
     profile: state.profile,
-    evidence: state.evidence
+    evidence: state.evidence,
+    sources: state.searchResults
   });
   return { brief };
 }
@@ -191,6 +209,26 @@ function dedupeByUrl(results: SearchResult[]) {
     seen.add(result.url);
     return true;
   });
+}
+
+function isUsableSource(result: SearchResult) {
+  try {
+    const hostname = new URL(result.url).hostname.replace(/^www\./, "");
+    const blocked = [
+      "facebook.com",
+      "instagram.com",
+      "perplexity.ai",
+      "pinterest.com",
+      "tiktok.com",
+      "x.com",
+      "twitter.com"
+    ];
+    return !blocked.some(
+      (domain) => hostname === domain || hostname.endsWith(`.${domain}`)
+    );
+  } catch {
+    return false;
+  }
 }
 
 function truncate(value: string, maxLength: number) {

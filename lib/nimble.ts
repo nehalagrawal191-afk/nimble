@@ -7,6 +7,7 @@ const NIMBLE_BASE_URL =
 type SearchOptions = {
   focus?: "general" | "news" | "coding" | "academic" | "shopping" | "social" | "geo" | "location";
   timeRange?: "day" | "week" | "month" | "year";
+  excludeDomains?: string[];
 };
 
 type NimbleSearchResponse = {
@@ -56,7 +57,10 @@ export async function nimbleSearch(
       max_results: maxResults,
       search_depth: "lite",
       focus: options.focus ?? "general",
-      ...(options.timeRange ? { time_range: options.timeRange } : {})
+      ...(options.timeRange ? { time_range: options.timeRange } : {}),
+      ...(options.excludeDomains?.length
+        ? { exclude_domains: options.excludeDomains }
+        : {})
     }),
     signal: AbortSignal.timeout(45_000)
   });

@@ -3,15 +3,20 @@ import { isDemoMode, optionalEnv, requiredEnv } from "@/lib/config";
 import {
   newsletterBriefSchema,
   type CompanyProfile,
-  type NewsletterBrief
+  type NewsletterBrief,
+  type SearchResult,
+  type Signal,
+  type Source
 } from "@/lib/types";
 
 export async function synthesizeNewsletter(input: {
   profile: CompanyProfile;
   evidence: string;
+  sources: SearchResult[];
 }): Promise<NewsletterBrief> {
   if (isDemoMode()) return demoBrief(input.profile);
 
+  const currentTimestamp = new Date().toISOString();
   const client = new OpenAI({ apiKey: requiredEnv("OPENAI_API_KEY") });
   const model = optionalEnv("OPENAI_MODEL") ?? "gpt-4.1-mini";
   const response = await client.chat.completions.create({
@@ -21,15 +26,20 @@ export async function synthesizeNewsletter(input: {
     messages: [
       {
         role: "system",
-        content: `You are a senior GTM intelligence analyst for ${input.profile.companyName}. Produce concise, evidence-grounded, action-ready Morning Signal newsletters. Prioritize findings by the approved ICP and target markets. Use only supplied evidence for factual claims. Return valid JSON matching the requested schema.`
+        content: `You are a rigorous senior GTM intelligence analyst for ${input.profile.companyName}. Produce concise, action-ready Morning Signal newsletters. Use only supplied evidence for factual claims. Every signal must cite at least one supplied source using the exact URL shown in the evidence. Never invent a URL, fact, date, or competitor update to fill a section. Treat rumors, social posts, and claims without corroboration as unverified and do not elevate them as the top signal. Recommendations may be your analysis, but their factual premise must be cited. Prioritize the approved ICP and target markets. Return valid JSON matching the requested schema.`
       },
       {
         role: "user",
-        content: `Approved company profile:
+        content: `Current timestamp: ${currentTimestamp}
+
+Approved company profile:
 ${JSON.stringify(input.profile, null, 2)}
 
 Fresh evidence gathered through Nimble:
 ${input.evidence}
+
+Allowed source URLs:
+${input.sources.map((source) => source.url).join("\n")}
 
 Return JSON with this shape:
 {
@@ -37,7 +47,7 @@ Return JSON with this shape:
   "companyName": "${input.profile.companyName}",
   "title": "Morning Signal",
   "subtitle": "Your daily shot of market intelligence and action-ready GTM moves.",
-  "generatedAt": "human-readable current date/time",
+  "generatedAt": "human-readable version of ${currentTimestamp}",
   "intro": "2-3 sentence opening",
   "topSignal": {
     "title": "",
@@ -49,10 +59,10 @@ Return JSON with this shape:
     "recommendedAction": "",
     "sources": [{ "title": "", "url": "", "publisher": "", "date": "" }]
   },
-  "industryNews": [same signal shape, exactly 3],
-  "competitorSignals": [same signal shape, exactly 3],
+  "industryNews": [same signal shape, 1-3 evidence-supported items],
+  "competitorSignals": [same signal shape, 0-3 evidence-supported items; never invent filler],
   "companyTake": "one sharp, differentiated point of view ${input.profile.companyName} can credibly own",
-  "movesToday": [{ "title": "", "action": "" }, exactly 3]
+  "movesToday": [{ "title": "", "action": "" }, 1-3]
 }`
       }
     ]
@@ -60,7 +70,82 @@ Return JSON with this shape:
 
   const raw = response.choices[0]?.message.content;
   if (!raw) throw new Error("OpenAI returned an empty newsletter response.");
-  return newsletterBriefSchema.parse(JSON.parse(raw));
+  const parsed = newsletterBriefSchema.parse(JSON.parse(raw));
+  return groundBrief(parsed, input.profile, input.sources);
+}
+
+function groundBrief(
+  brief: NewsletterBrief,
+  profile: CompanyProfile,
+  searchResults: SearchResult[]
+): NewsletterBrief {
+  const allowedSources = new Map(
+    searchResults.map((source) => [normalizeUrl(source.url), source])
+  );
+  const topSignal = groundSignal(brief.topSignal, allowedSources);
+
+  if (!topSignal) {
+    throw new Error(
+      "The draft did not contain a source-backed top signal. No newsletter was published."
+    );
+  }
+
+  return {
+    ...brief,
+    companyName: profile.companyName,
+    title: "Morning Signal",
+    subtitle: "Your daily shot of market intelligence and action-ready GTM moves.",
+    generatedAt: new Intl.DateTimeFormat("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+      hour: "numeric",
+      minute: "2-digit"
+    }).format(new Date()),
+    topSignal,
+    industryNews: brief.industryNews
+      .map((signal) => groundSignal(signal, allowedSources))
+      .filter((signal): signal is Signal => signal !== null),
+    competitorSignals: brief.competitorSignals
+      .map((signal) => groundSignal(signal, allowedSources))
+      .filter((signal): signal is Signal => signal !== null)
+  };
+}
+
+function groundSignal(
+  signal: Signal,
+  allowedSources: Map<string, SearchResult>
+): Signal | null {
+  const seen = new Set<string>();
+  const sources = signal.sources.flatMap((source) => {
+    const key = normalizeUrl(source.url);
+    const matched = allowedSources.get(key);
+    if (!matched || seen.has(key)) return [];
+    seen.add(key);
+    return [canonicalSource(matched)];
+  });
+
+  return sources.length ? { ...signal, sources } : null;
+}
+
+function canonicalSource(result: SearchResult): Source {
+  return {
+    title: result.title,
+    url: result.url,
+    publisher: result.publisher,
+    date: result.date
+  };
+}
+
+function normalizeUrl(value: string) {
+  try {
+    const url = new URL(value);
+    url.hash = "";
+    url.searchParams.sort();
+    return url.toString().replace(/\/$/, "");
+  } catch {
+    return value.replace(/\/$/, "");
+  }
 }
 
 function demoBrief(profile: CompanyProfile): NewsletterBrief {
