@@ -6,15 +6,16 @@ This project is built for Nimble's Principal Developer Advocate take-home assign
 
 ## What It Does
 
-The product follows a three-screen workflow:
+The product follows a four-screen workflow:
 
 1. Accepts a company website URL.
 2. Uses Nimble to research and pre-fill the company overview, products, competitors, coverage, ICP, and target markets.
 3. Pauses for human review and approval.
-4. Plans market and competitor queries from the approved profile.
-5. Uses Nimble Search and Extract to gather fresh evidence.
-6. Synthesizes, stores, and renders the Morning Signal newsletter.
-7. Optionally sends the newsletter through Resend.
+4. Streams live LangGraph progress into a visual map of Nimble agents and web sources.
+5. Plans market and competitor queries from the approved profile.
+6. Uses Nimble Search and Extract to gather fresh evidence.
+7. Synthesizes, stores, and renders the Morning Signal newsletter.
+8. Optionally sends the newsletter through Resend.
 
 The newsletter sections are:
 
@@ -110,8 +111,8 @@ See [`docs/TALK_OUTLINE.md`](docs/TALK_OUTLINE.md) for the full Part 1 talk path
 1. Start with the problem: GTM teams miss important market changes because signals are live, scattered, and buried across the web.
 2. Enter `nimbleway.com` and show the researched profile.
 3. Explain the human approval checkpoint; refine the ICP and target markets.
-4. Approve the profile and generate the brief.
-5. Explain the LangGraph workflow: planning, Nimble Search, Nimble Extract, synthesis, storage, delivery.
+4. Approve the profile and show the live agent-work map.
+5. Explain the streamed LangGraph stages: planning, Nimble Search, Nimble Extract, verification, and synthesis.
 6. Open LangSmith and show traces for the agent run.
 7. Walk through the newsletter:
    - What changed?

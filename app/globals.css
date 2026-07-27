@@ -254,6 +254,246 @@ a { color: inherit; }
   border: 0;
 }
 
+.working-screen {
+  min-height: calc(100vh - 72px);
+  padding: 38px 28px 54px;
+  display: grid;
+  grid-template-rows: auto minmax(430px, 1fr) auto;
+  gap: 14px;
+  background:
+    linear-gradient(#e4e2d5 1px, transparent 1px),
+    linear-gradient(90deg, #e4e2d5 1px, transparent 1px),
+    var(--canvas);
+  background-size: 36px 36px;
+  overflow: hidden;
+}
+
+.working-heading {
+  width: min(960px, 100%);
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+}
+
+.working-heading h1 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 24px;
+  letter-spacing: 0;
+}
+
+.live-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.live-status i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--yellow);
+  border: 1px solid var(--ink);
+  box-shadow: 0 0 0 5px rgba(255, 234, 0, 0.24);
+}
+
+.agent-map {
+  width: min(960px, 100%);
+  aspect-ratio: 5 / 3;
+  max-height: 610px;
+  min-height: 430px;
+  margin: auto;
+  position: relative;
+}
+
+.connection-map {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.source-line {
+  stroke: #a6a69d;
+  stroke-width: 1;
+  opacity: 0.22;
+  vector-effect: non-scaling-stroke;
+}
+
+.source-line.active {
+  stroke: #8d8100;
+  stroke-width: 1.4;
+  stroke-dasharray: 4 9;
+  opacity: 0.66;
+  animation: signal-flow 1.5s linear infinite;
+}
+
+@keyframes signal-flow {
+  to { stroke-dashoffset: -26; }
+}
+
+.work-source {
+  width: 46px;
+  height: 46px;
+  position: absolute;
+  translate: -50% -50%;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid #bdbdb3;
+  background: rgba(255, 255, 255, 0.94);
+  opacity: 0.48;
+  box-shadow: 0 7px 18px rgba(23, 23, 23, 0.07);
+  transition: opacity 180ms ease, border-color 180ms ease, transform 180ms ease;
+}
+
+.work-source img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+.work-source.active {
+  border-color: #8d8100;
+  opacity: 0.88;
+  animation: source-breathe 2.4s ease-in-out infinite;
+}
+
+.work-source:nth-of-type(3n) { animation-delay: 0.3s; }
+.work-source:nth-of-type(3n + 1) { animation-delay: 0.7s; }
+
+@keyframes source-breathe {
+  50% { transform: translateY(-3px); }
+}
+
+.agent-node {
+  min-width: 76px;
+  min-height: 34px;
+  padding: 0 11px;
+  position: absolute;
+  translate: -50% -50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 1px solid #bdbdb3;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.96);
+  color: #77776f;
+  font-size: 11px;
+  font-weight: 800;
+  box-shadow: 0 7px 18px rgba(23, 23, 23, 0.06);
+  z-index: 2;
+}
+
+.agent-node i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #d5d5cd;
+  display: grid;
+  place-items: center;
+}
+
+.agent-node.active {
+  border-color: var(--ink);
+  background: var(--yellow);
+  color: var(--ink);
+  transform: scale(1.06);
+}
+
+.agent-node.active i {
+  background: var(--ink);
+  box-shadow: 0 0 0 4px rgba(23, 23, 23, 0.1);
+}
+
+.agent-node.complete {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+.agent-node.complete i {
+  width: 15px;
+  height: 15px;
+  background: var(--ink);
+  color: white;
+}
+
+.signal-core {
+  width: 158px;
+  height: 158px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  background: var(--yellow);
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 7px;
+  color: var(--ink);
+  box-shadow:
+    0 0 0 12px rgba(255, 234, 0, 0.16),
+    0 18px 45px rgba(23, 23, 23, 0.12);
+  z-index: 3;
+}
+
+.signal-core img {
+  width: 58px;
+  height: 58px;
+}
+
+.signal-core strong {
+  font-size: 13px;
+}
+
+.core-progress {
+  display: flex;
+  gap: 4px;
+}
+
+.core-progress i {
+  width: 14px;
+  height: 3px;
+  background: rgba(23, 23, 23, 0.2);
+}
+
+.core-progress i.filled {
+  background: var(--ink);
+}
+
+.working-footer {
+  width: min(960px, 100%);
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+}
+
+.working-footer strong {
+  color: var(--ink);
+}
+
+.working-footer span {
+  color: var(--muted);
+}
+
+.working-footer span::before {
+  content: "·";
+  margin-right: 10px;
+}
+
 .profile-screen, .report-screen { width: min(1180px, calc(100% - 40px)); margin: 0 auto; padding: 48px 0 72px; }
 .screen-heading, .report-toolbar {
   display: flex;
@@ -419,6 +659,23 @@ a { color: inherit; }
   .source-logo-12 {
     display: none;
   }
+
+  .working-screen {
+    grid-template-rows: auto minmax(520px, 1fr) auto;
+  }
+
+  .agent-map {
+    aspect-ratio: 4 / 5;
+    min-height: 520px;
+  }
+
+  .work-source:nth-of-type(n + 9) {
+    display: none;
+  }
+
+  .source-line:nth-child(n + 9) {
+    display: none;
+  }
 }
 
 @media (max-width: 620px) {
@@ -433,6 +690,23 @@ a { color: inherit; }
   .source-logo-4 { right: 6%; bottom: 12%; }
   .source-logo-5 { right: 22%; top: 7%; }
   .source-logo-6 { left: 20%; bottom: 8%; }
+  .working-screen { padding: 26px 12px 38px; }
+  .working-heading,
+  .agent-map,
+  .working-footer {
+    width: 100%;
+    max-width: calc(100vw - 24px);
+  }
+  .working-heading h1 { font-size: 19px; }
+  .agent-map { min-height: 500px; }
+  .work-source { width: 36px; height: 36px; }
+  .work-source img { width: 18px; height: 18px; }
+  .work-source:nth-of-type(n + 7) { display: none; }
+  .source-line:nth-child(n + 7) { display: none; }
+  .agent-node { min-width: 64px; min-height: 30px; padding: 0 8px; font-size: 10px; }
+  .signal-core { width: 126px; height: 126px; }
+  .signal-core img { width: 47px; height: 47px; }
+  .signal-core strong { font-size: 11px; }
   .url-control { grid-template-columns: auto minmax(0, 1fr); padding: 10px 12px; }
   .url-control .primary-button { grid-column: 1 / -1; width: 100%; }
   .profile-screen, .report-screen { width: min(100% - 24px, 1180px); padding-top: 30px; }

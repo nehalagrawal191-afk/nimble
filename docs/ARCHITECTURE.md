@@ -29,6 +29,11 @@ LangGraph makes each step explicit:
 
 That structure gives the demo a clean technical story: the LLM is not guessing from memory. It is reasoning over live evidence gathered through Nimble.
 
+The `/api/brief/stream` route emits newline-delimited progress events from the
+same LangGraph run. The interface uses those real node updates to activate the
+Plan, Search, Extract, Verify, and Synthesize visualization before showing the
+completed newsletter.
+
 ## Where Nimble Is In The Critical Path
 
 Nimble is used before the LLM writes the newsletter.

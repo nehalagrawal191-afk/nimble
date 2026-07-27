@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import {
   ArrowLeft,
   ArrowRight,
@@ -16,7 +16,8 @@ import {
 } from "lucide-react";
 import type { CompanyProfile, NewsletterBrief } from "@/lib/types";
 
-type Step = "website" | "profile" | "report";
+type Step = "website" | "profile" | "working" | "report";
+type WorkPhase = "planning" | "searching" | "extracting" | "verifying" | "synthesizing";
 
 const sourceLogos = [
   { name: "Google", file: "google.svg" },
@@ -33,15 +34,44 @@ const sourceLogos = [
   { name: "CNN", file: "cnn.svg" }
 ] as const;
 
+const workSourcePositions = [
+  { x: 9, y: 17 },
+  { x: 27, y: 8 },
+  { x: 52, y: 7 },
+  { x: 75, y: 10 },
+  { x: 92, y: 20 },
+  { x: 95, y: 49 },
+  { x: 90, y: 78 },
+  { x: 72, y: 91 },
+  { x: 49, y: 93 },
+  { x: 27, y: 90 },
+  { x: 9, y: 75 },
+  { x: 5, y: 46 }
+] as const;
+
+const agentStages: Array<{ key: WorkPhase; label: string; x: number; y: number }> = [
+  { key: "planning", label: "Plan", x: 50, y: 19 },
+  { key: "searching", label: "Search", x: 72, y: 38 },
+  { key: "extracting", label: "Extract", x: 65, y: 72 },
+  { key: "verifying", label: "Verify", x: 35, y: 72 },
+  { key: "synthesizing", label: "Synthesize", x: 28, y: 38 }
+];
+
 export default function Home() {
   const [step, setStep] = useState<Step>("website");
   const [website, setWebsite] = useState("https://www.nimbleway.com");
   const [profile, setProfile] = useState<CompanyProfile | null>(null);
   const [brief, setBrief] = useState<NewsletterBrief | null>(null);
   const [loading, setLoading] = useState(false);
+  const [workPhase, setWorkPhase] = useState<WorkPhase>("planning");
+  const [sourceCount, setSourceCount] = useState(0);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [sendStatus, setSendStatus] = useState<string | null>(null);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "auto" });
+  }, [step]);
 
   async function researchCompany(event: FormEvent) {
     event.preventDefault();
@@ -70,19 +100,64 @@ export default function Home() {
     setLoading(true);
     setError(null);
     setSendStatus(null);
+    setWorkPhase("planning");
+    setSourceCount(0);
+    setStep("working");
 
     try {
-      const response = await fetch("/api/brief", {
+      const response = await fetch("/api/brief/stream", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ profile })
       });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error ?? "Brief generation failed.");
-      setBrief(data.brief);
+      if (!response.ok || !response.body) {
+        const data = await response.json();
+        throw new Error(data.error ?? "Brief generation failed.");
+      }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+      let completedBrief: NewsletterBrief | null = null;
+
+      while (true) {
+        const { value, done } = await reader.read();
+        buffer += decoder.decode(value, { stream: !done });
+        const lines = buffer.split("\n");
+        buffer = lines.pop() ?? "";
+
+        for (const line of lines.filter(Boolean)) {
+          const event = JSON.parse(line) as {
+            type: "progress" | "complete" | "error";
+            phase?: WorkPhase;
+            sourceCount?: number;
+            brief?: NewsletterBrief;
+            message?: string;
+          };
+
+          if (event.type === "error") throw new Error(event.message ?? "Agent run failed.");
+          if (event.sourceCount !== undefined) setSourceCount(event.sourceCount);
+
+          if (event.type === "progress" && event.phase) {
+            setWorkPhase(event.phase);
+            await wait(550);
+          }
+
+          if (event.type === "complete" && event.brief) {
+            completedBrief = event.brief;
+          }
+        }
+
+        if (done) break;
+      }
+
+      if (!completedBrief) throw new Error("Agent completed without a newsletter.");
+      setBrief(completedBrief);
+      await wait(650);
       setStep("report");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong.");
+      setStep("profile");
     } finally {
       setLoading(false);
     }
@@ -135,9 +210,11 @@ export default function Home() {
         <div className="stepper" aria-label="Progress">
           <StepItem number={1} label="Company" active={step === "website"} complete={step !== "website"} />
           <span className="step-line" />
-          <StepItem number={2} label="GTM profile" active={step === "profile"} complete={step === "report"} />
+          <StepItem number={2} label="GTM profile" active={step === "profile"} complete={step === "working" || step === "report"} />
           <span className="step-line" />
-          <StepItem number={3} label="Morning Signal" active={step === "report"} complete={false} />
+          <StepItem number={3} label="Agents" active={step === "working"} complete={step === "report"} />
+          <span className="step-line" />
+          <StepItem number={4} label="Morning Signal" active={step === "report"} complete={false} />
         </div>
         <span className="mode-badge">Powered by Nimble</span>
       </header>
@@ -161,6 +238,14 @@ export default function Home() {
           loading={loading}
           onBack={() => setStep("website")}
           onSubmit={generateBrief}
+        />
+      ) : null}
+
+      {step === "working" && profile ? (
+        <WorkingScreen
+          companyName={profile.companyName}
+          phase={workPhase}
+          sourceCount={sourceCount}
         />
       ) : null}
 
@@ -356,6 +441,95 @@ function ProfileScreen({
   );
 }
 
+function WorkingScreen({
+  companyName,
+  phase,
+  sourceCount
+}: {
+  companyName: string;
+  phase: WorkPhase;
+  sourceCount: number;
+}) {
+  const phaseIndex = agentStages.findIndex((stage) => stage.key === phase);
+  const phaseLabel = agentStages[phaseIndex]?.label ?? "Plan";
+
+  return (
+    <section className="working-screen">
+      <div className="working-heading">
+        <h1>Nimble agents at work</h1>
+        <span className="live-status"><i /> Live</span>
+      </div>
+
+      <div className={`agent-map phase-${phase}`}>
+        <svg
+          className="connection-map"
+          viewBox="0 0 1000 600"
+          preserveAspectRatio="none"
+          aria-hidden="true"
+        >
+          {workSourcePositions.map((position, index) => (
+            <line
+              className={phaseIndex > 0 ? "source-line active" : "source-line"}
+              key={`line-${sourceLogos[index].name}`}
+              x1={position.x * 10}
+              y1={position.y * 6}
+              x2="500"
+              y2="300"
+              style={{ animationDelay: `${index * 0.1}s` }}
+            />
+          ))}
+        </svg>
+
+        {sourceLogos.map((logo, index) => {
+          const position = workSourcePositions[index];
+          return (
+            <span
+              className={`work-source ${phaseIndex > 0 ? "active" : ""}`}
+              key={`work-${logo.name}`}
+              style={{ left: `${position.x}%`, top: `${position.y}%` }}
+              title={logo.name}
+            >
+              <Image
+                src={`/source-logos/${logo.file}`}
+                width={24}
+                height={24}
+                alt={logo.name}
+                unoptimized
+              />
+            </span>
+          );
+        })}
+
+        {agentStages.map((stage, index) => (
+          <span
+            className={`agent-node ${index === phaseIndex ? "active" : ""} ${index < phaseIndex ? "complete" : ""}`}
+            key={stage.key}
+            style={{ left: `${stage.x}%`, top: `${stage.y}%` }}
+          >
+            <i>{index < phaseIndex ? <Check size={11} /> : null}</i>
+            {stage.label}
+          </span>
+        ))}
+
+        <div className="signal-core">
+          <Image src="/nimble-logo.png" width={62} height={62} alt="" priority />
+          <strong>Morning Signal</strong>
+          <div className="core-progress" aria-hidden="true">
+            {agentStages.map((stage, index) => (
+              <i className={index <= phaseIndex ? "filled" : ""} key={stage.key} />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="working-footer">
+        <strong>{phaseLabel}</strong>
+        <span>{sourceCount ? `${sourceCount} sources` : companyName}</span>
+      </div>
+    </section>
+  );
+}
+
 function ReportScreen({
   brief,
   loading,
@@ -527,4 +701,8 @@ function SignalSection({
 
 function lines(value: string) {
   return value.split("\n").map((item) => item.trim()).filter(Boolean);
+}
+
+function wait(milliseconds: number) {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
 }

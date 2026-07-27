@@ -61,8 +61,8 @@ Without Nimble, the agent can only produce generic category commentary or rely o
 1. Enter `nimbleway.com` as the company website.
 2. Show the researched company profile, competitor set, ICP, and target markets.
 3. Explain why the human approval checkpoint improves relevance and trust.
-4. Approve the profile and run the agent.
-5. Explain the graph steps while it runs.
+4. Approve the profile and reveal the live agent-work map.
+5. Follow Plan, Search, Extract, Verify, and Synthesize as streamed graph events.
 6. Walk through the unchanged Morning Signal newsletter structure.
 7. Point to sources, Nimble's Take, and recommended moves.
 8. Show LangSmith traces and explain how the pattern generalizes.

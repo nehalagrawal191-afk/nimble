@@ -3,6 +3,18 @@ import { nimbleExtract, nimbleSearch } from "@/lib/nimble";
 import { synthesizeNewsletter } from "@/lib/llm";
 import type { AgentInput, ExtractedPage, NewsletterBrief, SearchResult } from "@/lib/types";
 
+export type AgentProgressEvent =
+  | {
+      type: "progress";
+      phase: "planning" | "searching" | "extracting" | "verifying" | "synthesizing";
+      sourceCount: number;
+    }
+  | {
+      type: "complete";
+      brief: NewsletterBrief;
+      sourceCount: number;
+    };
+
 const AgentState = Annotation.Root({
   profile: Annotation<AgentInput["profile"]>(),
   queries: Annotation<string[]>({
@@ -112,6 +124,57 @@ export async function runGtmSignalAgent(input: AgentInput) {
 
   if (!result.brief) throw new Error("Agent completed without a newsletter brief.");
   return result.brief;
+}
+
+export async function* streamGtmSignalAgent(
+  input: AgentInput
+): AsyncGenerator<AgentProgressEvent> {
+  let sourceCount = 0;
+  yield { type: "progress", phase: "planning", sourceCount };
+
+  const stream = await workflow.stream(input, {
+    streamMode: "updates",
+    configurable: {
+      thread_id: `morning-signal-stream-${Date.now()}`
+    }
+  });
+
+  for await (const rawUpdate of stream) {
+    const update = rawUpdate as Record<
+      string,
+      {
+        searchResults?: SearchResult[];
+        extractedPages?: ExtractedPage[];
+        brief?: NewsletterBrief;
+      }
+    >;
+
+    if (update.plan_queries) {
+      yield { type: "progress", phase: "searching", sourceCount };
+    }
+
+    if (update.nimble_search) {
+      sourceCount = update.nimble_search.searchResults?.length ?? sourceCount;
+      yield { type: "progress", phase: "extracting", sourceCount };
+    }
+
+    if (update.nimble_extract) {
+      sourceCount = update.nimble_extract.extractedPages?.length ?? sourceCount;
+      yield { type: "progress", phase: "verifying", sourceCount };
+    }
+
+    if (update.assemble_evidence) {
+      yield { type: "progress", phase: "synthesizing", sourceCount };
+    }
+
+    if (update.synthesize_newsletter?.brief) {
+      yield {
+        type: "complete",
+        brief: update.synthesize_newsletter.brief,
+        sourceCount
+      };
+    }
+  }
 }
 
 function dedupeByUrl(results: SearchResult[]) {
