@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { FormEvent, useState } from "react";
 import {
   ArrowLeft,
@@ -106,8 +107,15 @@ export default function Home() {
     <main className="app-shell">
       <header className="app-header">
         <button className="wordmark" type="button" onClick={restart} aria-label="Start over">
-          <span className="brand-mark">N</span>
-          <span>Nimble</span>
+          <Image
+            className="brand-logo"
+            src="/nimble-logo.png"
+            width={36}
+            height={36}
+            alt=""
+            priority
+          />
+          <span>Nimble&apos;s Takes</span>
         </button>
         <div className="stepper" aria-label="Progress">
           <StepItem number={1} label="Company" active={step === "website"} complete={step !== "website"} />
@@ -169,15 +177,10 @@ function WebsiteScreen({
   return (
     <section className="onboarding-screen">
       <div className="onboarding-content">
-        <div className="hero-icon"><Globe2 size={28} /></div>
-        <p className="eyebrow">GTM intelligence agent</p>
-        <h1>What company should we track?</h1>
-        <p className="lead">
-          Enter a company website. Morning Signal will map its products, market,
-          competitors, and growth context before tracking the live web.
-        </p>
+        <h1>Your Market, Clearly Signaled</h1>
+        <p className="url-hint">Add your company URL</p>
         <form className="url-form" onSubmit={onSubmit}>
-          <label htmlFor="website">Company website</label>
+          <label className="sr-only" htmlFor="website">Company website</label>
           <div className="url-control">
             <Globe2 size={20} />
             <input
@@ -196,11 +199,6 @@ function WebsiteScreen({
             </button>
           </div>
         </form>
-        <div className="trust-row">
-          <span><Check size={15} /> Live company research</span>
-          <span><Check size={15} /> Editable before approval</span>
-          <span><Check size={15} /> Evidence-backed output</span>
-        </div>
       </div>
     </section>
   );
