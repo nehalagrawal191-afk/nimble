@@ -5,8 +5,10 @@ Morning Signal is intentionally built as a visible agent workflow rather than a 
 ## Core Flow
 
 ```text
-Brief objective
-  -> Plan search topics
+Company website
+  -> Discover company context with Nimble
+  -> Review and approve company profile, ICP, and target markets
+  -> Plan search topics from approved context
   -> Search with Nimble
   -> Extract with Nimble
   -> Assemble evidence packet
@@ -44,7 +46,7 @@ The final newsletter is validated with Zod:
 - `topSignal`
 - `industryNews`
 - `competitorSignals`
-- `nimbleTake`
+- `companyTake`
 - `movesToday`
 - source citations for every signal
 

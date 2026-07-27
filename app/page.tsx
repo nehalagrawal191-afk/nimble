@@ -1,26 +1,56 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { Mail, Play, RotateCcw, Send } from "lucide-react";
-import type { NewsletterBrief } from "@/lib/types";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Building2,
+  Check,
+  Globe2,
+  Loader2,
+  Mail,
+  RefreshCw,
+  Send,
+  Sparkles
+} from "lucide-react";
+import type { CompanyProfile, NewsletterBrief } from "@/lib/types";
 
-const defaultPrompt =
-  "Create today's GTM signal brief for Nimble's GTM team across AI search APIs, web scraping infrastructure, web data platforms, and production AI agent tooling.";
-
-const defaultCompetitors =
-  "Tavily, Exa, Bright Data, Oxylabs, Zyte, Apify, Firecrawl, SerpApi";
+type Step = "website" | "profile" | "report";
 
 export default function Home() {
-  const [prompt, setPrompt] = useState(defaultPrompt);
-  const [competitors, setCompetitors] = useState(defaultCompetitors);
+  const [step, setStep] = useState<Step>("website");
+  const [website, setWebsite] = useState("https://www.nimbleway.com");
+  const [profile, setProfile] = useState<CompanyProfile | null>(null);
   const [brief, setBrief] = useState<NewsletterBrief | null>(null);
   const [loading, setLoading] = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [sendStatus, setSendStatus] = useState<string | null>(null);
 
-  async function generateBrief(event: FormEvent) {
+  async function researchCompany(event: FormEvent) {
     event.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch("/api/company", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ website })
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error ?? "Company research failed.");
+      setProfile(data.profile);
+      setStep("profile");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function generateBrief() {
+    if (!profile) return;
     setLoading(true);
     setError(null);
     setSendStatus(null);
@@ -29,11 +59,12 @@ export default function Home() {
       const response = await fetch("/api/brief", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt, competitors })
+        body: JSON.stringify({ profile })
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error ?? "Brief generation failed.");
       setBrief(data.brief);
+      setStep("report");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong.");
     } finally {
@@ -63,177 +94,411 @@ export default function Home() {
     }
   }
 
-  function resetDemo() {
+  function restart() {
+    setStep("website");
+    setProfile(null);
     setBrief(null);
     setError(null);
     setSendStatus(null);
-    setPrompt(defaultPrompt);
-    setCompetitors(defaultCompetitors);
   }
 
   return (
-    <main className="shell">
-      <aside className="sidebar">
-        <div className="brand">
-          <div className="brand-mark">N</div>
-          Nimble
+    <main className="app-shell">
+      <header className="app-header">
+        <button className="wordmark" type="button" onClick={restart} aria-label="Start over">
+          <span className="brand-mark">N</span>
+          <span>Nimble</span>
+        </button>
+        <div className="stepper" aria-label="Progress">
+          <StepItem number={1} label="Company" active={step === "website"} complete={step !== "website"} />
+          <span className="step-line" />
+          <StepItem number={2} label="GTM profile" active={step === "profile"} complete={step === "report"} />
+          <span className="step-line" />
+          <StepItem number={3} label="Morning Signal" active={step === "report"} complete={false} />
         </div>
-        <div>
-          <h1>Morning Signal</h1>
-          <p>
-            A real-time GTM intelligence agent that turns live web data into an
-            action-ready newsletter for Nimble's go-to-market team.
-          </p>
-        </div>
+        <span className="mode-badge">Powered by Nimble</span>
+      </header>
 
-        <form className="control-panel" onSubmit={generateBrief}>
-          <div className="field">
-            <label htmlFor="prompt">Brief objective</label>
-            <textarea
-              id="prompt"
-              value={prompt}
-              onChange={(event) => setPrompt(event.target.value)}
-            />
-          </div>
-          <div className="field">
-            <label htmlFor="competitors">Tracked competitors</label>
-            <input
-              id="competitors"
-              value={competitors}
-              onChange={(event) => setCompetitors(event.target.value)}
-            />
-          </div>
-          <div className="button-row">
-            <button className="primary-button" disabled={loading} type="submit">
-              <Play size={17} />
-              {loading ? "Tracking signals" : "Generate brief"}
-            </button>
-            <button className="secondary-button" type="button" onClick={resetDemo}>
-              <RotateCcw size={17} />
-              Reset
-            </button>
-          </div>
-        </form>
+      {error ? <div className="global-message error">{error}</div> : null}
+      {sendStatus ? <div className="global-message success">{sendStatus}</div> : null}
 
-        <div className="status-grid">
-          <div className="status-item">
-            <strong>Live web layer</strong>
-            <span>Nimble Search + Extract, with demo-mode fallback.</span>
-          </div>
-          <div className="status-item">
-            <strong>Agent workflow</strong>
-            <span>LangGraph steps traceable in LangSmith.</span>
-          </div>
-          <div className="status-item">
-            <strong>Delivery</strong>
-            <span>Newsletter rendering plus optional Resend email.</span>
-          </div>
-        </div>
-      </aside>
+      {step === "website" ? (
+        <WebsiteScreen
+          website={website}
+          setWebsite={setWebsite}
+          loading={loading}
+          onSubmit={researchCompany}
+        />
+      ) : null}
 
-      <section className="main">
-        <div className="topbar">
-          <h2>Daily GTM Intelligence Brief</h2>
-          <span className="pill">{brief ? brief.generatedAt : "Ready"}</span>
-        </div>
+      {step === "profile" && profile ? (
+        <ProfileScreen
+          profile={profile}
+          setProfile={setProfile}
+          loading={loading}
+          onBack={() => setStep("website")}
+          onSubmit={generateBrief}
+        />
+      ) : null}
 
-        {error ? <div className="error">{error}</div> : null}
-        {sendStatus ? <div className="status-item">{sendStatus}</div> : null}
-
-        {brief ? (
-          <article className="newsletter">
-            <header className="newsletter-header">
-              <h3>{brief.title}</h3>
-              <p>{brief.subtitle}</p>
-            </header>
-            <div className="newsletter-body">
-              <section className="section">
-                <h4>Good morning, Nimble GTM.</h4>
-                <p>{brief.intro}</p>
-              </section>
-
-              <SignalSection title="Today's Top GTM Signal" signals={[brief.topSignal]} />
-              <SignalSection title="Industry News In 24 Hours" signals={brief.industryNews} />
-              <SignalSection title="What Competitors Are Up To" signals={brief.competitorSignals} />
-
-              <section className="section">
-                <h4>Nimble's Take</h4>
-                <p>{brief.nimbleTake}</p>
-              </section>
-
-              <section className="section">
-                <h4>Your Moves Today</h4>
-                <div className="signal-list">
-                  {brief.movesToday.map((move) => (
-                    <div className="signal-card" key={move.title}>
-                      <h5>{move.title}</h5>
-                      <p>{move.action}</p>
-                    </div>
-                  ))}
-                </div>
-              </section>
-
-              <div className="button-row">
-                <button className="secondary-button" disabled={sending} onClick={sendBrief}>
-                  <Send size={17} />
-                  {sending ? "Sending" : "Send newsletter"}
-                </button>
-              </div>
-            </div>
-          </article>
-        ) : (
-          <div className="empty-state">
-            <div>
-              <Mail size={42} />
-              <h3>No brief generated yet</h3>
-              <p>
-                Start a run to collect live signals, score GTM relevance, and
-                render the Morning Signal newsletter.
-              </p>
-            </div>
-          </div>
-        )}
-      </section>
+      {step === "report" && brief ? (
+        <ReportScreen
+          brief={brief}
+          loading={loading}
+          sending={sending}
+          onSend={sendBrief}
+          onEdit={() => setStep("profile")}
+          onRefresh={generateBrief}
+        />
+      ) : null}
     </main>
   );
 }
 
-function SignalSection({ title, signals }: { title: string; signals: NewsletterBrief["industryNews"] }) {
+function WebsiteScreen({
+  website,
+  setWebsite,
+  loading,
+  onSubmit
+}: {
+  website: string;
+  setWebsite: (value: string) => void;
+  loading: boolean;
+  onSubmit: (event: FormEvent) => void;
+}) {
+  return (
+    <section className="onboarding-screen">
+      <div className="onboarding-content">
+        <div className="hero-icon"><Globe2 size={28} /></div>
+        <p className="eyebrow">GTM intelligence agent</p>
+        <h1>What company should we track?</h1>
+        <p className="lead">
+          Enter a company website. Morning Signal will map its products, market,
+          competitors, and growth context before tracking the live web.
+        </p>
+        <form className="url-form" onSubmit={onSubmit}>
+          <label htmlFor="website">Company website</label>
+          <div className="url-control">
+            <Globe2 size={20} />
+            <input
+              id="website"
+              type="text"
+              inputMode="url"
+              autoComplete="url"
+              value={website}
+              onChange={(event) => setWebsite(event.target.value)}
+              placeholder="https://company.com"
+              required
+            />
+            <button className="primary-button" disabled={loading} type="submit">
+              {loading ? <Loader2 className="spin" size={18} /> : <Sparkles size={18} />}
+              {loading ? "Researching" : "Research company"}
+            </button>
+          </div>
+        </form>
+        <div className="trust-row">
+          <span><Check size={15} /> Live company research</span>
+          <span><Check size={15} /> Editable before approval</span>
+          <span><Check size={15} /> Evidence-backed output</span>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ProfileScreen({
+  profile,
+  setProfile,
+  loading,
+  onBack,
+  onSubmit
+}: {
+  profile: CompanyProfile;
+  setProfile: (profile: CompanyProfile) => void;
+  loading: boolean;
+  onBack: () => void;
+  onSubmit: () => void;
+}) {
+  const update = <K extends keyof CompanyProfile>(key: K, value: CompanyProfile[K]) =>
+    setProfile({ ...profile, [key]: value });
+
+  return (
+    <section className="profile-screen">
+      <div className="screen-heading">
+        <div>
+          <p className="eyebrow">Review the research</p>
+          <h1>Define the GTM lens</h1>
+          <p>
+            Confirm what the agent found and sharpen the ICP and markets it should
+            prioritize. Your edits become the research brief.
+          </p>
+        </div>
+        <a className="website-link" href={profile.website} target="_blank" rel="noreferrer">
+          <Globe2 size={16} /> {new URL(profile.website).hostname}
+        </a>
+      </div>
+
+      <form
+        className="profile-form"
+        onSubmit={(event) => {
+          event.preventDefault();
+          onSubmit();
+        }}
+      >
+        <div className="profile-grid">
+          <div className="profile-column">
+            <h2><Building2 size={19} /> Company context</h2>
+            <FormField label="Company name">
+              <input
+                value={profile.companyName}
+                onChange={(event) => update("companyName", event.target.value)}
+                required
+              />
+            </FormField>
+            <FormField label="About">
+              <textarea
+                value={profile.overview}
+                onChange={(event) => update("overview", event.target.value)}
+                rows={4}
+                required
+              />
+            </FormField>
+            <FormField label="Products" hint="One per line">
+              <textarea
+                value={profile.products.join("\n")}
+                onChange={(event) => update("products", lines(event.target.value))}
+                rows={4}
+                required
+              />
+            </FormField>
+            <FormField label="Coverage">
+              <textarea
+                value={profile.coverage}
+                onChange={(event) => update("coverage", event.target.value)}
+                rows={3}
+                required
+              />
+            </FormField>
+          </div>
+
+          <div className="profile-column">
+            <h2><Sparkles size={19} /> GTM context</h2>
+            <FormField label="Competitors" hint="One per line">
+              <textarea
+                value={profile.competitors.join("\n")}
+                onChange={(event) => update("competitors", lines(event.target.value))}
+                rows={5}
+                required
+              />
+            </FormField>
+            <FormField label="Ideal customer profile (ICP)">
+              <textarea
+                value={profile.icp}
+                onChange={(event) => update("icp", event.target.value)}
+                rows={5}
+                required
+              />
+            </FormField>
+            <FormField label="Target markets">
+              <textarea
+                value={profile.targetMarkets}
+                onChange={(event) => update("targetMarkets", event.target.value)}
+                rows={5}
+                required
+              />
+            </FormField>
+          </div>
+        </div>
+
+        <div className="approval-bar">
+          <div>
+            <strong>Ready to track the market?</strong>
+            <span>The agent will use this approved context to plan its live research.</span>
+          </div>
+          <div className="button-row">
+            <button className="secondary-button" type="button" onClick={onBack}>
+              <ArrowLeft size={17} /> Back
+            </button>
+            <button className="primary-button" disabled={loading} type="submit">
+              {loading ? <Loader2 className="spin" size={18} /> : <Check size={18} />}
+              {loading ? "Tracking live signals" : "Approve & generate"}
+            </button>
+          </div>
+        </div>
+      </form>
+    </section>
+  );
+}
+
+function ReportScreen({
+  brief,
+  loading,
+  sending,
+  onSend,
+  onEdit,
+  onRefresh
+}: {
+  brief: NewsletterBrief;
+  loading: boolean;
+  sending: boolean;
+  onSend: () => void;
+  onEdit: () => void;
+  onRefresh: () => void;
+}) {
+  return (
+    <section className="report-screen">
+      <div className="report-toolbar">
+        <div>
+          <p className="eyebrow">{brief.companyName} GTM intelligence</p>
+          <h1>{brief.title}</h1>
+        </div>
+        <div className="button-row">
+          <button className="secondary-button" type="button" onClick={onEdit}>
+            <ArrowLeft size={17} /> Edit profile
+          </button>
+          <button
+            className="icon-button"
+            type="button"
+            title="Regenerate report"
+            aria-label="Regenerate report"
+            disabled={loading}
+            onClick={onRefresh}
+          >
+            {loading ? <Loader2 className="spin" size={18} /> : <RefreshCw size={18} />}
+          </button>
+          <button className="primary-button" type="button" disabled={sending} onClick={onSend}>
+            {sending ? <Loader2 className="spin" size={17} /> : <Send size={17} />}
+            {sending ? "Sending" : "Send newsletter"}
+          </button>
+        </div>
+      </div>
+
+      <article className="newsletter">
+        <header className="newsletter-header">
+          <div className="newsletter-kicker">
+            <span><Mail size={16} /> Daily brief</span>
+            <span>{brief.generatedAt}</span>
+          </div>
+          <h2>{brief.title}</h2>
+          <p>{brief.subtitle}</p>
+        </header>
+        <div className="newsletter-body">
+          <section className="section greeting">
+            <h3>Good morning.</h3>
+            <p>{brief.intro}</p>
+          </section>
+          <SignalSection title="Top GTM Signal" signals={[brief.topSignal]} featured />
+          <SignalSection title="Industry News" signals={brief.industryNews} />
+          <SignalSection title="What Competitors Are Up To" signals={brief.competitorSignals} />
+          <section className="section take-section">
+            <p className="section-label">Point of view</p>
+            <h3>{brief.companyName}&apos;s Take</h3>
+            <p>{brief.companyTake}</p>
+          </section>
+          <section className="section">
+            <p className="section-label">Action plan</p>
+            <h3>Your Moves Today</h3>
+            <div className="moves-list">
+              {brief.movesToday.map((move, index) => (
+                <div className="move-row" key={move.title}>
+                  <span>{index + 1}</span>
+                  <div>
+                    <h4>{move.title}</h4>
+                    <p>{move.action}</p>
+                  </div>
+                  <ArrowRight size={18} />
+                </div>
+              ))}
+            </div>
+          </section>
+        </div>
+      </article>
+    </section>
+  );
+}
+
+function StepItem({
+  number,
+  label,
+  active,
+  complete
+}: {
+  number: number;
+  label: string;
+  active: boolean;
+  complete: boolean;
+}) {
+  return (
+    <div className={`step-item ${active ? "active" : ""} ${complete ? "complete" : ""}`}>
+      <span>{complete ? <Check size={13} /> : number}</span>
+      <strong>{label}</strong>
+    </div>
+  );
+}
+
+function FormField({
+  label,
+  hint,
+  children
+}: {
+  label: string;
+  hint?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <label className="field">
+      <span>{label}{hint ? <small>{hint}</small> : null}</span>
+      {children}
+    </label>
+  );
+}
+
+function SignalSection({
+  title,
+  signals,
+  featured = false
+}: {
+  title: string;
+  signals: NewsletterBrief["industryNews"];
+  featured?: boolean;
+}) {
   return (
     <section className="section">
-      <h4>{title}</h4>
+      <p className="section-label">{featured ? "Priority signal" : "Live intelligence"}</p>
+      <h3>{title}</h3>
       <div className="signal-list">
         {signals.map((signal) => (
-          <div className="signal-card" key={`${title}-${signal.title}`}>
-            <h5>{signal.title}</h5>
+          <div className={`signal-card ${featured ? "featured" : ""}`} key={`${title}-${signal.title}`}>
+            <div className="signal-title-row">
+              <h4>{signal.title}</h4>
+              <span className={`urgency ${signal.urgency.toLowerCase()}`}>{signal.urgency}</span>
+            </div>
             <div className="signal-meta">
-              <span className={`tag ${signal.urgency.toLowerCase()}`}>{signal.urgency} urgency</span>
-              <span className="tag">{signal.category}</span>
-              <span className="tag">{signal.timeframe}</span>
+              <span>{signal.category}</span>
+              <span>{signal.timeframe}</span>
             </div>
             <p>{signal.summary}</p>
-            <p>
-              <strong>Why now: </strong>
-              {signal.whyNow}
-            </p>
-            <p>
-              <strong>Recommended action: </strong>
-              {signal.recommendedAction}
-            </p>
+            <div className="signal-analysis">
+              <p><strong>Why it matters</strong>{signal.whyNow}</p>
+              <p><strong>Recommended action</strong>{signal.recommendedAction}</p>
+            </div>
             {signal.sources.length ? (
-              <ul className="source-list">
+              <div className="sources">
+                <span>Sources</span>
                 {signal.sources.map((source) => (
-                  <li key={source.url}>
-                    <a href={source.url} target="_blank" rel="noreferrer">
-                      {source.title || source.url}
-                    </a>
-                  </li>
+                  <a href={source.url} target="_blank" rel="noreferrer" key={source.url}>
+                    {source.title || source.url} <ArrowRight size={13} />
+                  </a>
                 ))}
-              </ul>
+              </div>
             ) : null}
           </div>
         ))}
       </div>
     </section>
   );
+}
+
+function lines(value: string) {
+  return value.split("\n").map((item) => item.trim()).filter(Boolean);
 }

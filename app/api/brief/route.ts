@@ -2,26 +2,18 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { runGtmSignalAgent } from "@/lib/agent";
 import { saveBrief } from "@/lib/store";
+import { companyProfileSchema } from "@/lib/types";
 
 export const runtime = "nodejs";
 
 const requestSchema = z.object({
-  prompt: z.string().min(10),
-  competitors: z.string().min(3)
+  profile: companyProfileSchema
 });
 
 export async function POST(request: Request) {
   try {
     const payload = requestSchema.parse(await request.json());
-    const competitorList = payload.competitors
-      .split(",")
-      .map((item) => item.trim())
-      .filter(Boolean);
-
-    const brief = await runGtmSignalAgent({
-      prompt: payload.prompt,
-      competitors: competitorList
-    });
+    const brief = await runGtmSignalAgent({ profile: payload.profile });
 
     saveBrief(brief);
     return NextResponse.json({ brief });

@@ -23,8 +23,20 @@ export const moveSchema = z.object({
   action: z.string()
 });
 
+export const companyProfileSchema = z.object({
+  website: z.string().url(),
+  companyName: z.string().min(1),
+  overview: z.string().min(1),
+  products: z.array(z.string()).min(1),
+  competitors: z.array(z.string()).min(1),
+  coverage: z.string().min(1),
+  icp: z.string().min(1),
+  targetMarkets: z.string().min(1)
+});
+
 export const newsletterBriefSchema = z.object({
   id: z.string(),
+  companyName: z.string(),
   title: z.string(),
   subtitle: z.string(),
   generatedAt: z.string(),
@@ -32,17 +44,17 @@ export const newsletterBriefSchema = z.object({
   topSignal: signalSchema,
   industryNews: z.array(signalSchema),
   competitorSignals: z.array(signalSchema),
-  nimbleTake: z.string(),
+  companyTake: z.string(),
   movesToday: z.array(moveSchema)
 });
 
 export type Source = z.infer<typeof sourceSchema>;
 export type Signal = z.infer<typeof signalSchema>;
+export type CompanyProfile = z.infer<typeof companyProfileSchema>;
 export type NewsletterBrief = z.infer<typeof newsletterBriefSchema>;
 
 export type AgentInput = {
-  prompt: string;
-  competitors: string[];
+  profile: CompanyProfile;
 };
 
 export type SearchResult = {

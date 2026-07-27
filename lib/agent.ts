@@ -4,8 +4,7 @@ import { synthesizeNewsletter } from "@/lib/llm";
 import type { AgentInput, ExtractedPage, NewsletterBrief, SearchResult } from "@/lib/types";
 
 const AgentState = Annotation.Root({
-  prompt: Annotation<string>(),
-  competitors: Annotation<string[]>(),
+  profile: Annotation<AgentInput["profile"]>(),
   queries: Annotation<string[]>({
     reducer: (_, value) => value,
     default: () => []
@@ -26,12 +25,16 @@ const AgentState = Annotation.Root({
 });
 
 async function planQueries(state: typeof AgentState.State) {
-  const competitorTerms = state.competitors.slice(0, 8);
+  const { profile } = state;
+  const competitorTerms = profile.competitors.slice(0, 8);
   const queries = [
-    "AI search API production agents web data latest",
-    "web scraping API AI agents structured extraction latest",
-    "Nimbleway competitors AI web search agent infrastructure",
-    ...competitorTerms.map((competitor) => `${competitor} AI search API agents extraction latest`)
+    `${profile.companyName} product positioning partnerships news latest`,
+    `${profile.products.slice(0, 3).join(" ")} industry news latest`,
+    `${profile.targetMarkets} market trends buyer demand latest`,
+    ...competitorTerms.map(
+      (competitor) =>
+        `${competitor} product launch pricing positioning partnership news latest`
+    )
   ];
   return { queries };
 }
@@ -80,8 +83,7 @@ async function assembleEvidence(state: typeof AgentState.State) {
 
 async function synthesize(state: typeof AgentState.State) {
   const brief = await synthesizeNewsletter({
-    prompt: state.prompt,
-    competitors: state.competitors,
+    profile: state.profile,
     evidence: state.evidence
   });
   return { brief };

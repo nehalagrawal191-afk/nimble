@@ -58,14 +58,14 @@ Without Nimble, the agent can only produce generic category commentary or rely o
 
 ## Demo Beats
 
-1. Show the objective prompt: create today's GTM signal brief for Nimble.
-2. Show the tracked competitor set.
-3. Run the agent.
-4. Explain the graph steps while it runs.
-5. Walk through the generated newsletter.
-6. Point to source links and recommended actions.
-7. Show LangSmith traces if available.
-8. Explain how this generalizes to other agentic web-data workflows.
+1. Enter `nimbleway.com` as the company website.
+2. Show the researched company profile, competitor set, ICP, and target markets.
+3. Explain why the human approval checkpoint improves relevance and trust.
+4. Approve the profile and run the agent.
+5. Explain the graph steps while it runs.
+6. Walk through the unchanged Morning Signal newsletter structure.
+7. Point to sources, Nimble's Take, and recommended moves.
+8. Show LangSmith traces and explain how the pattern generalizes.
 
 ## Close
 

@@ -1,27 +1,27 @@
 # Morning Signal: Nimble GTM Intelligence Agent
 
-Morning Signal is a real-time GTM intelligence newsletter agent for Nimble's go-to-market team. It uses Nimble as the live web intelligence layer, then turns fresh market, competitor, and developer ecosystem signals into an action-ready daily brief.
+Morning Signal is a real-time GTM intelligence newsletter agent. A user enters a company website, approves an AI-researched company and GTM profile, and receives an action-ready daily brief grounded in fresh web evidence.
 
 This project is built for Nimble's Principal Developer Advocate take-home assignment, Part 1: build and present an AI agent that uses Nimble's web search capabilities as a core capability.
 
 ## What It Does
 
-Given a GTM research objective and a tracked competitor set, the agent:
+The product follows a three-screen workflow:
 
-1. Plans market and competitor search queries.
-2. Uses Nimble Search to discover fresh web signals.
-3. Uses Nimble Extract to pull source content from key pages.
-4. Synthesizes the evidence into a newsletter for Nimble's GTM team.
-5. Stores generated briefs in SQLite.
-6. Renders the brief in a Next.js interface.
+1. Accepts a company website URL.
+2. Uses Nimble to research and pre-fill the company overview, products, competitors, coverage, ICP, and target markets.
+3. Pauses for human review and approval.
+4. Plans market and competitor queries from the approved profile.
+5. Uses Nimble Search and Extract to gather fresh evidence.
+6. Synthesizes, stores, and renders the Morning Signal newsletter.
 7. Optionally sends the newsletter through Resend.
 
 The newsletter sections are:
 
-- Today's Top GTM Signal
-- Industry News In 24 Hours
+- Top GTM Signal
+- Industry News
 - What Competitors Are Up To
-- Nimble's Take
+- `[Company]'s Take`
 - Your Moves Today
 
 ## Why Nimble Matters Here
@@ -38,7 +38,9 @@ Nimble is doing meaningful work in the pipeline:
 ## Architecture
 
 ```text
-User objective
+Company website
+  -> Nimble Search + Extract: discover company context
+  -> Human approval: company, ICP, and target markets
   -> LangGraph: plan queries
   -> Nimble Search: discover fresh signals
   -> Nimble Extract: collect source content
@@ -106,15 +108,16 @@ http://localhost:3000
 See [`docs/TALK_OUTLINE.md`](docs/TALK_OUTLINE.md) for the full Part 1 talk path.
 
 1. Start with the problem: GTM teams miss important market changes because signals are live, scattered, and buried across the web.
-2. Show the objective prompt and competitor set.
-3. Generate the brief.
-4. Explain the LangGraph workflow: planning, Nimble Search, Nimble Extract, synthesis, storage, delivery.
-5. Open LangSmith and show traces for the agent run.
-6. Walk through the newsletter:
+2. Enter `nimbleway.com` and show the researched profile.
+3. Explain the human approval checkpoint; refine the ICP and target markets.
+4. Approve the profile and generate the brief.
+5. Explain the LangGraph workflow: planning, Nimble Search, Nimble Extract, synthesis, storage, delivery.
+6. Open LangSmith and show traces for the agent run.
+7. Walk through the newsletter:
    - What changed?
    - Why now?
    - What should Nimble's GTM team do today?
-7. Close with the DevRel point: the best developer content proves a workflow, not just an API call.
+8. Close with the DevRel point: the best developer content proves a workflow, not just an API call.
 
 ## Safety And Reliability
 

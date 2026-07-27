@@ -1,13 +1,16 @@
 import OpenAI from "openai";
 import { isDemoMode, optionalEnv, requiredEnv } from "@/lib/config";
-import { newsletterBriefSchema, type NewsletterBrief } from "@/lib/types";
+import {
+  newsletterBriefSchema,
+  type CompanyProfile,
+  type NewsletterBrief
+} from "@/lib/types";
 
 export async function synthesizeNewsletter(input: {
-  prompt: string;
-  competitors: string[];
+  profile: CompanyProfile;
   evidence: string;
 }): Promise<NewsletterBrief> {
-  if (isDemoMode()) return demoBrief(input.competitors);
+  if (isDemoMode()) return demoBrief(input.profile);
 
   const client = new OpenAI({ apiKey: requiredEnv("OPENAI_API_KEY") });
   const model = optionalEnv("OPENAI_MODEL") ?? "gpt-4.1-mini";
@@ -18,21 +21,20 @@ export async function synthesizeNewsletter(input: {
     messages: [
       {
         role: "system",
-        content:
-          "You are a senior GTM intelligence analyst for Nimble. Produce concise, evidence-grounded, action-ready newsletter briefs for Nimble's GTM team. Use only the supplied evidence. Return valid JSON matching the requested schema."
+        content: `You are a senior GTM intelligence analyst for ${input.profile.companyName}. Produce concise, evidence-grounded, action-ready Morning Signal newsletters. Prioritize findings by the approved ICP and target markets. Use only supplied evidence for factual claims. Return valid JSON matching the requested schema.`
       },
       {
         role: "user",
-        content: `Objective: ${input.prompt}
+        content: `Approved company profile:
+${JSON.stringify(input.profile, null, 2)}
 
-Tracked competitors: ${input.competitors.join(", ")}
-
-Evidence gathered through Nimble:
+Fresh evidence gathered through Nimble:
 ${input.evidence}
 
 Return JSON with this shape:
 {
   "id": "slug-or-uuid",
+  "companyName": "${input.profile.companyName}",
   "title": "Morning Signal",
   "subtitle": "Your daily shot of market intelligence and action-ready GTM moves.",
   "generatedAt": "human-readable current date/time",
@@ -49,7 +51,7 @@ Return JSON with this shape:
   },
   "industryNews": [same signal shape, exactly 3],
   "competitorSignals": [same signal shape, exactly 3],
-  "nimbleTake": "one sharp paragraph",
+  "companyTake": "one sharp, differentiated point of view ${input.profile.companyName} can credibly own",
   "movesToday": [{ "title": "", "action": "" }, exactly 3]
 }`
       }
@@ -61,7 +63,7 @@ Return JSON with this shape:
   return newsletterBriefSchema.parse(JSON.parse(raw));
 }
 
-function demoBrief(competitors: string[]): NewsletterBrief {
+function demoBrief(profile: CompanyProfile): NewsletterBrief {
   const generatedAt = new Intl.DateTimeFormat("en-US", {
     month: "long",
     day: "numeric",
@@ -72,22 +74,23 @@ function demoBrief(competitors: string[]): NewsletterBrief {
 
   return {
     id: `demo-${Date.now()}`,
+    companyName: profile.companyName,
     title: "Morning Signal",
     subtitle: "Your daily shot of market intelligence and action-ready GTM moves.",
     generatedAt,
     intro:
-      "I tracked fresh competitor updates, developer demand signals, and AI agent infrastructure moves. The important pattern: the category is converging around agentic search, but the proof layer is still thin.",
+      `I tracked fresh competitor updates, buyer demand signals, and market shifts relevant to ${profile.companyName}. The important pattern: the category is converging around agentic search, but the proof layer is still thin.`,
     topSignal: {
       title: "AI search competitors are moving from retrieval claims to agent workflow claims",
       category: "Positioning",
       urgency: "High",
       timeframe: "Today",
       summary:
-        "Multiple competitors now frame search and extraction as infrastructure for production agents, not just developer APIs. This overlaps directly with Nimble's strongest current narrative.",
+        `Multiple competitors now frame search and extraction as infrastructure for production agents, not just developer APIs. This overlaps directly with ${profile.companyName}'s strongest current narrative.`,
       whyNow:
         "The market is shifting language quickly, which means generic 'AI search API' messaging will become harder to defend without concrete agent demos.",
       recommendedAction:
-        "Publish a flagship GTM intelligence agent demo showing Nimble Search plus Extract turning live web signals into structured actions.",
+        `Publish a flagship GTM intelligence agent demo showing ${profile.companyName} turning live web signals into structured actions for ${profile.icp}.`,
       sources: [
         { title: "Tavily", url: "https://www.tavily.com/", publisher: "Tavily", date: "Today" },
         { title: "Exa", url: "https://exa.ai/", publisher: "Exa", date: "Today" }
@@ -104,8 +107,8 @@ function demoBrief(competitors: string[]): NewsletterBrief {
         whyNow:
           "Static training data is visibly insufficient for operational GTM decisions that change daily.",
         recommendedAction:
-          "Anchor Nimble's developer content around the phrase 'live web data layer for production agents' and prove it with working repos.",
-        sources: [{ title: "Nimble", url: "https://www.nimbleway.com/", publisher: "Nimble" }]
+          `Anchor ${profile.companyName}'s developer content around a clear production-agent category claim and prove it with working repos.`,
+        sources: [{ title: profile.companyName, url: profile.website, publisher: profile.companyName }]
       },
       {
         title: "Structured outputs are becoming the trust surface",
@@ -130,11 +133,11 @@ function demoBrief(competitors: string[]): NewsletterBrief {
         whyNow:
           "AI engineers are overloaded with similar-sounding agent tools and need proof before commitment.",
         recommendedAction:
-          "Turn this agent into a reusable 'GTM intelligence cookbook' example for Nimble.",
-        sources: [{ title: "Nimble Docs", url: "https://docs.nimbleway.com/nimble-sdk/getting-started/quickstart", publisher: "Nimble" }]
+          `Turn this agent into a reusable GTM intelligence cookbook example for ${profile.companyName}.`,
+        sources: [{ title: `${profile.companyName} website`, url: profile.website, publisher: profile.companyName }]
       }
     ],
-    competitorSignals: competitors.slice(0, 3).map((competitor, index) => ({
+    competitorSignals: profile.competitors.slice(0, 3).map((competitor, index) => ({
       title: `${competitor} is competing for the agent search narrative`,
       category: "Competitive",
       urgency: index === 0 ? "High" : "Medium",
@@ -143,11 +146,11 @@ function demoBrief(competitors: string[]): NewsletterBrief {
       whyNow:
         "Messaging convergence makes differentiated proof more valuable than broad category language.",
       recommendedAction:
-        "Create one comparison-safe technical asset that emphasizes Nimble's live search, extraction, and workflow fit without overclaiming.",
+        `Create one comparison-safe technical asset that emphasizes ${profile.companyName}'s product and workflow fit without overclaiming.`,
       sources: [{ title: competitor, url: `https://www.google.com/search?q=${encodeURIComponent(competitor)}`, publisher: competitor }]
     })),
-    nimbleTake:
-      "Nimble has a strong opening: the market wants agents that can reason over what is happening now, not what was true at training time. The GTM opportunity is to show this with concrete, observable workflows where Nimble discovers, extracts, structures, and turns live web signals into decisions.",
+    companyTake:
+      `${profile.companyName} has a strong opening: the market wants agents that can reason over what is happening now, not what was true at training time. The GTM opportunity is to show this with concrete, observable workflows that discover, extract, structure, and turn live web signals into decisions for ${profile.targetMarkets}.`,
     movesToday: [
       {
         title: "Package this as a flagship DevRel demo",

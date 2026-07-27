@@ -33,8 +33,8 @@ function renderEmail(brief: NewsletterBrief) {
       ${renderSignal("Today's Top GTM Signal", brief.topSignal)}
       ${renderSignals("Industry News In 24 Hours", brief.industryNews)}
       ${renderSignals("What Competitors Are Up To", brief.competitorSignals)}
-      <h2>Nimble's Take</h2>
-      <p>${escapeHtml(brief.nimbleTake)}</p>
+      <h2>${escapeHtml(brief.companyName)}'s Take</h2>
+      <p>${escapeHtml(brief.companyTake)}</p>
       <h2>Your Moves Today</h2>
       <ul>
         ${brief.movesToday
