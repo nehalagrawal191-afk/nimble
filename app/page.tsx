@@ -587,13 +587,13 @@ function ReportScreen({
             <h3>Good morning.</h3>
             <p>{brief.intro}</p>
           </section>
-          <SignalSection title="Top GTM Signal" signals={[brief.topSignal]} featured />
-          <SignalSection title="Industry News" signals={brief.industryNews} />
+          <ProspectSection prospect={brief.topProspect} />
+          <SignalSection title="Industry News In 24 Hours" signals={brief.industryNews} />
           <SignalSection title="What Competitors Are Up To" signals={brief.competitorSignals} />
           <section className="section take-section yellow-section">
-            <p className="section-label">Point of view</p>
-            <h3>{brief.companyName}&apos;s Take</h3>
-            <p>{brief.companyTake}</p>
+            <p className="section-label">Competitive response</p>
+            <h3>Nimble&apos;s Take</h3>
+            <p>{brief.competitorTake}</p>
           </section>
           <section className="section">
             <p className="section-label">Action plan</p>
@@ -653,50 +653,76 @@ function FormField({
   );
 }
 
+function ProspectSection({
+  prospect
+}: {
+  prospect: NewsletterBrief["topProspect"];
+}) {
+  return (
+    <section className="section yellow-section">
+      <p className="section-label">Priority account</p>
+      <h3>Today&apos;s Top Prospect</h3>
+      <div className="signal-card featured">
+        <div className="signal-title-row">
+          <h4>{prospect.companyName}</h4>
+        </div>
+        <p>{prospect.trigger}</p>
+        <div className="signal-analysis">
+          <p><strong>Why they fit</strong>{prospect.fit}</p>
+          <p><strong>Why now</strong>{prospect.whyNow}</p>
+          <p><strong>Recommended action</strong>{prospect.recommendedAction}</p>
+        </div>
+        <SourceLinks sources={prospect.sources} />
+      </div>
+    </section>
+  );
+}
+
 function SignalSection({
   title,
-  signals,
-  featured = false
+  signals
 }: {
   title: string;
   signals: NewsletterBrief["industryNews"];
-  featured?: boolean;
 }) {
   return (
-    <section className={`section ${featured ? "yellow-section" : ""}`}>
-      <p className="section-label">{featured ? "Priority signal" : "Live intelligence"}</p>
+    <section className="section">
+      <p className="section-label">Live intelligence</p>
       <h3>{title}</h3>
       <div className="signal-list">
         {signals.map((signal) => (
-          <div className={`signal-card ${featured ? "featured" : ""}`} key={`${title}-${signal.title}`}>
+          <div className="signal-card" key={`${title}-${signal.title}`}>
             <div className="signal-title-row">
               <h4>{signal.title}</h4>
-              <span className={`urgency ${signal.urgency.toLowerCase()}`}>{signal.urgency}</span>
-            </div>
-            <div className="signal-meta">
-              <span>{signal.category}</span>
-              <span>{signal.timeframe}</span>
             </div>
             <p>{signal.summary}</p>
             <div className="signal-analysis">
-              <p><strong>Why it matters</strong>{signal.whyNow}</p>
-              <p><strong>Recommended action</strong>{signal.recommendedAction}</p>
+              <p><strong>Why it matters</strong>{signal.whyItMatters}</p>
+              {signal.nimbleTake ? <p><strong>Nimble&apos;s Take</strong>{signal.nimbleTake}</p> : null}
             </div>
-            {signal.sources.length ? (
-              <div className="sources">
-                <span>Sources</span>
-                {signal.sources.map((source) => (
-                  <a href={source.url} target="_blank" rel="noreferrer" key={source.url}>
-                    {source.title || source.url} <ArrowRight size={13} />
-                  </a>
-                ))}
-              </div>
-            ) : null}
+            <SourceLinks sources={signal.sources} />
           </div>
         ))}
       </div>
     </section>
   );
+}
+
+function SourceLinks({
+  sources
+}: {
+  sources: NewsletterBrief["industryNews"][number]["sources"];
+}) {
+  return sources.length ? (
+    <div className="sources">
+      <span>Sources</span>
+      {sources.map((source) => (
+        <a href={source.url} target="_blank" rel="noreferrer" key={source.url}>
+          {source.title || source.url} <ArrowRight size={13} />
+        </a>
+      ))}
+    </div>
+  ) : null;
 }
 
 function lines(value: string) {

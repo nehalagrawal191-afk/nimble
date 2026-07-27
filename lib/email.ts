@@ -1,6 +1,6 @@
 import { Resend } from "resend";
 import { optionalEnv, requiredEnv } from "@/lib/config";
-import type { NewsletterBrief, Signal } from "@/lib/types";
+import type { NewsletterBrief, Prospect, Signal } from "@/lib/types";
 
 export async function sendNewsletter(brief: NewsletterBrief) {
   const to = optionalEnv("NEWSLETTER_TO");
@@ -16,7 +16,7 @@ export async function sendNewsletter(brief: NewsletterBrief) {
   await resend.emails.send({
     from,
     to,
-    subject: `${brief.title}: ${brief.topSignal.title}`,
+    subject: `${brief.title}: ${brief.topProspect.companyName}`,
     html: renderEmail(brief)
   });
 
@@ -30,12 +30,12 @@ function renderEmail(brief: NewsletterBrief) {
       <p>${escapeHtml(brief.subtitle)}</p>
       <p><strong>Generated:</strong> ${escapeHtml(brief.generatedAt)}</p>
       <p>${escapeHtml(brief.intro)}</p>
-      ${renderSignal("Today's Top GTM Signal", brief.topSignal, true)}
+      ${renderProspect(brief.topProspect)}
       ${renderSignals("Industry News In 24 Hours", brief.industryNews)}
       ${renderSignals("What Competitors Are Up To", brief.competitorSignals)}
       <section style="background: #ffe75f; border-left: 7px solid #171717; padding: 22px 24px; margin-top: 24px;">
-        <h2 style="margin-top: 0;">${escapeHtml(brief.companyName)}'s Take</h2>
-        <p style="margin-bottom: 0;">${escapeHtml(brief.companyTake)}</p>
+        <h2 style="margin-top: 0;">Nimble's Take</h2>
+        <p style="margin-bottom: 0;">${escapeHtml(brief.competitorTake)}</p>
       </section>
       <h2>Your Moves Today</h2>
       <ul>
@@ -48,21 +48,37 @@ function renderEmail(brief: NewsletterBrief) {
 }
 
 function renderSignals(title: string, signals: Signal[]) {
-  return `<h2>${escapeHtml(title)}</h2>${signals.map((signal) => renderSignal("", signal)).join("")}`;
+  return `<h2>${escapeHtml(title)}</h2>${signals.map(renderSignal).join("")}`;
 }
 
-function renderSignal(title: string, signal: Signal, featured = false) {
+function renderProspect(prospect: Prospect) {
   return `
-    ${title ? `<h2>${escapeHtml(title)}</h2>` : ""}
-    <section style="${featured ? "background: #ffe75f; border-left: 7px solid #171717; padding: 22px 24px;" : "border-top: 1px solid #deded5; padding-top: 12px;"} margin-top: 12px;">
+    <h2>Today's Top Prospect</h2>
+    <section style="background: #ffe75f; border-left: 7px solid #171717; padding: 22px 24px; margin-top: 12px;">
+      <h3>${escapeHtml(prospect.companyName)}</h3>
+      <p>${escapeHtml(prospect.trigger)}</p>
+      <p><strong>Why they fit:</strong> ${escapeHtml(prospect.fit)}</p>
+      <p><strong>Why now:</strong> ${escapeHtml(prospect.whyNow)}</p>
+      <p><strong>Recommended action:</strong> ${escapeHtml(prospect.recommendedAction)}</p>
+      <ul>
+        ${prospect.sources
+          .map((source) => `<li><a href="${escapeHtml(source.url)}">${escapeHtml(source.title || source.url)}</a></li>`)
+          .join("")}
+      </ul>
+    </section>
+  `;
+}
+
+function renderSignal(signal: Signal) {
+  return `
+    <section style="border-top: 1px solid #deded5; padding-top: 12px; margin-top: 12px;">
       <h3>${escapeHtml(signal.title)}</h3>
-      <p><strong>${signal.urgency} urgency</strong> | ${escapeHtml(signal.category)} | ${escapeHtml(signal.timeframe)}</p>
       <p>${escapeHtml(signal.summary)}</p>
-      <p><strong>Why now:</strong> ${escapeHtml(signal.whyNow)}</p>
-      <p><strong>Recommended action:</strong> ${escapeHtml(signal.recommendedAction)}</p>
+      <p><strong>Why it matters:</strong> ${escapeHtml(signal.whyItMatters)}</p>
+      ${signal.nimbleTake ? `<p><strong>Nimble's Take:</strong> ${escapeHtml(signal.nimbleTake)}</p>` : ""}
       <ul>
         ${signal.sources
-          .map((source) => `<li><a href="${source.url}">${escapeHtml(source.title || source.url)}</a></li>`)
+          .map((source) => `<li><a href="${escapeHtml(source.url)}">${escapeHtml(source.title || source.url)}</a></li>`)
           .join("")}
       </ul>
     </section>

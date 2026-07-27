@@ -7,15 +7,25 @@ export const sourceSchema = z.object({
   date: z.string().optional()
 });
 
-export const signalSchema = z.object({
-  title: z.string(),
-  category: z.string(),
-  urgency: z.enum(["High", "Medium", "Low"]),
-  timeframe: z.string(),
-  summary: z.string(),
+export const prospectSchema = z.object({
+  companyName: z.string(),
+  trigger: z.string(),
+  fit: z.string(),
   whyNow: z.string(),
   recommendedAction: z.string(),
   sources: z.array(sourceSchema).min(1)
+});
+
+export const signalSchema = z.object({
+  title: z.string(),
+  summary: z.string(),
+  whyItMatters: z.string(),
+  nimbleTake: z.string().optional(),
+  sources: z.array(sourceSchema).min(1)
+});
+
+export const competitorSignalSchema = signalSchema.extend({
+  companyName: z.string()
 });
 
 export const moveSchema = z.object({
@@ -41,15 +51,17 @@ export const newsletterBriefSchema = z.object({
   subtitle: z.string(),
   generatedAt: z.string(),
   intro: z.string(),
-  topSignal: signalSchema,
-  industryNews: z.array(signalSchema),
-  competitorSignals: z.array(signalSchema),
-  companyTake: z.string(),
-  movesToday: z.array(moveSchema)
+  topProspect: prospectSchema,
+  industryNews: z.array(signalSchema).length(3),
+  competitorSignals: z.array(competitorSignalSchema).length(3),
+  competitorTake: z.string(),
+  movesToday: z.array(moveSchema).length(3)
 });
 
 export type Source = z.infer<typeof sourceSchema>;
+export type Prospect = z.infer<typeof prospectSchema>;
 export type Signal = z.infer<typeof signalSchema>;
+export type CompetitorSignal = z.infer<typeof competitorSignalSchema>;
 export type CompanyProfile = z.infer<typeof companyProfileSchema>;
 export type NewsletterBrief = z.infer<typeof newsletterBriefSchema>;
 
@@ -63,6 +75,7 @@ export type SearchResult = {
   description: string;
   publisher?: string;
   date?: string;
+  theme?: "prospect" | "industry" | "competitor";
 };
 
 export type ExtractedPage = {

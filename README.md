@@ -19,11 +19,11 @@ The product follows a four-screen workflow:
 
 The newsletter sections are:
 
-- Top GTM Signal
-- Industry News
-- What Competitors Are Up To
-- `[Company]'s Take`
-- Your Moves Today
+- Today's Top Prospect, backed by a current buying signal
+- Industry News In 24 Hours, exactly three items with a tailored Nimble's Take
+- What Competitors Are Up To, exactly three verified updates
+- Nimble's Take on the competitive pattern and differentiation opportunity
+- Your Moves Today, exactly three prioritized actions
 
 ## Why Nimble Matters Here
 
@@ -33,7 +33,9 @@ Nimble is doing meaningful work in the pipeline:
 
 - `Search API`: discovers fresh competitor, category, and market signals.
 - `Extract API`: retrieves structured source content from high-value pages.
+- Themed evidence lanes: keep prospect, 24-hour industry, and competitor sources separate.
 - Live source links: make the final brief inspectable and defensible.
+- Source grounding: prevents unsupported URLs, unapproved competitors, and generic filler from being published.
 - Demo-mode fallback: keeps the conference demo reliable without hiding the live architecture.
 
 ## Architecture

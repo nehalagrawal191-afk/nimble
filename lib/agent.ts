@@ -4,6 +4,13 @@ import { nimbleExtract, nimbleSearch } from "@/lib/nimble";
 import { synthesizeNewsletter } from "@/lib/llm";
 import type { AgentInput, ExtractedPage, NewsletterBrief, SearchResult } from "@/lib/types";
 
+type ResearchTheme = NonNullable<SearchResult["theme"]>;
+type PlannedQuery = {
+  query: string;
+  theme: ResearchTheme;
+  timeRange: "day" | "week" | "month";
+};
+
 export type AgentProgressEvent =
   | {
       type: "progress";
@@ -18,7 +25,7 @@ export type AgentProgressEvent =
 
 const AgentState = Annotation.Root({
   profile: Annotation<AgentInput["profile"]>(),
-  queries: Annotation<string[]>({
+  queries: Annotation<PlannedQuery[]>({
     reducer: (_, value) => value,
     default: () => []
   }),
@@ -39,38 +46,78 @@ const AgentState = Annotation.Root({
 
 async function planQueries(state: typeof AgentState.State) {
   const { profile } = state;
-  const competitorTerms = profile.competitors.slice(0, 5);
-  const queries = [
-    `${profile.companyName} product positioning partnerships news latest`,
-    `${profile.products.slice(0, 3).join(" ")} industry news latest`,
-    `${profile.targetMarkets} market trends buyer demand latest`,
-    ...competitorTerms.map(
-      (competitor) =>
-        `${competitor} product launch pricing positioning partnership news latest`
-    )
+  const productTerms = profile.products.slice(0, 3).join(" ");
+  const queries: PlannedQuery[] = [
+    {
+      query: `${profile.icp} hiring funding expansion new initiative ${productTerms}`,
+      theme: "prospect",
+      timeRange: "week"
+    },
+    {
+      query: `${profile.targetMarkets} companies hiring partnership funding expansion buyer signal`,
+      theme: "prospect",
+      timeRange: "week"
+    },
+    {
+      query: `${productTerms} industry product launch regulation funding demand`,
+      theme: "industry",
+      timeRange: "day"
+    },
+    {
+      query: `${productTerms} AI infrastructure policy investment market news`,
+      theme: "industry",
+      timeRange: "day"
+    },
+    ...profile.competitors.slice(0, 5).map((competitor) => ({
+      query: `"${competitor}" launch pricing product partnership positioning`,
+      theme: "competitor" as const,
+      timeRange: "month" as const
+    }))
   ];
   return { queries };
 }
 
 async function searchWithNimble(state: typeof AgentState.State) {
   const batches = await Promise.all(
-    state.queries.map((query) =>
-      nimbleSearch(query, 3, {
-        focus: "general",
-        timeRange: "month",
-        excludeDomains: [
-          "facebook.com",
-          "instagram.com",
-          "perplexity.ai",
-          "pinterest.com",
-          "tiktok.com",
-          "x.com",
-          "twitter.com"
-        ]
-      })
-    )
+    state.queries.map(async ({ query, theme, timeRange }) => {
+      const preferredFocus = theme === "prospect" ? "general" : "news";
+      const excludeDomains = [
+        "facebook.com",
+        "instagram.com",
+        "perplexity.ai",
+        "pinterest.com",
+        "tiktok.com",
+        "x.com",
+        "twitter.com"
+      ];
+      let results: SearchResult[] = [];
+      try {
+        results = await nimbleSearch(query, 4, {
+          focus: preferredFocus,
+          timeRange,
+          excludeDomains
+        });
+      } catch {
+        results = [];
+      }
+      if (results.length === 0 && preferredFocus === "news") {
+        try {
+          results = await nimbleSearch(query, 4, {
+            focus: "general",
+            timeRange,
+            excludeDomains
+          });
+        } catch {
+          results = [];
+        }
+      }
+      const perQueryLimit = 3;
+      return results
+        .slice(0, perQueryLimit)
+        .map((result) => ({ ...result, theme }));
+    })
   );
-  const deduped = dedupeByUrl(batches.flat()).filter(isUsableSource).slice(0, 10);
+  const deduped = dedupeByUrl(batches.flat()).filter(isUsableSource).slice(0, 24);
   if (deduped.length === 0) {
     throw new Error(
       "Nimble found no reliable live sources for this company. Try again shortly or broaden the target markets."
@@ -80,8 +127,11 @@ async function searchWithNimble(state: typeof AgentState.State) {
 }
 
 async function extractWithNimble(state: typeof AgentState.State) {
+  const selectedResults = (["prospect", "industry", "competitor"] as const).flatMap(
+    (theme) => state.searchResults.filter((result) => result.theme === theme).slice(0, 4)
+  );
   const pages = await Promise.all(
-    state.searchResults.slice(0, 6).map(async (result) => {
+    selectedResults.map(async (result) => {
       try {
         return await nimbleExtract(result.url);
       } catch {
@@ -106,6 +156,7 @@ async function assembleEvidence(state: typeof AgentState.State) {
         `URL: ${result.url}`,
         `Publisher: ${result.publisher ?? "Unknown"}`,
         `Date: ${result.date ?? "Unknown"}`,
+        `Research theme: ${result.theme ?? "unknown"}`,
         `Search snippet: ${result.description}`,
         `Extracted content: ${truncate(page?.text ?? "", 1200)}`
       ].join("\n");

@@ -48,12 +48,12 @@ If Nimble fails during a live conference demo, `DEMO_MODE=true` can run the same
 
 The final newsletter is validated with Zod:
 
-- `topSignal`
+- `topProspect`
 - `industryNews`
 - `competitorSignals`
-- `companyTake`
+- `competitorTake`
 - `movesToday`
-- source citations for every signal
+- source citations validated against the correct research theme
 
 Generated briefs are stored in SQLite at `data/signals.db`, which is ignored by git.
 
