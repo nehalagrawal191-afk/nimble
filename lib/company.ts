@@ -14,10 +14,35 @@ export async function discoverCompanyProfile(website: string): Promise<CompanyPr
   assertLiveResearchConfig();
 
   const host = new URL(normalizedWebsite).hostname.replace(/^www\./, "");
-  const [homepage, searchResults] = await Promise.all([
-    nimbleExtract(normalizedWebsite),
-    nimbleSearch(`${host} company products competitors markets coverage`, 6)
-  ]);
+  const excludedDomains = [
+    "facebook.com",
+    "instagram.com",
+    "pinterest.com",
+    "tiktok.com",
+    "x.com",
+    "twitter.com"
+  ];
+  const [homepage, productResults, alternativeResults, comparisonResults] =
+    await Promise.all([
+      nimbleExtract(normalizedWebsite),
+      nimbleSearch(`${host} products platform customers use cases markets`, 5, {
+        focus: "general",
+        excludeDomains: excludedDomains
+      }),
+      nimbleSearch(`${host} competitors alternatives similar products`, 5, {
+        focus: "general",
+        excludeDomains: excludedDomains
+      }),
+      nimbleSearch(`${host} versus comparison reviews`, 5, {
+        focus: "general",
+        excludeDomains: excludedDomains
+      })
+    ]);
+  const searchResults = dedupeByUrl([
+    ...productResults,
+    ...alternativeResults,
+    ...comparisonResults
+  ]).slice(0, 12);
 
   const evidence = [
     `WEBSITE\n${homepage.title}\n${homepage.text.slice(0, 6000)}`,
@@ -35,8 +60,19 @@ export async function discoverCompanyProfile(website: string): Promise<CompanyPr
     messages: [
       {
         role: "system",
-        content:
-          "You are a careful company research analyst. Build a concise company profile from supplied evidence. Separate products from capabilities, infer competitors conservatively, and make ICP and target market suggestions editable. Return JSON only."
+        content: `You are a senior competitive intelligence analyst. Build a concise company profile using only the supplied evidence.
+
+For competitors, first determine the company's primary product category, core job-to-be-done, economic buyer, user, and typical buying motion. A company qualifies as a direct competitor only when it:
+1. serves substantially the same buyer or user,
+2. solves the same primary job-to-be-done,
+3. offers a product that could realistically replace the analyzed company in a buying decision, and
+4. would plausibly compete for the same budget.
+
+Rank 3-7 direct competitors from strongest to weakest product and buying overlap. Prefer competitors explicitly named in comparison or alternatives evidence. You may include a strongly supported competitor inferred from clearly overlapping product evidence, but never from brand familiarity alone.
+
+Exclude customers, partners, integrations, data sources, parent companies, consultancies, broad cloud providers, generic horizontal tools, and adjacent vendors that solve only one small part of the workflow. Do not include the analyzed company itself. Do not mix adjacent or aspirational competitors into the list. If evidence is limited, return fewer high-confidence names instead of filling the list.
+
+Separate actual products from capabilities. Keep the overview factual. Make ICP and target-market suggestions concrete but editable. Return JSON only.`
       },
       {
         role: "user",
@@ -44,6 +80,15 @@ export async function discoverCompanyProfile(website: string): Promise<CompanyPr
 
 Evidence gathered through Nimble:
 ${evidence}
+
+Before returning JSON, silently apply this competitor test to every candidate:
+- Same category?
+- Same core use case?
+- Same buyer/user?
+- Substitutable in a shortlist?
+- Supported by the supplied evidence?
+
+Include a candidate only when at least four answers are yes, including "substitutable in a shortlist" and "supported by the supplied evidence." Return official company or product names only, with no explanations inside the competitors array. Order the closest substitutes first.
 
 Return:
 {
@@ -65,6 +110,15 @@ Return:
   return companyProfileSchema.parse({
     ...JSON.parse(raw),
     website: normalizedWebsite
+  });
+}
+
+function dedupeByUrl<T extends { url: string }>(results: T[]) {
+  const seen = new Set<string>();
+  return results.filter((result) => {
+    if (seen.has(result.url)) return false;
+    seen.add(result.url);
+    return true;
   });
 }
 
