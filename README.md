@@ -90,9 +90,32 @@ NEWSLETTER_TO=
 NEWSLETTER_ALLOWED_RECIPIENTS=
 ```
 
-`NEWSLETTER_TO` and `NEWSLETTER_ALLOWED_RECIPIENTS` form a server-side delivery
-allowlist. The report screen accepts a recipient address, but the API sends only
-to addresses explicitly enabled in one of those variables.
+## Email Delivery
+
+Create a [Resend API key](https://resend.com/api-keys), then add these values to
+`.env`:
+
+```bash
+RESEND_API_KEY=re_your_actual_key
+NEWSLETTER_TO=your-resend-account-email@example.com
+NEWSLETTER_FROM="Nimble's Takes <onboarding@resend.dev>"
+```
+
+`NEWSLETTER_TO` is also the delivery allowlist for the first recipient. To enable
+more recipients, add them as a comma-separated list:
+
+```bash
+NEWSLETTER_ALLOWED_RECIPIENTS=person1@example.com,person2@example.com
+```
+
+On the report screen, enter an allowed email address and click **Create daily
+newsletter**. The app sends the complete Morning Signal through Resend and
+reports the real delivery result.
+
+The default `onboarding@resend.dev` sender can send only to the email associated
+with your Resend account. To send to other addresses, [verify a domain in
+Resend](https://resend.com/docs/dashboard/domains/introduction) and replace
+`NEWSLETTER_FROM` with an address on that domain.
 
 Restart the development server after changing `.env`. With live mode enabled,
 any valid public company URL follows the same discovery, approval, research, and
@@ -110,13 +133,13 @@ company research.
 Run the app:
 
 ```bash
-npm run dev
+npm run dev -- -p 3001
 ```
 
 Open:
 
 ```text
-http://localhost:3000
+http://localhost:3001
 ```
 
 ## Suggested Demo Script
