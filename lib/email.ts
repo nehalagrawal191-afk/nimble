@@ -25,7 +25,7 @@ export async function sendNewsletter(brief: NewsletterBrief) {
 
 function renderEmail(brief: NewsletterBrief) {
   return `
-    <main style="font-family: Arial, sans-serif; color: #132033; line-height: 1.55;">
+    <main style="font-family: Arial, sans-serif; color: #171717; line-height: 1.55;">
       <h1>${escapeHtml(brief.title)}</h1>
       <p>${escapeHtml(brief.subtitle)}</p>
       <p><strong>Generated:</strong> ${escapeHtml(brief.generatedAt)}</p>
@@ -33,7 +33,7 @@ function renderEmail(brief: NewsletterBrief) {
       ${renderSignal("Today's Top GTM Signal", brief.topSignal, true)}
       ${renderSignals("Industry News In 24 Hours", brief.industryNews)}
       ${renderSignals("What Competitors Are Up To", brief.competitorSignals)}
-      <section style="background: #ffe75f; border-left: 7px solid #111827; padding: 22px 24px; margin-top: 24px;">
+      <section style="background: #ffe75f; border-left: 7px solid #171717; padding: 22px 24px; margin-top: 24px;">
         <h2 style="margin-top: 0;">${escapeHtml(brief.companyName)}'s Take</h2>
         <p style="margin-bottom: 0;">${escapeHtml(brief.companyTake)}</p>
       </section>
@@ -54,7 +54,7 @@ function renderSignals(title: string, signals: Signal[]) {
 function renderSignal(title: string, signal: Signal, featured = false) {
   return `
     ${title ? `<h2>${escapeHtml(title)}</h2>` : ""}
-    <section style="${featured ? "background: #ffe75f; border-left: 7px solid #111827; padding: 22px 24px;" : "border-top: 1px solid #dbe3ee; padding-top: 12px;"} margin-top: 12px;">
+    <section style="${featured ? "background: #ffe75f; border-left: 7px solid #171717; padding: 22px 24px;" : "border-top: 1px solid #deded5; padding-top: 12px;"} margin-top: 12px;">
       <h3>${escapeHtml(signal.title)}</h3>
       <p><strong>${signal.urgency} urgency</strong> | ${escapeHtml(signal.category)} | ${escapeHtml(signal.timeframe)}</p>
       <p>${escapeHtml(signal.summary)}</p>
