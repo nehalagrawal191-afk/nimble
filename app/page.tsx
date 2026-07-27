@@ -390,7 +390,7 @@ function ReportScreen({
           <SignalSection title="Top GTM Signal" signals={[brief.topSignal]} featured />
           <SignalSection title="Industry News" signals={brief.industryNews} />
           <SignalSection title="What Competitors Are Up To" signals={brief.competitorSignals} />
-          <section className="section take-section">
+          <section className="section take-section yellow-section">
             <p className="section-label">Point of view</p>
             <h3>{brief.companyName}&apos;s Take</h3>
             <p>{brief.companyTake}</p>
@@ -463,7 +463,7 @@ function SignalSection({
   featured?: boolean;
 }) {
   return (
-    <section className="section">
+    <section className={`section ${featured ? "yellow-section" : ""}`}>
       <p className="section-label">{featured ? "Priority signal" : "Live intelligence"}</p>
       <h3>{title}</h3>
       <div className="signal-list">
