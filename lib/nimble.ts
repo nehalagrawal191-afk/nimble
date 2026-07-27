@@ -1,13 +1,24 @@
-import { isDemoMode, requiredEnv } from "@/lib/config";
+import { isDemoMode, optionalEnv, requiredEnv } from "@/lib/config";
 import type { ExtractedPage, SearchResult } from "@/lib/types";
 
-const NIMBLE_BASE_URL = "https://sdk.nimbleway.com/v2";
+const NIMBLE_BASE_URL =
+  optionalEnv("NIMBLE_BASE_URL") ?? "https://sdk.nimbleway.com/v1";
+
+type SearchOptions = {
+  focus?: "general" | "news" | "coding" | "academic" | "shopping" | "social" | "geo" | "location";
+  timeRange?: "day" | "week" | "month" | "year";
+};
 
 type NimbleSearchResponse = {
   results?: Array<{
     title?: string;
     url?: string;
     description?: string;
+    snippet?: string;
+    content?: string;
+    publisher?: string;
+    date?: string;
+    published_date?: string;
     metadata?: Record<string, unknown>;
   }>;
 };
@@ -23,10 +34,15 @@ type NimbleExtractResponse = {
     text?: string;
     markdown?: string;
     content?: string;
+    html?: string;
   };
 };
 
-export async function nimbleSearch(query: string, maxResults = 5): Promise<SearchResult[]> {
+export async function nimbleSearch(
+  query: string,
+  maxResults = 5,
+  options: SearchOptions = {}
+): Promise<SearchResult[]> {
   if (isDemoMode()) return demoSearch(query, maxResults);
 
   const response = await fetch(`${NIMBLE_BASE_URL}/search`, {
@@ -37,12 +53,18 @@ export async function nimbleSearch(query: string, maxResults = 5): Promise<Searc
     },
     body: JSON.stringify({
       query,
-      max_results: maxResults
-    })
+      max_results: maxResults,
+      search_depth: "lite",
+      focus: options.focus ?? "general",
+      ...(options.timeRange ? { time_range: options.timeRange } : {})
+    }),
+    signal: AbortSignal.timeout(45_000)
   });
 
   if (!response.ok) {
-    throw new Error(`Nimble Search failed (${response.status}): ${await response.text()}`);
+    throw new Error(
+      `Nimble Search failed (${response.status}): ${truncateError(await response.text())}`
+    );
   }
 
   const payload = (await response.json()) as NimbleSearchResponse;
@@ -51,9 +73,16 @@ export async function nimbleSearch(query: string, maxResults = 5): Promise<Searc
     .map((item) => ({
       title: item.title ?? item.url ?? "Untitled source",
       url: item.url ?? "",
-      description: item.description ?? "",
-      publisher: stringFromMetadata(item.metadata, "publisher"),
-      date: stringFromMetadata(item.metadata, "date")
+      description: item.description ?? item.snippet ?? item.content ?? "",
+      publisher:
+        item.publisher ??
+        stringFromMetadata(item.metadata, "publisher") ??
+        publisherFromUrl(item.url ?? ""),
+      date:
+        item.date ??
+        item.published_date ??
+        stringFromMetadata(item.metadata, "date") ??
+        stringFromMetadata(item.metadata, "published_date")
     }));
 }
 
@@ -68,12 +97,16 @@ export async function nimbleExtract(url: string): Promise<ExtractedPage> {
     },
     body: JSON.stringify({
       url,
-      render: true
-    })
+      render: true,
+      formats: ["markdown"]
+    }),
+    signal: AbortSignal.timeout(60_000)
   });
 
   if (!response.ok) {
-    throw new Error(`Nimble Extract failed (${response.status}): ${await response.text()}`);
+    throw new Error(
+      `Nimble Extract failed (${response.status}): ${truncateError(await response.text())}`
+    );
   }
 
   const payload = (await response.json()) as NimbleExtractResponse;
@@ -88,6 +121,8 @@ export async function nimbleExtract(url: string): Promise<ExtractedPage> {
       data.markdown ??
       data.text ??
       data.content ??
+      data.html ??
+      payload.html ??
       ""
   };
 }
@@ -95,6 +130,18 @@ export async function nimbleExtract(url: string): Promise<ExtractedPage> {
 function stringFromMetadata(metadata: Record<string, unknown> | undefined, key: string) {
   const value = metadata?.[key];
   return typeof value === "string" ? value : undefined;
+}
+
+function publisherFromUrl(url: string) {
+  try {
+    return new URL(url).hostname.replace(/^www\./, "");
+  } catch {
+    return undefined;
+  }
+}
+
+function truncateError(value: string) {
+  return value.length > 500 ? `${value.slice(0, 500)}...` : value;
 }
 
 function demoSearch(query: string, maxResults: number): SearchResult[] {

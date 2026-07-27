@@ -1,4 +1,5 @@
 import { Annotation, StateGraph } from "@langchain/langgraph";
+import { assertLiveResearchConfig } from "@/lib/config";
 import { nimbleExtract, nimbleSearch } from "@/lib/nimble";
 import { synthesizeNewsletter } from "@/lib/llm";
 import type { AgentInput, ExtractedPage, NewsletterBrief, SearchResult } from "@/lib/types";
@@ -38,7 +39,7 @@ const AgentState = Annotation.Root({
 
 async function planQueries(state: typeof AgentState.State) {
   const { profile } = state;
-  const competitorTerms = profile.competitors.slice(0, 8);
+  const competitorTerms = profile.competitors.slice(0, 5);
   const queries = [
     `${profile.companyName} product positioning partnerships news latest`,
     `${profile.products.slice(0, 3).join(" ")} industry news latest`,
@@ -52,14 +53,18 @@ async function planQueries(state: typeof AgentState.State) {
 }
 
 async function searchWithNimble(state: typeof AgentState.State) {
-  const batches = await Promise.all(state.queries.map((query) => nimbleSearch(query, 4)));
-  const deduped = dedupeByUrl(batches.flat()).slice(0, 12);
+  const batches = await Promise.all(
+    state.queries.map((query) =>
+      nimbleSearch(query, 3, { focus: "general", timeRange: "week" })
+    )
+  );
+  const deduped = dedupeByUrl(batches.flat()).slice(0, 10);
   return { searchResults: deduped };
 }
 
 async function extractWithNimble(state: typeof AgentState.State) {
   const pages = await Promise.all(
-    state.searchResults.slice(0, 7).map(async (result) => {
+    state.searchResults.slice(0, 6).map(async (result) => {
       try {
         return await nimbleExtract(result.url);
       } catch {
@@ -116,6 +121,7 @@ const workflow = new StateGraph(AgentState)
   .compile();
 
 export async function runGtmSignalAgent(input: AgentInput) {
+  assertLiveResearchConfig();
   const result = await workflow.invoke(input, {
     configurable: {
       thread_id: `morning-signal-${Date.now()}`
@@ -129,6 +135,7 @@ export async function runGtmSignalAgent(input: AgentInput) {
 export async function* streamGtmSignalAgent(
   input: AgentInput
 ): AsyncGenerator<AgentProgressEvent> {
+  assertLiveResearchConfig();
   let sourceCount = 0;
   yield { type: "progress", phase: "planning", sourceCount };
 

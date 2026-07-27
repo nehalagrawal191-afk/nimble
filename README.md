@@ -81,16 +81,24 @@ Fill in:
 ```bash
 NIMBLE_API_KEY=
 OPENAI_API_KEY=
+DEMO_MODE=false
 LANGSMITH_API_KEY=
 RESEND_API_KEY=
 NEWSLETTER_TO=
 ```
 
-For a safe dry run without external API calls:
+Restart the development server after changing `.env`. With live mode enabled,
+any valid public company URL follows the same discovery, approval, research, and
+newsletter flow.
+
+For a safe dry run without external API calls, use the built-in Nimble fixture:
 
 ```bash
 DEMO_MODE=true
 ```
+
+Demo mode intentionally rejects other domains instead of generating fabricated
+company research.
 
 Run the app:
 
@@ -124,7 +132,11 @@ See [`docs/TALK_OUTLINE.md`](docs/TALK_OUTLINE.md) for the full Part 1 talk path
 
 - API keys live only in `.env`, which is ignored by git.
 - `.env.example` documents required configuration without secrets.
-- Demo mode keeps the UI and talk reliable if a provider is unavailable.
+- Live configuration is validated before paid retrieval begins.
+- Company discovery accepts public HTTP/HTTPS websites and rejects private hosts.
+- Each report run is capped at eight searches and six page extractions, plus the
+  initial company discovery search and extraction.
+- Demo mode keeps the Nimble talk path reliable if a provider is unavailable.
 - Source links are preserved in the generated brief.
 - Resend delivery is optional; the app renders the newsletter even without email configuration.
 - `npm audit --omit=dev` passes with zero production vulnerabilities.
