@@ -66,6 +66,7 @@ export default function Home() {
   const [workPhase, setWorkPhase] = useState<WorkPhase>("planning");
   const [sourceCount, setSourceCount] = useState(0);
   const [sending, setSending] = useState(false);
+  const [recipientEmail, setRecipientEmail] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [sendStatus, setSendStatus] = useState<string | null>(null);
 
@@ -163,7 +164,8 @@ export default function Home() {
     }
   }
 
-  async function sendBrief() {
+  async function sendBrief(event: FormEvent) {
+    event.preventDefault();
     if (!brief) return;
     setSending(true);
     setError(null);
@@ -173,7 +175,7 @@ export default function Home() {
       const response = await fetch("/api/send", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ brief })
+        body: JSON.stringify({ brief, recipient: recipientEmail })
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error ?? "Newsletter delivery failed.");
@@ -254,6 +256,8 @@ export default function Home() {
           brief={brief}
           loading={loading}
           sending={sending}
+          recipientEmail={recipientEmail}
+          setRecipientEmail={setRecipientEmail}
           onSend={sendBrief}
           onEdit={() => setStep("profile")}
           onRefresh={generateBrief}
@@ -534,6 +538,8 @@ function ReportScreen({
   brief,
   loading,
   sending,
+  recipientEmail,
+  setRecipientEmail,
   onSend,
   onEdit,
   onRefresh
@@ -541,7 +547,9 @@ function ReportScreen({
   brief: NewsletterBrief;
   loading: boolean;
   sending: boolean;
-  onSend: () => void;
+  recipientEmail: string;
+  setRecipientEmail: (value: string) => void;
+  onSend: (event: FormEvent) => void;
   onEdit: () => void;
   onRefresh: () => void;
 }) {
@@ -566,10 +574,22 @@ function ReportScreen({
           >
             {loading ? <Loader2 className="spin" size={18} /> : <RefreshCw size={18} />}
           </button>
-          <button className="primary-button" type="button" disabled={sending} onClick={onSend}>
-            {sending ? <Loader2 className="spin" size={17} /> : <Send size={17} />}
-            {sending ? "Creating newsletter" : "Create daily newsletter"}
-          </button>
+          <form className="delivery-control" onSubmit={onSend}>
+            <input
+              type="email"
+              value={recipientEmail}
+              onChange={(event) => setRecipientEmail(event.target.value)}
+              placeholder="you@company.com"
+              aria-label="Newsletter recipient"
+              autoComplete="email"
+              required
+              disabled={sending}
+            />
+            <button className="primary-button" type="submit" disabled={sending}>
+              {sending ? <Loader2 className="spin" size={17} /> : <Send size={17} />}
+              {sending ? "Sending newsletter" : "Create daily newsletter"}
+            </button>
+          </form>
         </div>
       </div>
 

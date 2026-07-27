@@ -241,6 +241,32 @@ a { color: inherit; }
 .secondary-button:hover, .icon-button:hover { background: #f5f5ef; border-color: #bdbdb3; }
 .icon-button { width: 42px; padding: 0; background: white; border-color: var(--line); color: #3d3d3d; }
 .button-row { display: flex; gap: 9px; flex-wrap: wrap; align-items: center; }
+.delivery-control {
+  display: flex;
+  min-height: 42px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: white;
+  overflow: hidden;
+}
+.delivery-control:focus-within {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 4px rgba(255, 234, 0, 0.34);
+}
+.delivery-control input {
+  width: 210px;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  padding: 0 12px;
+  color: var(--ink);
+}
+.delivery-control .primary-button {
+  min-height: 40px;
+  border-block: 0;
+  border-right: 0;
+  border-radius: 0;
+}
 
 .sr-only {
   position: absolute;
@@ -712,6 +738,8 @@ a { color: inherit; }
   .profile-screen, .report-screen { width: min(100% - 24px, 1180px); padding-top: 30px; }
   .profile-column { padding: 18px; }
   .report-toolbar .button-row { width: 100%; }
+  .delivery-control { width: 100%; }
+  .delivery-control input { flex: 1; width: auto; }
   .newsletter-header { padding: 26px 22px 30px; }
   .newsletter-kicker { margin-bottom: 24px; }
   .newsletter-header h2 { font-size: 30px; }

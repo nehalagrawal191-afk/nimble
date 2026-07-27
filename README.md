@@ -87,7 +87,12 @@ DEMO_MODE=false
 LANGSMITH_API_KEY=
 RESEND_API_KEY=
 NEWSLETTER_TO=
+NEWSLETTER_ALLOWED_RECIPIENTS=
 ```
+
+`NEWSLETTER_TO` and `NEWSLETTER_ALLOWED_RECIPIENTS` form a server-side delivery
+allowlist. The report screen accepts a recipient address, but the API sends only
+to addresses explicitly enabled in one of those variables.
 
 Restart the development server after changing `.env`. With live mode enabled,
 any valid public company URL follows the same discovery, approval, research, and

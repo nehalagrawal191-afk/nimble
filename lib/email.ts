@@ -2,23 +2,35 @@ import { Resend } from "resend";
 import { optionalEnv, requiredEnv } from "@/lib/config";
 import type { NewsletterBrief, Prospect, Signal } from "@/lib/types";
 
-export async function sendNewsletter(brief: NewsletterBrief) {
-  const to = optionalEnv("NEWSLETTER_TO");
-  if (!to) {
-    return {
-      message:
-        "Newsletter rendered successfully. Set NEWSLETTER_TO and RESEND_API_KEY to enable email delivery."
-    };
+export async function sendNewsletter(brief: NewsletterBrief, recipient: string) {
+  const allowedRecipients = [
+    optionalEnv("NEWSLETTER_TO"),
+    ...(optionalEnv("NEWSLETTER_ALLOWED_RECIPIENTS")?.split(",") ?? [])
+  ]
+    .filter((value): value is string => Boolean(value))
+    .map((value) => value.trim().toLowerCase());
+  const to = recipient.trim().toLowerCase();
+
+  if (!allowedRecipients.length) {
+    throw new Error(
+      "Newsletter delivery is not configured. Add NEWSLETTER_TO or NEWSLETTER_ALLOWED_RECIPIENTS to .env."
+    );
+  }
+  if (!allowedRecipients.includes(to)) {
+    throw new Error(
+      "This recipient is not enabled for the demo. Add it to NEWSLETTER_ALLOWED_RECIPIENTS in .env."
+    );
   }
 
   const resend = new Resend(requiredEnv("RESEND_API_KEY"));
   const from = optionalEnv("NEWSLETTER_FROM") ?? "Nimble GTM Signal <onboarding@resend.dev>";
-  await resend.emails.send({
+  const { error } = await resend.emails.send({
     from,
     to,
     subject: `${brief.title}: ${brief.topProspect.companyName}`,
     html: renderEmail(brief)
   });
+  if (error) throw new Error(`Resend delivery failed: ${error.message}`);
 
   return { message: `Newsletter sent to ${to}.` };
 }
