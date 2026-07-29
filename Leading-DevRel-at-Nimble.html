@@ -8,10 +8,13 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet" />
   <!--
-    Presence research (Jul 2026):
-    - LinkedIn ~13.8k · YouTube @nimble_search · GitHub ~74★ / PyPI ~16k/mo
-    - X @nimble_search · HN/Reddit near zero
-    Evidence: public/slides/presence-evidence.md
+    Presence research (Jul 2026) — user screenshots + live capture:
+    - LinkedIn 14,092 followers
+    - X @nimble_search 3,787 followers; paid Kaitee post ~16K views
+    - YouTube @nimble_search 13 subscribers / 38 videos
+    - GitHub Nimbleway 15 followers; agent-skills 50★
+    - Arcade.dev MCP partner docs (with Exa/Tavily/Google)
+    Evidence images: public/slides/presence/
   -->
 <style>
 :root {
@@ -215,66 +218,55 @@ h1.wide { max-width: 22ch; }
   letter-spacing: 0.04em;
 }
 
-/* Slide 4 — presence */
-.rank-table {
+/* Slide 4 — presence grid */
+.presence-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px 16px;
+  flex: 1;
+  min-height: 0;
+  align-content: start;
+}
+
+.p-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.p-card img {
   width: 100%;
-  border-collapse: collapse;
-  margin-top: 8px;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+  border: 1px solid rgba(17,17,17,0.2);
+  background: #f5f5f5;
+  filter: grayscale(1) contrast(1.05);
 }
 
-.rank-table th {
-  text-align: left;
-  font-family: var(--mono);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--muted);
-  padding: 0 16px 12px 0;
-  border-bottom: 1px solid var(--line);
-}
-
-.rank-table td {
-  padding: 16px 16px 16px 0;
-  border-bottom: 1px solid rgba(17, 17, 17, 0.12);
-  vertical-align: baseline;
-  font-size: clamp(16px, 1.5vw, 20px);
-}
-
-.rank-table td:first-child {
-  font-family: var(--mono);
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--muted);
-  width: 40px;
-}
-
-.rank-table td:nth-child(2) {
+.p-card .l1 {
+  margin: 8px 0 2px;
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: -0.02em;
-  width: 28%;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
 }
 
-.rank-table td:nth-child(3) {
-  color: var(--muted);
-  font-size: clamp(14px, 1.3vw, 16px);
+.p-card .l2 {
+  margin: 0;
+  font-size: 11px;
   font-weight: 400;
-}
-
-.rank-table tr.cold td:nth-child(2),
-.rank-table tr.cold td:nth-child(3) {
-  color: #999;
-}
-
-.so-what {
-  margin-top: 28px;
-  padding-top: 20px;
-  border-top: 1px solid var(--line);
-  font-size: clamp(16px, 1.5vw, 20px);
-  font-weight: 600;
-  letter-spacing: -0.015em;
+  color: var(--muted);
   line-height: 1.35;
-  max-width: 42ch;
+}
+
+.slide.tight-top .top { margin-bottom: 16px; }
+.slide.tight-top h1 { font-size: clamp(28px, 3.2vw, 40px); }
+.slide.tight-top .rule { margin: 14px 0 16px; }
+
+@media (max-width: 900px) {
+  .presence-grid { grid-template-columns: 1fr 1fr; }
 }
 
 .controls {
@@ -365,7 +357,7 @@ h1.wide { max-width: 22ch; }
     </section>
 
     <!-- 4 -->
-    <section class="slide" data-notes="LinkedIn strongest. YouTube active. GitHub stars low / PyPI usage real. X quiet. HN + Reddit cold. Evidence in presence-evidence.md">
+    <section class="slide tight-top" data-notes="Presence snapshot from live channels + user screenshots. YouTube 13 subs / 38 videos. LinkedIn 14,092 followers. GitHub 15 followers, agent-skills 50★. X 3,787 followers. Influencer paid post 16K views. Arcade MCP partner docs.">
       <div class="top">
         <div class="label">Current presence</div>
         <div class="num" data-slide-num>04 / 04</div>
@@ -373,50 +365,40 @@ h1.wide { max-width: 22ch; }
       <div class="body">
         <h1 class="wide">Where Nimble shows up.</h1>
         <hr class="rule" />
-        <table class="rank-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Channel</th>
-              <th>Signal</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>01</td>
-              <td>LinkedIn</td>
-              <td>~13.8k followers · strongest owned social</td>
-            </tr>
-            <tr>
-              <td>02</td>
-              <td>YouTube</td>
-              <td>@nimble_search · active tutorials</td>
-            </tr>
-            <tr>
-              <td>03</td>
-              <td>GitHub</td>
-              <td>Stars low · PyPI usage stronger</td>
-            </tr>
-            <tr>
-              <td>04</td>
-              <td>X</td>
-              <td>@nimble_search · present, quieter</td>
-            </tr>
-            <tr class="cold">
-              <td>05</td>
-              <td>Hacker News</td>
-              <td>Near-zero product conversation</td>
-            </tr>
-            <tr class="cold">
-              <td>06</td>
-              <td>Reddit</td>
-              <td>No visible traction in agent communities</td>
-            </tr>
-          </tbody>
-        </table>
-        <p class="so-what">Brand lives on LinkedIn. Builder communities are still cold.</p>
+        <div class="presence-grid">
+          <div class="p-card">
+            <img src="public/slides/presence/linkedin-card.jpg" alt="LinkedIn company page" />
+            <p class="l1">LinkedIn: 14,092 followers · B2B product + conference posts</p>
+            <p class="l2">Strongest owned channel — buyer/enterprise reach, not builder rooms.</p>
+          </div>
+          <div class="p-card">
+            <img src="public/slides/presence/x-card.jpg" alt="X profile @nimble_search" />
+            <p class="l1">X: 3,787 followers · product launches + agent messaging</p>
+            <p class="l2">Solid owned audience; still mostly broadcast, not community debate.</p>
+          </div>
+          <div class="p-card">
+            <img src="public/slides/presence/influencer-card.jpg" alt="Paid partnership post on X" />
+            <p class="l1">X (paid): influencer demo · 16K views / 162 likes / 128 reposts</p>
+            <p class="l2">Proof that product demos travel when someone else narrates the workflow.</p>
+          </div>
+          <div class="p-card">
+            <img src="public/slides/presence/youtube-card.jpg" alt="YouTube channel Nimble AI" />
+            <p class="l1">YouTube: 13 subscribers · 38 explainer / demo videos</p>
+            <p class="l2">Inventory exists; reach does not — founder-led, almost no distribution.</p>
+          </div>
+          <div class="p-card">
+            <img src="public/slides/presence/github-card.jpg" alt="GitHub org Nimbleway" />
+            <p class="l1">GitHub: 15 followers · agent-skills 50★ / cookbook 17★</p>
+            <p class="l2">Real SDK surface; stars lag usage — not yet a default in agent stacks.</p>
+          </div>
+          <div class="p-card">
+            <img src="public/slides/presence/arcade-card.jpg" alt="Arcade docs Nimble MCP partner" />
+            <p class="l1">Arcade docs: MCP partner · listed with Exa / Tavily / Google</p>
+            <p class="l2">Quiet ecosystem win — native where agent builders already wire tools.</p>
+          </div>
+        </div>
       </div>
-      <div class="footer">Screenshot links → public/slides/presence-evidence.md</div>
+      <div class="footer">Replace linkedin/influencer cards with your exact screenshots if needed</div>
     </section>
 
   </div>
