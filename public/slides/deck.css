@@ -326,6 +326,59 @@ html, body {
   background: #000;
 }
 
+a.video-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+a.video-link:hover .video-play {
+  transform: translate(-50%, -50%) scale(1.06);
+  background: var(--yellow);
+  color: var(--ink);
+}
+
+.video-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  background: #1a1a1a;
+}
+
+.video-play {
+  position: absolute;
+  left: 50%;
+  top: 48%;
+  transform: translate(-50%, -50%);
+  width: 78px;
+  height: 78px;
+  border-radius: 50%;
+  background: rgba(18, 18, 18, 0.88);
+  color: var(--yellow);
+  display: grid;
+  place-items: center;
+  font-size: 28px;
+  padding-left: 4px;
+  border: 2px solid rgba(255, 234, 0, 0.55);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+  transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.video-caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 14px 18px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.78));
+  color: rgba(245, 245, 240, 0.92);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
 .video-placeholder {
   position: absolute;
   inset: 0;
