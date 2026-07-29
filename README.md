@@ -144,12 +144,28 @@ http://localhost:3001
 
 ## Presentation Deck
 
-The Part 1 keynote deck lives at [`public/presentation/index.html`](public/presentation/index.html).
+The Part 1 keynote deck is a static HTML keynote served by the Next app.
 
-- Open the file directly, or with the app running visit `http://localhost:3001/presentation/`
-- Speaker notes and timing: [`docs/presentation/SPEAKER_NOTES.md`](docs/presentation/SPEAKER_NOTES.md)
-- Talk outline: [`docs/TALK_OUTLINE.md`](docs/TALK_OUTLINE.md)
-- Drop the 4-minute demo recording at `public/presentation/demo.mp4`
+**Open this exact URL (server must be running):**
+
+```text
+http://localhost:3001/slides/index.html
+```
+
+Step-by-step:
+
+1. In this repo, run: `npm run dev -- -H 0.0.0.0 -p 3001`
+2. Wait until the terminal prints `Ready`
+3. In your browser open: `http://localhost:3001/`
+4. Click **Open keynote deck →** in the top-right  
+   — or go directly to `http://localhost:3001/slides/index.html`
+5. Use `→` / `←` to move slides; `F` for fullscreen
+
+Also available: `/deck` (redirects to the same file).
+
+Speaker notes and timing: [`docs/presentation/SPEAKER_NOTES.md`](docs/presentation/SPEAKER_NOTES.md)  
+Talk outline: [`docs/TALK_OUTLINE.md`](docs/TALK_OUTLINE.md)  
+Demo video path: `public/slides/demo.mp4`
 
 ## Suggested Demo Script
 
