@@ -97,6 +97,15 @@ a { color: inherit; }
   border-radius: 7px;
 }
 
+a.deck-link {
+  text-decoration: none;
+  justify-self: end;
+}
+
+a.deck-link:hover {
+  background: var(--yellow-hover);
+}
+
 .global-message {
   max-width: 1180px;
   margin: 18px auto 0;
@@ -705,7 +714,7 @@ a { color: inherit; }
 }
 
 @media (max-width: 620px) {
-  .mode-badge { display: none; }
+  .mode-badge:not(.deck-link) { display: none; }
   .app-header { grid-template-columns: 1fr; }
   .onboarding-screen { padding: 28px 14px 60px; }
   .onboarding-content { padding: 28px 12px; }

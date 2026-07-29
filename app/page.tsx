@@ -218,7 +218,9 @@ export default function Home() {
           <span className="step-line" />
           <StepItem number={4} label="Morning Signal" active={step === "report"} complete={false} />
         </div>
-        <span className="mode-badge">Powered by Nimble</span>
+        <a className="mode-badge deck-link" href="/slides/index.html">
+          Open keynote deck →
+        </a>
       </header>
 
       {error ? <div className="global-message error">{error}</div> : null}

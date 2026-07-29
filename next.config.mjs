@@ -8,6 +8,13 @@ const nextConfig = {
   turbopack: {
     root: projectRoot
   },
+  trailingSlash: false,
+  async rewrites() {
+    return [
+      { source: "/deck", destination: "/slides/index.html" },
+      { source: "/presentation", destination: "/slides/index.html" }
+    ];
+  },
   experimental: {
     serverActions: {
       bodySizeLimit: "2mb"

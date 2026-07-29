@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Morning espresso with Nimble</title>
+  <meta name="description" content="Nimble turns live web chaos into structured, source-grounded, agent-ready intelligence before the LLM reasons." />
+  <link rel="stylesheet" href="/slides/deck.css" />
+</head>
+<body>
+  <div class="deck" id="deck">
+
+    <!-- 1. Title -->
+    <section class="slide dark is-active" data-title="Title">
+      <div class="chrome">
+        <div class="brand"><img src="/slides/nimble-logo.png" alt="" /> Nimble</div>
+        <div class="progress-track"><div class="progress-fill" data-progress></div></div>
+        <div class="slide-num" data-slide-num>01</div>
+      </div>
+      <div class="slide-body title-stage">
+        <div class="title-copy">
+          <h1 class="headline xl">Morning espresso with Nimble</h1>
+          <div class="thesis-bar"></div>
+          <p class="subhead">
+            Nimble turns live web chaos into structured, source-grounded, agent-ready intelligence — before the LLM reasons.
+          </p>
+        </div>
+        <div class="title-visual" aria-hidden="true">
+          <div class="signal-orbit"></div>
+          <span class="signal-node"></span>
+          <span class="signal-node"></span>
+          <span class="signal-node"></span>
+          <span class="signal-node"></span>
+          <div class="signal-core">Morning<br/>Signal</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Demo video -->
+    <section class="slide dark" data-title="Demo">
+      <div class="chrome">
+        <div class="brand"><img src="/slides/nimble-logo.png" alt="" /> Nimble</div>
+        <div class="progress-track"><div class="progress-fill" data-progress></div></div>
+        <div class="slide-num" data-slide-num></div>
+      </div>
+      <div class="slide-body">
+        <h2 class="headline wide" style="max-width:none; margin-bottom:20px;">Morning Signal demo</h2>
+        <div class="video-frame">
+          <a
+            class="video-shell video-link"
+            href="https://youtu.be/KxJ2BB3j1oM"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Open Morning Signal demo on YouTube"
+          >
+            <img
+              class="video-thumb"
+              src="https://img.youtube.com/vi/KxJ2BB3j1oM/maxresdefault.jpg"
+              alt="Morning Signal demo preview"
+              onerror="this.onerror=null;this.src='https://img.youtube.com/vi/KxJ2BB3j1oM/hqdefault.jpg';"
+            />
+            <span class="video-play" aria-hidden="true">▶</span>
+            <span class="video-caption">Watch on YouTube → youtu.be/KxJ2BB3j1oM</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. What you just saw -->
+    <section class="slide" data-title="What you saw">
+      <div class="chrome">
+        <div class="brand"><img src="/slides/nimble-logo.png" alt="" /> Nimble</div>
+        <div class="progress-track"><div class="progress-fill" data-progress></div></div>
+        <div class="slide-num" data-slide-num></div>
+      </div>
+      <div class="slide-body">
+        <h2 class="headline wide">One pass from URL to action-ready brief</h2>
+        <div class="workflow">
+          <div class="wf-step">
+            <div class="wf-index">1</div>
+            <h3>Company URL</h3>
+            <p>Seed the agent with a live website, not a static CRM record.</p>
+          </div>
+          <div class="wf-step">
+            <div class="wf-index">2</div>
+            <h3>Approved context</h3>
+            <p>Human confirms ICP, markets, and competitor set.</p>
+          </div>
+          <div class="wf-step nimble">
+            <div class="wf-index">3</div>
+            <h3>Nimble Search</h3>
+            <p>Discover fresh market, competitor, and prospect signals.</p>
+          </div>
+          <div class="wf-step nimble">
+            <div class="wf-index">4</div>
+            <h3>Nimble Extract</h3>
+            <p>Turn pages into structured, citable evidence.</p>
+          </div>
+          <div class="wf-step">
+            <div class="wf-index">5</div>
+            <h3>Morning Signal</h3>
+            <p>Synthesize moves only after evidence exists.</p>
+          </div>
+        </div>
+        <div class="so-what">The LLM never writes first — Nimble gathers evidence before synthesis.</div>
+      </div>
+    </section>
+
+    <!-- 4. Problem constellation -->
+
+    <!-- Section: The Problem -->
+    <section class="slide dark divider" data-title="The Problem">
+      <div class="chrome">
+        <div class="brand"><img src="/slides/nimble-logo.png" alt="" /> Nimble</div>
+        <div class="progress-track"><div class="progress-fill" data-progress></div></div>
+        <div class="slide-num" data-slide-num></div>
+      </div>
+      <div class="slide-body">
+        <div class="divider-stage">
+          <h2 class="headline">The Problem</h2>
+          <div class="thesis-bar"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide dark" data-title="Problem">
+      <div class="chrome">
+        <div class="brand"><img src="/slides/nimble-logo.png" alt="" /> Nimble</div>
+        <div class="progress-track"><div class="progress-fill" data-progress></div></div>
+        <div class="slide-num" data-slide-num></div>
+      </div>
+      <div class="slide-body">
+        <h2 class="headline wide" style="max-width:none;">GTM teams do not lack information. They miss what changed today.</h2>
+        <div class="constellation" aria-label="Scattered live web signals">
+          <div class="signal-card">
+            <div class="label">Competitor</div>
+            <div class="title">Product launches</div>
+            <div class="miss">Buried in changelogs &amp; blogs</div>
+          </div>
+          <div class="signal-card">
+            <div class="label">Pricing</div>
+            <div class="title">Packaging shifts</div>
+            <div class="miss">No alert in the CRM</div>
+          </div>
+          <div class="signal-card">
+            <div class="label">Docs</div>
+            <div class="title">API &amp; feature updates</div>
+            <div class="miss">Developer narrative moves first</div>
+          </div>
+          <div class="signal-card">
+            <div class="label">Community</div>
+            <div class="title">Threads &amp; comparisons</div>
+            <div class="miss">Buyer language forms here</div>
+          </div>
+          <div class="signal-card">
+            <div class="label">Hiring</div>
+            <div class="title">Job postings</div>
+            <div class="miss">Intent before the RFP</div>
+          </div>
+          <div class="signal-card">
+            <div class="label">Market</div>
+            <div class="title">Analyst &amp; reports</div>
+            <div class="miss">Category framing drifts weekly</div>
+          </div>
+          <div class="constellation-center">Scattered signals. Zero shared truth.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Blind spots -->
+    <section class="slide" data-title="Blind spots">
+      <div class="chrome">
+        <div class="brand"><img src="/slides/nimble-logo.png" alt="" /> Nimble</div>
+        <div class="progress-track"><div class="progress-fill" data-progress></div></div>
+        <div class="slide-num" data-slide-num></div>
+      </div>
+      <div class="slide-body">
+        <h2 class="headline wide">Your systems know history. They do not know this morning.</h2>
+        <div class="blind-spots">
+          <div class="blind">
+            <div class="x">✕</div>
+            <h3>CRM</h3>
+            <p>Accounts and activities — not competitor pages that changed overnight.</p>
+          </div>
+          <div class="blind">
+            <div class="x">✕</div>
+            <h3>Battlecards</h3>
+            <p>Static PDFs freeze a market that moves every product launch.</p>
+          </div>
+          <div class="blind">
+            <div class="x">✕</div>
+            <h3>LLM memory</h3>
+            <p>Training cutoffs and stale context invent confidence without sources.</p>
+          </div>
+        </div>
+        <div class="so-what">Without live web intelligence, agents invent strategy from yesterday’s world.</div>
+      </div>
+    </section>
+
+    <!-- 6. Agent architecture -->
+
+    <!-- Section: The Agent -->
+    <section class="slide dark divider" data-title="The Agent">
+      <div class="chrome">
+        <div class="brand"><img src="/slides/nimble-logo.png" alt="" /> Nimble</div>
+        <div class="progress-track"><div class="progress-fill" data-progress></div></div>
+        <div class="slide-num" data-slide-num></div>
+      </div>
+      <div class="slide-body">
+        <div class="divider-stage">
+          <h2 class="headline">The Agent</h2>
+          <div class="thesis-bar"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="Architecture">
+      <div class="chrome">
+        <div class="brand"><img src="/slides/nimble-logo.png" alt="" /> Nimble</div>
+        <div class="progress-track"><div class="progress-fill" data-progress></div></div>
+        <div class="slide-num" data-slide-num></div>
+      </div>
+      <div class="slide-body">
+        <h2 class="headline wide">Morning Signal architecture: the LLM is one node</h2>
+        <div class="arch-lanes">
+          <div class="pipeline">
+            <div class="pipe-row">
+              <div class="pipe-label">Context</div>
+              <div class="pipe-track">
+                <span class="arch-node">Company URL</span>
+                <span class="arch-arrow">→</span>
+                <span class="arch-node">Company profile</span>
+                <span class="arch-arrow">→</span>
+                <span class="arch-node">Approved GTM context</span>
+              </div>
+            </div>
+            <div class="pipe-row">
+              <div class="pipe-label">Plan</div>
+              <div class="pipe-track">
+                <span class="arch-node">LangGraph planner</span>
+                <span class="arch-arrow">→</span>
+                <span class="arch-node">Themed queries</span>
+              </div>
+            </div>
+            <div class="pipe-row">
+              <div class="pipe-label">Critical path</div>
+              <div class="pipe-track critical">
+                <span class="arch-node nimble">Nimble Search</span>
+                <span class="arch-arrow">→</span>
+                <span class="arch-node nimble">Nimble Extract</span>
+                <span class="arch-arrow">→</span>
+                <span class="arch-node nimble">Evidence packet</span>
+              </div>
+            </div>
+            <div class="pipe-row">
+              <div class="pipe-label">Output</div>
+              <div class="pipe-track">
+                <span class="arch-node llm">OpenAI synthesis</span>
+                <span class="arch-arrow">→</span>
+                <span class="arch-node">Morning Signal brief</span>
+              </div>
+            </div>
+          </div>
+          <div class="callout-panel">
+            <h3>Design choice</h3>
+            <p>Search and extract run before synthesis. If Nimble finds nothing credible, the agent has nothing to invent.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Nimble critical path -->
+    <section class="slide" data-title="Nimble role">
+      <div class="chrome">
+        <div class="brand"><img src="/slides/nimble-logo.png" alt="" /> Nimble</div>
+        <div class="progress-track"><div class="progress-fill" data-progress></div></div>
+        <div class="slide-num" data-slide-num></div>
+      </div>
+      <div class="slide-body">
+        <h2 class="headline wide">Before synthesis: Nimble Search and Extract</h2>
+        <div class="critical-grid">
+          <div class="crit" data-step="01">
+            <div class="crit-icon">S</div>
+            <h3>Search discovers</h3>
+            <p>Fresh sources across competitors, markets, and prospect intent — not ranked nostalgia.</p>
+          </div>
+          <div class="crit" data-step="02">
+            <div class="crit-icon">E</div>
+            <h3>Extract structures</h3>
+            <p>Messy pages become usable evidence fields the agent can reason over.</p>
+          </div>
+          <div class="crit" data-step="03">
+            <div class="crit-icon">M</div>
+            <h3>Metadata audits</h3>
+            <p>Titles, URLs, publishers, and dates travel with every claim.</p>
+          </div>
+          <div class="crit" data-step="04">
+            <div class="crit-icon">G</div>
+            <h3>Grounding holds</h3>
+            <p>Structured evidence blocks generic filler before it reaches the brief.</p>
+          </div>
+        </div>
+        <div class="synth-arrow">
+          <div class="line"></div>
+          <div class="badge">Only then → synthesis</div>
+          <div class="line"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Search API -->
+
+    <!-- Section: Nimble Capabilities -->
+    <section class="slide dark divider" data-title="Nimble Capabilities">
+      <div class="chrome">
+        <div class="brand"><img src="/slides/nimble-logo.png" alt="" /> Nimble</div>
+        <div class="progress-track"><div class="progress-fill" data-progress></div></div>
+        <div class="slide-num" data-slide-num></div>
+      </div>
+      <div class="slide-body">
+        <div class="divider-stage">
+          <h2 class="headline">Nimble Capabilities</h2>
+          <div class="thesis-bar"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="Search">
+      <div class="chrome">
+        <div class="brand"><img src="/slides/nimble-logo.png" alt="" /> Nimble</div>
+        <div class="progress-track"><div class="progress-fill" data-progress></div></div>
+        <div class="slide-num" data-slide-num></div>
+      </div>
+      <div class="slide-body feature-layout">
+        <div>
+          <h2 class="headline wide">Search API: find what changed today</h2>
+          <div class="triple">
+            <div class="triple-row">
+              <div class="who">What</div>
+              <p>Intent-aware web search that returns fresh, structured results for agents.</p>
+            </div>
+            <div class="triple-row">
+              <div class="who">Developers</div>
+              <p>One call for discovery — depth, focus, and time range as controls, not afterthoughts.</p>
+            </div>
+            <div class="triple-row">
+              <div class="who">Teams</div>
+              <p>Sales and GTM see today’s launches, pricing moves, and hiring signals — not last quarter’s deck.</p>
+            </div>
+          </div>
+        </div>
+        <div class="feature-visual">
+          <pre class="code-block"><span class="cm">// Morning Signal · themed discovery</span>
+<span class="k">await</span> nimbleSearch({
+  <span class="c">query</span>: <span class="s">`"Firecrawl" launch pricing`</span>,
+  <span class="c">theme</span>: <span class="s">"competitor"</span>,
+  <span class="c">timeRange</span>: <span class="s">"month"</span>
+})
+
+<span class="cm">→ titles · urls · snippets · freshness</span>
+<span class="cm">→ ready for Extract, not for guessing</span></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. Extract API -->
+    <section class="slide" data-title="Extract">
+      <div class="chrome">
+        <div class="brand"><img src="/slides/nimble-logo.png" alt="" /> Nimble</div>
+        <div class="progress-track"><div class="progress-fill" data-progress></div></div>
+        <div class="slide-num" data-slide-num></div>
+      </div>
+      <div class="slide-body feature-layout">
+        <div>
+          <h2 class="headline wide">Extract API: turn pages into evidence</h2>
+          <div class="triple">
+            <div class="triple-row">
+              <div class="who">What</div>
+              <p>Pull clean, structured content from any URL the Search step surfaces.</p>
+            </div>
+            <div class="triple-row">
+              <div class="who">Developers</div>
+              <p>Skip brittle scrapers. Get agent-ready text and fields with source provenance.</p>
+            </div>
+            <div class="triple-row">
+              <div class="who">Teams</div>
+              <p>Every claim in the brief can open the page that justified it.</p>
+            </div>
+          </div>
+        </div>
+        <div class="feature-visual">
+          <div class="mini-cards">
+            <div class="mini-card">
+              <strong>Input</strong>
+              HTML · JS apps · docs · pricing pages
+            </div>
+            <div class="mini-card">
+              <strong>Nimble Extract</strong>
+              Structured content + metadata + URL
+            </div>
+            <div class="mini-card">
+              <strong>Evidence packet</strong>
+              Theme-tagged snippets the synthesizer may cite — nothing else
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10. Agent API -->
+    <section class="slide" data-title="Agents">
+      <div class="chrome">
+        <div class="brand"><img src="/slides/nimble-logo.png" alt="" /> Nimble</div>
+        <div class="progress-track"><div class="progress-fill" data-progress></div></div>
+        <div class="slide-num" data-slide-num></div>
+      </div>
+      <div class="slide-body feature-layout">
+        <div>
+          <h2 class="headline wide">Web Search Agents: automate research playbooks</h2>
+          <div class="triple">
+            <div class="triple-row">
+              <div class="who">What</div>
+              <p>Reusable agents that know how to navigate a site class and return structured knowledge.</p>
+            </div>
+            <div class="triple-row">
+              <div class="who">Developers</div>
+              <p>Encode research playbooks once — invoke them like any other API dependency.</p>
+            </div>
+            <div class="triple-row">
+              <div class="who">Teams</div>
+              <p>Daily competitor and market sweeps become reliable ops, not heroic analyst nights.</p>
+            </div>
+          </div>
+        </div>
+        <div class="feature-visual">
+          <div class="mini-cards">
+            <div class="mini-card"><strong>Public agents</strong> Maintained recipes for common sources</div>
+            <div class="mini-card"><strong>Custom agents</strong> Natural-language specs for your niche sites</div>
+            <div class="mini-card"><strong>Morning Signal fit</strong> Same pattern as LangGraph nodes — composable, observable, repeatable</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 11. Crawl / Map -->
+    <section class="slide" data-title="Crawl Map">
+      <div class="chrome">
+        <div class="brand"><img src="/slides/nimble-logo.png" alt="" /> Nimble</div>
+        <div class="progress-track"><div class="progress-fill" data-progress></div></div>
+        <div class="slide-num" data-slide-num></div>
+      </div>
+      <div class="slide-body feature-layout">
+        <div>
+          <h2 class="headline wide">Crawl &amp; Map: site-level intelligence</h2>
+          <div class="triple">
+            <div class="triple-row">
+              <div class="who">What</div>
+              <p>Map discovers URL structure. Crawl expands extraction across the site graph.</p>
+            </div>
+            <div class="triple-row">
+              <div class="who">Developers</div>
+              <p>Plan coverage before spend — know the sitemap shape, then crawl with intent.</p>
+            </div>
+            <div class="triple-row">
+              <div class="who">Teams</div>
+              <p>Competitor docs, pricing trees, and changelog hubs become continuous coverage.</p>
+            </div>
+          </div>
+        </div>
+        <div class="feature-visual">
+          <pre class="code-block"><span class="cm">// Scale the same evidence pattern</span>
+<span class="c">page</span>  → Extract     <span class="cm">// one URL</span>
+<span class="c">site</span>  → Map         <span class="cm">// discover URLs</span>
+<span class="c">site</span>  → Crawl       <span class="cm">// multi-page extract</span>
+
+<span class="cm">Morning Signal starts at Search+Extract.</span>
+<span class="cm">Crawl/Map is the production expansion path.</span></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- 12. Drivers -->
+    <section class="slide" data-title="Drivers">
+      <div class="chrome">
+        <div class="brand"><img src="/slides/nimble-logo.png" alt="" /> Nimble</div>
+        <div class="progress-track"><div class="progress-fill" data-progress></div></div>
+        <div class="slide-num" data-slide-num></div>
+      </div>
+      <div class="slide-body feature-layout">
+        <div>
+          <h2 class="headline wide">Drivers: cost and control per request</h2>
+          <div class="triple">
+            <div class="triple-row">
+              <div class="who">What</div>
+              <p>Choose how hard the platform works: standard, render JS, or stealth.</p>
+            </div>
+            <div class="triple-row">
+              <div class="who">Developers</div>
+              <p>Match driver to page difficulty — pay for rendering only when the DOM needs it.</p>
+            </div>
+            <div class="triple-row">
+              <div class="who">Teams</div>
+              <p>Predictable unit economics and production knobs, not a black-box scrapebill.</p>
+            </div>
+          </div>
+        </div>
+        <div class="feature-visual">
+          <div class="driver-stack">
+            <div class="driver">
+              <div>
+                <strong>Standard</strong>
+                <div class="meta">Static / simple HTML · lowest cost</div>
+              </div>
+              <div class="meter" title="cost"><span style="width:28%"></span></div>
+            </div>
+            <div class="driver">
+              <div>
+                <strong>Render JS</strong>
+                <div class="meta">SPA &amp; dynamic docs · mid cost</div>
+              </div>
+              <div class="meter"><span style="width:58%"></span></div>
+            </div>
+            <div class="driver">
+              <div>
+                <strong>Stealth</strong>
+                <div class="meta">Hard targets · max resilience</div>
+              </div>
+              <div class="meter"><span style="width:92%"></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 13. Competitive 2x2 -->
+
+    <!-- Section: Why Nimble -->
+    <section class="slide dark divider" data-title="Why Nimble">
+      <div class="chrome">
+        <div class="brand"><img src="/slides/nimble-logo.png" alt="" /> Nimble</div>
+        <div class="progress-track"><div class="progress-fill" data-progress></div></div>
+        <div class="slide-num" data-slide-num></div>
+      </div>
+      <div class="slide-body">
+        <div class="divider-stage">
+          <h2 class="headline">Why Nimble</h2>
+          <div class="thesis-bar"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="Positioning">
+      <div class="chrome">
+        <div class="brand"><img src="/slides/nimble-logo.png" alt="" /> Nimble</div>
+        <div class="progress-track"><div class="progress-fill" data-progress></div></div>
+        <div class="slide-num" data-slide-num></div>
+      </div>
+      <div class="slide-body">
+        <h2 class="headline wide">Nimble vs. the market: agent-ready structured web intelligence</h2>
+        <div class="matrix-wrap">
+          <div class="matrix" aria-label="2x2 positioning">
+            <div class="axis-label x-left">Search result retrieval</div>
+            <div class="axis-label x-right">Structured web intelligence</div>
+            <div class="axis-label y-bottom">Point solution</div>
+            <div class="axis-label y-top">Agent-ready workflow platform</div>
+            <div class="matrix-plot">
+              <!-- positions: left/bottom = 0, right/top = 100; transform translate(-50%, 50%) -->
+              <div class="plot-dot" style="left:22%; bottom:58%;">Exa / Tavily</div>
+              <div class="plot-dot" style="left:62%; bottom:28%;">Firecrawl</div>
+              <div class="plot-dot" style="left:48%; bottom:42%;">Apify</div>
+              <div class="plot-dot" style="left:70%; bottom:62%;">Bright Data</div>
+              <div class="plot-dot nimble" style="left:88%; bottom:86%;">Nimble</div>
+            </div>
+          </div>
+          <div class="matrix-note">
+            <h3>The wedge</h3>
+            <p>Others excel at retrieval, markdown crawl, or raw infrastructure. Nimble combines live search, structured extract, agents, crawl/map, and pricing controls — the stack Morning Signal needs as one platform.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 14. Why Nimble wins -->
+    <section class="slide" data-title="Win criteria">
+      <div class="chrome">
+        <div class="brand"><img src="/slides/nimble-logo.png" alt="" /> Nimble</div>
+        <div class="progress-track"><div class="progress-fill" data-progress></div></div>
+        <div class="slide-num" data-slide-num></div>
+      </div>
+      <div class="slide-body">
+        <h2 class="headline wide">Why Nimble wins Morning Signal</h2>
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>Criterion</th>
+              <th>AI search</th>
+              <th>Crawl / scrape</th>
+              <th>Infra platforms</th>
+              <th class="nimble-col">Nimble</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Live web freshness</td>
+              <td><span class="score"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span></td>
+              <td><span class="score"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span></td>
+              <td><span class="score"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></td>
+              <td class="nimble-col"><span class="score nimble"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span></td>
+            </tr>
+            <tr>
+              <td>Structured extraction</td>
+              <td><span class="score"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span></td>
+              <td><span class="score"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></td>
+              <td><span class="score"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span></td>
+              <td class="nimble-col"><span class="score nimble"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span></td>
+            </tr>
+            <tr>
+              <td>Source inspectability</td>
+              <td><span class="score"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span></td>
+              <td><span class="score"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span></td>
+              <td><span class="score"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span></td>
+              <td class="nimble-col"><span class="score nimble"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span></td>
+            </tr>
+            <tr>
+              <td>Agent workflow fit</td>
+              <td><span class="score"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span></td>
+              <td><span class="score"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span></td>
+              <td><span class="score"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span></td>
+              <td class="nimble-col"><span class="score nimble"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span></td>
+            </tr>
+            <tr>
+              <td>Developer onboarding</td>
+              <td><span class="score"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></td>
+              <td><span class="score"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></td>
+              <td><span class="score"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span></td>
+              <td class="nimble-col"><span class="score nimble"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span></td>
+            </tr>
+            <tr>
+              <td>Production controls</td>
+              <td><span class="score"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span></td>
+              <td><span class="score"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span></td>
+              <td><span class="score"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span></td>
+              <td class="nimble-col"><span class="score nimble"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span></td>
+            </tr>
+            <tr>
+              <td>Cost transparency</td>
+              <td><span class="score"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span></td>
+              <td><span class="score"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span></td>
+              <td><span class="score"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span></td>
+              <td class="nimble-col"><span class="score nimble"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="so-what">Morning Signal needs freshness, structure, and auditability in one path.</div>
+      </div>
+    </section>
+
+    <!-- 15. Build path -->
+
+    <!-- Section: Build &amp; Extend -->
+    <section class="slide dark divider" data-title="Build &amp; Extend">
+      <div class="chrome">
+        <div class="brand"><img src="/slides/nimble-logo.png" alt="" /> Nimble</div>
+        <div class="progress-track"><div class="progress-fill" data-progress></div></div>
+        <div class="slide-num" data-slide-num></div>
+      </div>
+      <div class="slide-body">
+        <div class="divider-stage">
+          <h2 class="headline">Build &amp; Extend</h2>
+          <div class="thesis-bar"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="Build path">
+      <div class="chrome">
+        <div class="brand"><img src="/slides/nimble-logo.png" alt="" /> Nimble</div>
+        <div class="progress-track"><div class="progress-fill" data-progress></div></div>
+        <div class="slide-num" data-slide-num></div>
+      </div>
+      <div class="slide-body">
+        <h2 class="headline wide">Build path: API key → Search → Extract → grounded brief</h2>
+        <div class="build-path">
+          <div class="build-step">
+            <div class="n">01</div>
+            <h3>Get API key</h3>
+            <code>nimbleway.com</code>
+          </div>
+          <div class="build-step">
+            <div class="n">02</div>
+            <h3>Set env</h3>
+            <code>NIMBLE_API_KEY=…</code>
+          </div>
+          <div class="build-step">
+            <div class="n">03</div>
+            <h3>Call Search</h3>
+            <code>POST /v2/search</code>
+          </div>
+          <div class="build-step">
+            <div class="n">04</div>
+            <h3>Call Extract</h3>
+            <code>POST /v2/extract</code>
+          </div>
+          <div class="build-step">
+            <div class="n">05</div>
+            <h3>Orchestrate</h3>
+            <code>LangGraph nodes</code>
+          </div>
+          <div class="build-step">
+            <div class="n">06</div>
+            <h3>Synthesize</h3>
+            <code>LLM + sources only</code>
+          </div>
+        </div>
+        <div class="so-what">Ship a runnable workflow — not a slide about endpoints.</div>
+      </div>
+    </section>
+
+    <!-- 16. Generalization -->
+    <section class="slide" data-title="Pattern">
+      <div class="chrome">
+        <div class="brand"><img src="/slides/nimble-logo.png" alt="" /> Nimble</div>
+        <div class="progress-track"><div class="progress-fill" data-progress></div></div>
+        <div class="slide-num" data-slide-num></div>
+      </div>
+      <div class="slide-body">
+        <h2 class="headline wide">Same pattern across GTM, recruiting, research, and finance</h2>
+        <div class="pattern">
+          <div class="pattern-step"><span>01</span><strong>Live web signal</strong></div>
+          <div class="pattern-step"><span>02</span><strong>Structured evidence</strong></div>
+          <div class="pattern-step"><span>03</span><strong>Grounded synthesis</strong></div>
+          <div class="pattern-step"><span>04</span><strong>Business action</strong></div>
+        </div>
+        <div class="use-cases">
+          <div class="use-case">GTM intelligence<em>Morning Signal</em></div>
+          <div class="use-case">Recruiting intelligence<em>Hiring &amp; talent moves</em></div>
+          <div class="use-case">Market research<em>Category shifts</em></div>
+          <div class="use-case">Financial monitoring<em>Filings &amp; news</em></div>
+          <div class="use-case">Product / competitive<em>Docs &amp; launches</em></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 17. Close -->
+    <section class="slide dark" data-title="Close">
+      <div class="chrome">
+        <div class="brand"><img src="/slides/nimble-logo.png" alt="" /> Nimble</div>
+        <div class="progress-track"><div class="progress-fill" data-progress></div></div>
+        <div class="slide-num" data-slide-num></div>
+      </div>
+      <div class="slide-body">
+        <div class="close-stage social-stage">
+          <p class="subhead close-lead">Let’s keep the conversation going</p>
+          <div class="thesis-bar"></div>
+          <div class="social-qrs">
+            <a class="social-qr" href="https://www.linkedin.com/in/thenehalagrawal" target="_blank" rel="noopener noreferrer">
+              <img src="/slides/qr-linkedin.png" alt="QR code to LinkedIn profile" />
+              <strong>LinkedIn</strong>
+              <span>linkedin.com/in/thenehalagrawal</span>
+            </a>
+            <a class="social-qr" href="https://x.com/NehallAgrawal" target="_blank" rel="noopener noreferrer">
+              <img src="/slides/qr-x.png" alt="QR code to X profile" />
+              <strong>X</strong>
+              <span>x.com/NehallAgrawal</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="controls">
+    <button type="button" id="prevBtn" aria-label="Previous slide">←</button>
+    <button type="button" id="nextBtn" aria-label="Next slide">→</button>
+  </div>
+
+  <script src="/slides/deck.js"></script>
+</body>
+</html>
