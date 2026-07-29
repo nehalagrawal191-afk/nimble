@@ -53,16 +53,14 @@
         <h2 class="headline wide" style="max-width:none; margin-bottom:20px;">Watch Morning Signal work</h2>
         <div class="video-frame">
           <div class="video-shell">
-            <!-- Drop your recording at ./demo.mp4 or replace the source below -->
-            <video id="demoVideo" controls playsinline poster="">
-              <source src="/slides/demo.mp4" type="video/mp4" />
-            </video>
-            <div class="video-placeholder" id="videoFallback">
-              <div>
-                <strong>Demo video placeholder</strong>
-                <p>Place your 4-minute Morning Signal recording at <code>public/slides/demo.mp4</code>. The brief runs company URL → Nimble Search + Extract → source-grounded GTM newsletter.</p>
-              </div>
-            </div>
+            <iframe
+              id="demoVideo"
+              src="https://www.youtube.com/embed/KxJ2BB3j1oM?rel=0&modestbranding=1"
+              title="Morning Signal demo"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+              referrerpolicy="strict-origin-when-cross-origin"
+            ></iframe>
           </div>
         </div>
       </div>
@@ -687,7 +685,7 @@
       <div class="slide-body">
         <div class="close-stage">
           <div class="eyebrow">Thesis</div>
-          <h2 class="headline xl" style="max-width:14ch;">Prove the workflow. Don’t pitch the API.</h2>
+          <h2 class="headline xl">Prove the workflow.<br />Don’t pitch the API.</h2>
           <div class="thesis-bar"></div>
           <p class="subhead">
             Nimble turns live web chaos into structured, source-grounded, agent-ready intelligence — before the LLM reasons.
@@ -708,21 +706,5 @@
   </div>
 
   <script src="/slides/deck.js"></script>
-  <script>
-    const video = document.getElementById("demoVideo");
-    const fallback = document.getElementById("videoFallback");
-    if (video) {
-      video.addEventListener("loadeddata", () => {
-        if (video.readyState >= 2) fallback?.remove();
-      });
-      video.addEventListener("error", () => {
-        if (fallback) fallback.style.display = "grid";
-      });
-      // Hide fallback only when source actually plays
-      fetch("/slides/demo.mp4", { method: "HEAD" })
-        .then((r) => { if (r.ok) fallback?.remove(); })
-        .catch(() => {});
-    }
-  </script>
 </body>
 </html>
