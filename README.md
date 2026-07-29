@@ -142,6 +142,15 @@ Open:
 http://localhost:3001
 ```
 
+## Presentation Deck
+
+The Part 1 keynote deck lives at [`public/presentation/index.html`](public/presentation/index.html).
+
+- Open the file directly, or with the app running visit `http://localhost:3001/presentation/`
+- Speaker notes and timing: [`docs/presentation/SPEAKER_NOTES.md`](docs/presentation/SPEAKER_NOTES.md)
+- Talk outline: [`docs/TALK_OUTLINE.md`](docs/TALK_OUTLINE.md)
+- Drop the 4-minute demo recording at `public/presentation/demo.mp4`
+
 ## Suggested Demo Script
 
 See [`docs/TALK_OUTLINE.md`](docs/TALK_OUTLINE.md) for the full Part 1 talk path.
