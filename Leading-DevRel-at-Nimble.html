@@ -6,430 +6,417 @@
   <title>Leading DevRel at Nimble — Situational Assessment</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet" />
   <!--
     Presence research (Jul 2026):
-    - LinkedIn company/nimbledata ~13.8k followers — strongest owned social
-    - YouTube @nimble_search — active tutorials (Databricks, LangChain, MCP, scraping)
-    - GitHub Nimbleway — 26 repos, ~74 stars, 15 followers; agent-skills ~50★
-    - PyPI nimble_python ~16k downloads/month (usage > stars)
-    - X @nimble_search — account exists
-    - HN / Reddit — near-zero product conversation
-    Evidence links: public/slides/presence-evidence.md
+    - LinkedIn ~13.8k · YouTube @nimble_search · GitHub ~74★ / PyPI ~16k/mo
+    - X @nimble_search · HN/Reddit near zero
+    Evidence: public/slides/presence-evidence.md
   -->
 <style>
 :root {
-  --ink: #121212;
-  --ink-soft: #2a2a2a;
-  --muted: #6b6b6b;
-  --paper: #ffffff;
-  --canvas: #f3f0e6;
-  --yellow: #ffea00;
-  --green: #0a7a5a;
-  --line: #e2e2d8;
-  --shadow: 0 12px 32px rgba(18, 18, 18, 0.08);
-  --font-display: "Syne", sans-serif;
-  --font-body: "Figtree", sans-serif;
+  --bg: #ffffff;
+  --fg: #111111;
+  --muted: #666666;
+  --line: #111111;
+  --font: "IBM Plex Sans", sans-serif;
+  --mono: "IBM Plex Mono", monospace;
 }
 
 * { box-sizing: border-box; }
+
 html, body {
-  margin: 0; height: 100%; overflow: hidden;
-  background: #0d0d0d; color: var(--ink);
-  font-family: var(--font-body);
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: #000;
+  color: var(--fg);
+  font-family: var(--font);
 }
 
-.deck { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
+.deck {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
 
 .slide {
-  position: absolute; inset: 0; display: none;
-  padding: clamp(32px, 4.5vw, 64px) clamp(36px, 5.5vw, 88px);
-  background:
-    radial-gradient(ellipse 70% 55% at 95% 0%, rgba(255, 234, 0, 0.16), transparent 55%),
-    linear-gradient(165deg, #fffdf6 0%, var(--canvas) 100%);
-  opacity: 0; transform: translateY(10px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-.slide.is-active { display: flex; flex-direction: column; opacity: 1; transform: none; }
-
-.slide.dark {
-  background:
-    radial-gradient(ellipse 70% 50% at 80% 10%, rgba(255, 234, 0, 0.14), transparent 50%),
-    linear-gradient(160deg, #111 0%, #1a1a1a 100%);
-  color: #f5f5f0;
+  position: absolute;
+  inset: 0;
+  display: none;
+  padding: clamp(40px, 6vh, 72px) clamp(48px, 7vw, 96px);
+  background: var(--bg);
+  opacity: 0;
+  transition: opacity 0.25s ease;
 }
 
-.chrome {
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 24px; margin-bottom: clamp(16px, 2.5vh, 28px); flex-shrink: 0;
+.slide.is-active {
+  display: flex;
+  flex-direction: column;
+  opacity: 1;
 }
-.brand {
-  display: inline-flex; align-items: center; gap: 10px;
-  font-family: var(--font-display); font-weight: 800; font-size: 15px;
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: clamp(28px, 5vh, 48px);
+  flex-shrink: 0;
+}
+
+.label {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.num {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  max-width: 16ch;
+}
+
+h1.wide { max-width: 22ch; }
+
+.rule {
+  width: 100%;
+  height: 1px;
+  background: var(--line);
+  margin: 28px 0;
+  border: 0;
+  opacity: 0.2;
+}
+
+.sub {
+  margin: 16px 0 0;
+  font-size: clamp(18px, 1.8vw, 24px);
+  font-weight: 400;
+  line-height: 1.35;
+  color: var(--muted);
+  max-width: 36ch;
+}
+
+.footer {
+  margin-top: auto;
+  padding-top: 24px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+
+/* Slide 1 — photo */
+.photo-layout {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: clamp(32px, 5vw, 64px);
+  align-items: center;
+  min-height: 0;
+}
+
+.photo-layout img {
+  width: 100%;
+  height: min(62vh, 520px);
+  object-fit: cover;
+  object-position: center 18%;
+  display: block;
+  filter: grayscale(1) contrast(1.05);
+}
+
+/* Slide 2 — prerequisites */
+.list-4 {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.list-4 li {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 20px;
+  align-items: baseline;
+  padding: 22px 0;
+  border-top: 1px solid rgba(17, 17, 17, 0.15);
+  font-size: clamp(20px, 2.1vw, 28px);
+  font-weight: 600;
   letter-spacing: -0.02em;
-}
-.brand-mark {
-  width: 28px; height: 28px; border-radius: 6px; flex-shrink: 0;
-  background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAABLKADAAQAAAABAAABLAAAAADYYILnAAAlhElEQVR4Ae2dTYwcxdnHq3pmnZAQezZrbgnvBBMpEoJsjkSxspxASiScQ3JIDtgKF7jwcYKT7ROcsLmECxH2ITkkB0AKEpxY5Cgc2YCQkIKTCckNm107JCS7M1NvPT1T49mZnpnu+uj66H9L9s5H19fv6f5PPVVPVXOGAwRmCIjd73QP2KCTsWF3yFiHD3lXnnKMM9ERnHXka/lPvmacXjOev88/p7eLjj3B2B59KfORf/notWA9mQ+9viEy0eOM9+icNuvv8PVefg69xwECREBeaziaSIBEacAONodSjDImvktCJAVlU14Q3bB4iJ1c3ATfkfX7O8+Y/Mv3jqz/RX6Oo2kEIFiJW1zsdjt91t4UQ7Y5EiaxKQWgK5vdkf8iP3Ix6wnB3yEhQ68scnOWqD4EqwSkmE7Z3/32JhuKLRKnIWdb4fWYXNM8LGJr6x9vuy4R+ddHAIJVH2snJR3s3r3F2PCHTHD5l8neUwo9J9kKe8eezGpH8nmHZWwbAmYPrI+cIFg+qBuUmQ+ID/unOBcPy2wgUNVZ5gImXeTLa621bb7+Ua96FkjhiwAEyxf5CuXmvaghe1hwcap5Ll4FUBqnSp40Bvaa7H29jt6XBsCak0CwagZetjglUoyL0zJNp2w6nKdPgMSLCbYtMn4Z4qXP0WVKCJZLuhXzhkhVBObwdIiXQ7gGWUOwDODZSEpjUn22/4gcFH5S5oeelA2olvMg8SK3sZ21X8SYl2W4FbODYFUEZuN0io0asNaWEOwJmd+WjTyRR20EtmnA/sjxq5dqKxEFTQhAsCYo3L8YBXFmT6A35Z616xKo10XjXa1s7Tx6Xa5p38ofgnWLhbNX+diUEGdlAVvOCkHG3ghwwS5hoL4e/BAsh5z3r504LZeMPCKL2HJYDLIOhAD1uoZDdh7uojuDQLAss4XbZxlohNlBuNwZDYJliS2EyhLIhLKBcNk3JgTLkCmEyhBgA5JDuOwZGYJlwHJ/964nuODnZBaInzLg2JSkEC5zS0OwNBjSrJ8Q4hUJr6uRHEkaTgDCpX8BQLAqsEN4QgVYOLUMge02XzuDOK4yqEbnQLBKsBqPU50dB3yWSIFTQKA8AYrjQgBqOV4QrBWcME61AhC+tkKA3MS+EC9+eeOvF61kmGgmEKwFhoX7twAMPnZKgISrxdcegJtYjBmCNcMF7t8MELz1Q0CIi+1sKNcp4lFn0waAYE3RwOzfFAy89E6AeltY6nPYDBAsyQO9qsMXBd6FRWA0KD94Cr0tPEiVoVcV1s2J2hQToN6W4PxM07duzorxNOPTg927LjAh3pYXQ7cZLUYrYyUgn3rdpWtVXrO0TVFjD3mvNu/4YrfbbYvsVdnB3Gxe69Hi2AnIm7axM4mN62FRXFVbtN6DWMV+2za3/tTb6ouD9/57/a4nm0ahMT0sDKw37dJuSHsbFv7QCMGCC9iQm7ehzWySi5i8S9i/duIUXMCG3skNaTa5iANx8HZ/98Sp1JuctGDRjIrImBxcx35VqV/ITW8fiZZ8bNyrqc8iJukS0niVfO7fBWnA002/kNH+BhJIeFwrOcHCeFUDb1A0eY5AquNaSQkWiVVLtBAIOnf54oMmEkhRtJIZw6IlNjS4Lo3UbeLFiTaDwCwBFa+Vb5U0+2Wk75MQLDk78ggtW5A26ERqB1QbBFwR6NC9kUqQafSClc8Eyi1mXVkb+YJACgRanF9IYQYx6jGs3ACjx2ylcE2hDSDgngAX59bW/3refUFuSohWsCBWbi4I5NoAAhGLVpSCBbFqwE2FJrolEKloRSdYcoD9FQSEur2WkXtDCMgA07WNvz4VU2ujEizZs5Ib7vHGbakR0wWFusZFgLZfbm9cPRNLraOZJRy7gRCrWK4s1DMKAoKz0/m9FUVtI9nTHWNWkVxNqGa8BCIZ0wreJYRYxXsPoOaREYhAtIIWLIhVZBc8qhs/gcBFK1jBor3XueAX478C0AIQiIsAb7PT7aNXL4dY6yAFK1+sOVobGCIz1AkE0ifA+QMhPgMxOMEa7WdFT7XBQub07wq0MGACe22+9j2+/lEvpDoGFdag9rOSgLDrQkhXCerSRAId2ide7H6nG1Ljg+lh0bbGB9jPKqRrA3UBAUlA7LT58AG+3tsLAUcwPaw+y85K9eyGAAV1AAEQUAT45mDYuqDe+f4bhGCNwxcQxe77akD5IFBAIKRoeO8uIT03cPworgJU+AgEQCAUApyzn7TXr77msz5eBUsNssMV9HkJoGwQKE3A+8yhN8HCIHvpiwQngkBABPwOwnsbw8Ige0DXIKoCAqUJ8M3+MDtb+nTLJ3oRLFp2g32tLFsS2YFAXQQ4f9LXU3hqdwkRyV7XVYVyQMApAS/jWbX3sOjJzBIjItmdXkvIHAScE+j0xf6rzkuZKaBWwaJ4K8wIzlgAb0EgWgJ88+C63La8xqM2lxA7MNRoVRQFAnUSqHFnh1oECyEMdV49KAsE6iUgRaTX4gO5s4P79Ya1uIS0FgmuYL0XEUoDgboICLkGuK5QB+c9rP1rJ07zjL1SFzyUAwIg4IlADa6hU8GCK+jpwkGxIOCBQB2uoVOXENHsHq4aFAkCngjU4Ro662GNA0T/5okdigUBEPBFwKFr6KyHNQ4Q9YUM5YIACPgiIMRZV0U7Eaz8EV3YPdSVzZAvCIROYMvVWkPrLiH2uAr9WkL9QKAWAnKt4eBbtmOzrPew1oYtLL+p5XpAISAQNIGOi9gsqz0sDLQHfQGhciBQPwHLA/BWe1ht0UKAaP2XBEoEgXAJWB6AtyZYFNEuqW3JfzhAAARAQBHYyjc+UO8M/1oTLJYxZ1OZhm1EchAAAY8EuBDWPC8rgpWvF0QYg8dLAkWDQLgEhNQGW2EOVgbd9z878TeZUTdcZKgZCICAZwJWwhyMe1joXXm+DFA8CMRBQIY5tI2f7m7cw0LvKo6rBbUEgQAIGPeyjHpY6F0FcAmgCiAQDwHjXpZRDwu9q3iuFNQUBAIhYNTL0u5hpdS7evb8vwKxZXOrQTb45B+D5gJoTsuNelnagpVS3NVLL/+b3Xf/p7hhPN40H3x4wH78s8/YBx/2PdYCRddCgIsndMvREqyUelcK3Cf/HOQ3zG9//4X6CH9rJkA2OPnQNfb8hc9rLhnF1UygQxqiU6aWYKXUu5qGRjfM40/fwA0zDcXD6+df+JyRi3jjpgw5xJEkAflgmkd0GlZZsGhdUOpBonTDnHzoOlxEnSvKUhpy008+eA02sMQzwGy01hhWFiw+FFrKGCCwpVXCmMpSPLV8qdz0N976Xy3loZCaCWjs5FBJsGi/K8HZ6Zqb5a04jKl4Qz8pmGzwi0d34aZPiCT1YoseBVilRZUEi3YTrZJ5KueSi0hjW5h292dRssEvHt2DDfyZwEnJVZfrVBKsIWdbTmodQaY0e0jT7hAtf8Z6463/wgb+8LspWYY4VOlllRasFEMZqlqA3JP7vv8pe+nX/6maFOdbIjBy06/DBpZ4BpBNZzBobZWtR2nB0p2GLFuRmM579tzNfNo9pjqnVNcbN4eMbIB4rTSsKjJWOpC0lGDRYLtEs5UGHjutQHS8HY4muSD8xIReUGnl4Pt3umVqVEqw2sOW8T42ZSoT2znkntC4FqLj/VkO4Sf+2NssuT/sny6TXynBkqEMD5fJrInnkGghOt6v5UfjWljS49cKhqWXXF+4UrCaENluiDpPTu4JZhFtkNTPg2yAJT36/Dyn7JR5us5KwWpKZLsNY/3x3f1ctLDjgA2aenlgSY8etyBSDcWpVfVYKVhNjr1aBa/oe7gnRVTq/UyNLWJJT73cjUvjqxdELxUsuIP6JiD3hMa2sOOAPkOTlCRaWNJjQtBL2pVu4VLBgjtoZjSaPcSOA2YMTVPTDwct6cEPhynJmtKvcAuXChbcQXMjjVxERGabk9TPgZb04IdDn1+tKVe4hQsFC+6gPTOpyGzsHW+PadWc1A8HYuaqkqv9/KVu4ULBYiu6ZrU3I4ECER3v14j0w4GYOb82KFX6Eu1ZKFgIFi2FtvJJmMGqjMx6AsTMWUdqNUO+JFC9ULBo7WDq2yDrEL7zmy2dZHNpMIM1h6T0B7ZsoGLmsF1QafS1nSgY6y5aW1goWK0K2z3U1ooACvr5T29jV948zmzdNPilr25UssH7795hxQb0w4HtgqrboI4UB8N+YRBpoWBhK5nFJrn3njb7w+++zujGsXGoX3pEx5eneec3WvkPhy0bYLug8uzrOpNzUbh+uVCwZKU266pYjOXQDfOrF46xZ5663Ur1RzNYWLxbBeaxozy3wXNnj1ZJtvBcTIgsROPri0INmhOs8QLEjq9axlTuM0/fbs09oXYjOr669R979CvWbKAmRKjXi8M7gcLwhjnBYkO25b2qEVXAtnuC6Pjqxlc2eOyXX62eeCaFEi3sZjoDxsfbAi2aFywufuijbjGXads9GbmIiI6vck2QDZ479zVGLuKxo/OXdZW86Fz0dqsSc3B+gRYVWbbQd3RQneSytOmeIDpe7/IgG1x5a8PKLCJ6u3o2sJhqTosOCRbGr8xR23RPqDYYDK5uE7LB+3+6g9lyEU8+dB3bYFc3g40Unf3dbx8SrUOCJYaYHbRB2bZ7osZVsL9TNeuQi0izuaYuIpb0VONu9eyh2JrO75BgyZB4jF9N0zF8bdM9IdHC/k7VDZIH+1pyERHoW52/aYosE9+dzuOQYMkvutNf4rU5AZvuCdUGN011mygb2IibU4G+WNJT3Q5aKQTbmk43EazR46LFIX9x+kS8NiNgyz2hWqibBtHx1WxCcXPkIpouraLeLpb0VGOve/ZoXWG3o9JPBKvP2hArRcXRX5vuySj0AdHxVU1FNqClVffes1Y16dz5WNIzh8TJB9PaNBEsDLg7YT2XqU33hDJHvNAc4pUfkA2uvLlhZWlV/pQeOYsIF3Eldu0TprVpIlgYcNfmqZXQlntChSNeSMsEjGzwm5fXjV1EPH1aj3/ZVNMD7xPBkom7ZTPAeXYI2HRPRi4iouOrWuZHD34pdxF/cP+RqkkPnQ8X/RAOq2+EuDW2PiVYtz60WhoyW0rApnuC6PilqBd+STagcS0bs4jkouPp0wtRa37BuyphLliz0aTqS/ytj4At94RqjOh4PbuRDUi4TGcR83GtB69hXEvPDEWpOmoH0lywOBOTacOis/FZPQRsuSdUW3JRfvyzzxii46vZjlxDEq0fPfjlaglnzgb/GSCGbwfsII9iyAVrehTeMF8kNyRA7gnFCtk46KZBdHx1kmQDipszPcDflOCt9MMh79I71cPK39AHONIjgOh4vzYl/vT0aYQ+6NtBzRTmgsU4O7ReRz9bpAyVAKLj/VqGnj5NLjpES88OA8HWKeVIsBjHGJYex6hSkYty8iFEx/sy2og/Qk90+MsH7OWdqrFgIaRBB2KsaRAd789yKvQEWzBXswGtKaQU2WjRc7XEODt+AoiO92tD+tGgjQHhIpa3A4U2ZNMLC8snxZkpEICL4teKWNJTjf8BG3TGLmG1hDg7HQLKRaHobBz1E8C4YnnmGRt2MzEQ3fJJcGaqBBAd79ey5CLiR2OFDQZZJ+Ocd1echq8bQoB+7REd78/Y+NFYzl5w0ZUuIZblLMd069smDJCSaIUcHZ+6DfCjcet+m38lOpmcLkQM1jyZwk9oZq0p3XZyUUIMdFQ2uHFTXrmJHqH/aPjCzjN2TLqE7P98VSDGcpvUbQ81Or4puyHQjwYt6UlZnKtoAEW7Y5awCrHxufQL2JSHa47aGl50vLLBS7/+j4YF40lCS3pOYqua3GAZ48ekYGFZjs7l27SHa9Kv/eNP3wjq174pIRkkzuSe4xjSGBYG3U0uBLqR77v/00ZELIcaHd8kN93kWo09LZedK7iEFqyofgGbsFleqK6YqheJKo50CWQcs4RWrEs3TMjhAFYaOc4kVFesaW66TZvGkBdFNFAPC2ENFq0VajiAxSZOsgrVFWuSmz4xRjNewCV0YWcVDkB/Uz9CdYdDrVfq14Pr9mEMyxFhdcM0Yd+jUN3hUOvl6JJrRLYQLMdmJvekKft5h+oOh1ovx5dektlDsGowq9rP+4MP+zWU5rcI5Q6H1lZVrya46X6vALelQ7Dc8p3kTu5JU/ZTD7WtVC8KwGyCmz658BJ7AcGq2aDknoQWMe4KQahtpXo1xU13ZVtf+UKwPJAPNWLcBYpQ26rc9NS3q3FhU595kmDt+axAU8sm9+S+73/KYli8S49tf+yXX9U21chFDO/xVsoGcBG1TVt3wj3aDwuCVTf2qfKePXcz32Mr5C1Ejh3l+aPbnzt7dKrm1V6GGh1PrQjVda1GOP2z5aqcPbiEAdg5lv2dHnv0K+z9d+9gd35TPtZS8wg1Oj5U11UTc7LJ5FpCjh5WAOYN1W2aRXPnN1rsD7/7Ovv5T2+b/ar0e2priHvHKxcxBje9NOyETpQ7y1APS0CwAjGqcpsoVshkzMh1c0i0fvXCMfbMU7drF0XiEOpicXLTyQYm7dMGg4RLCGQkWOhhLSHk7avnzn0tF4VjR8P12p95+nZ25c3jRi4ijR9Rbyu0MTwSVGofCbOJC+ztAkq04EwIcSPRtkXfLHK7rry1EfQNc+897dxF/MH9R7R5U2+GnoIc4kE2IBf43nvWQqxeo+rEuejRflhwCQM2O7lf7//pjqDdEzWulaoLRe278uZG0DYI+BK2VjUxZDfgElrD6TYjck9+8/J60L2tGOpoYiVqH/W24CKaUDRJy2UclhA9kyyQtj4CP3rwS8bul+vaqjqmelOT60uiRcG0OOolwAXvZbKLBZewXu5GpcXgfik3NuSZThMjUPt+83IHLqIJRI20oiXHsIatrKeRFkk8EyD3xHSGznUTaKaTouNDnuk0YUA2MA2kNSm/iWmzATtADytSy6sZOpMgTtdNp+j40Gc6TRiMBuSPGwXSmpTfpLRt1t/Jblvv9ZrU6NTaSjeMaRCnayap39S01pJskHJv0vU1UiZ/vt4brSWUC6B7ZRLgnHAJhO6eqJs61dAHujJS7036vfrFDpWfh1HL9YT5G78VQummBGLoyYQurDZsQHFzqU44mPLRT5/lQ1e5YCHaXR9jaClVTyZk94SENfXQALW0KtXwjtqveyH+TGXmgiXXEza6h5Xir2Ho7gmJVuqhAWpZD0TLXN4E472JYMno0fyNebZx5qCm3+Os/eJakyiE7p6Qi5hy9LiyQcpjd4uvQHvf8IzdGsM6aA0a3cMirDY2p7NnHrs5he6eqOjxlBcYkzCHvrTK7lVnNzfZw7o1hjUObcg/sFtMXLmpsRWTnQdCbXHo7gmxT32BsVq2lOL15fq6P7L+l1s9rFFhIx/RdcGh569EK8UufAzuCfVEKKYp1ej4lK8vd/f2KKSB8h8Pust9R8ej8O4KjSvnlG+c0MeNqDeYcnQ83Qlkg9CXVoVyxw4Z/7uqy0Swmj5TqIBM/035xiG3JGTXZOQiHk86nomWVoVsg+l7wedruUvDtip/IlhqFF59gb8jAqoLj+1E6r8ibDxerP5ao0TbBKa1aSJYtLDQdkGp5EeilXrMUMi2SnkGN2TuodRtWpsmgkULC7GmcLmJaNwBU9PLGbn6VvV0yU3H0SQCYoe0SbV4Ilj5B4K9o77A32ICamoa0cvFfFx+SqIV+s4ULtvfxLynB9yp/YcFq+FLdMpeEHTj0AxPikt6yjLweR5m2HzSr7fs6QF3KvmwYGW3RuPrrVZ8pakB4RTjtWKwhtq8ELNsMVhLv47TA+6UyyHBGkeTTvxF/WKakxK/9v5srca18KPhzwaOS95bW/94e7qMQ4I1/gKzhdOESrxWv/Ypr4UrgcHbKZgM8YbeccHzu8jMC5bgGHjXMMNoXGsD41oa7GwkwWSIDYqB5VEwCTgvWBnbDqzaUVXHxlY1b7z1P/bJPwZRtTuEytKPhq3tdGCDACxaoEVzgjX2GTGOZWAv00DHN976L/vxzz6DaGnaQG2nY7KA+oMPD3Ib/PHdfc1aIJkhgbnxK8pvTrDGhWAcy5C2GhDWncX65J8Ddt/3P2XPX/jcsCbNTG5jHSjZgH44YAMf19D8+BXVolCwhOCv+6hiamUq0TKZxXr+hc/Z40/fQG9L4+IYjSuaPzOQbIAer4YBDJIILi4XJS8UrEHWf63oZHymR4BmsUz2ePrt77/ADaOHXu6rdeuZgZpZ5MnINSTR+uDDvkk2SFuSwBpb2y46tVCwaAdSrCsswqX/mamLAhdRnz2lNB1XpDzIBicfugYXkWA4PLh8Tipf/6hXVEShYNGJXDC4hUXEDD6z4aLARdQ3gHLRTbcKIhv84tE9uOn6pliaUizRnoWCxTIOt3ApVr0vlYtiMq4FF1GPPaUi0bKxVZCayYWLqG+LhSmXaM9CwUJ4w0KcVr6gcS2Tx1spF/GlX//HSn2alokpf+IFF9H+VUPu4OxynOlSFgpWfpJghSP10xngtT4BCnkwES0q+dlzN/NZxBs35agjjkoEFH/TJVVwESthX34yXx64vlywlnTNlpeKb8sSIBfFNDqbXMSTD17DmEpZ6FPnjcYVN5iJi07ZwUWcgmrwUj5/cGknaalgwS00IF8xKUVnm9w0cBErAp85XYWemGzMCBdxBmrFt6vcQcpuqWDl5cEtrIhd/3S6aUwf/QQXUZ8/hZ6YuuhUOmZyNW2wwh2kXFcLFtxCTfp6yWxsVQMXUY89pbLholM+mMklCtWOVe4g5bZSsOAWVoNu42wb4ypwEc0soXbdMFlArWyAtYirbVHGHaRcVgpWXpTgL64uEmfYJkAu4nNnjxo9tp1cxGfP/4thFrG6dSg63sYTqOEirma/LFh0OnUpwepn/UvTifC6PgI2bpqXXv43ZhE1TTbq7ZovoIaLuNwA7Wzt4vIzRt+WEixaWyhP3x4lwf91E6CbhgaDTZaUjGawrjMEmla3no3VCVQqXMRF7Pn2orWDsylKCRYl4pzBLZylV+N7Ei3TJSU3bg7zQFO4iHqGszGLSyXDRTzMf9FWMofPGr0rLVgtNtiWSfaKMsFn9RGgm4aePm0yGAwXUd9eahZXd2NGVTJcxBEJGmw/sn71kuKy6m9pwcofF43B91U8a/meHrhgOhhM7gm2/9Uzl3LRTQJ9qWTYQEIoEXs1baXSgkWJ2lm/1MDYdAF47YaArcFgN7VrRq6qt2sSHd8MUotb2WJr5xd/O/9NJcHKe1kYfJ+n6OkTW4PBnqqfRLF4vJi+GeW4+KWyg+2qlEqClSfivJIiqoLw1x0B+qW3saTEXQ3Tzpl6u7SA3dRFTJvSfOvKRLbPpqosWOPI9+3ZjPDeLwG1VQrcE392oB8Ok737/dW8/pLLRrbP1qyyYFEGgmOfrFmQIbxXv/SP/fKrIVSnkXUw3bu/KdCGnGl5alqCNZ6GRIhDoFeXWgcXaPWSr5aaEMEPR7GpqXdVJZRhOhctwcozQIjDNMfgXtt4SkxwjYqoQjQhgh+OYoPp9q4oN23BGoc4oJdVbJMgPqVfehqMN90COIjGRFoJ/HAcNpxJ74py0hYsBJIeNkSo70buifkWwKG2L4Z6qR8Ok7WgMbSzTB1NeleUv7ZgUWL0sohCHAdmsPzaiUTLdC2o3xaYl27au6IaGAkWelnmRqwzB8xg1Um7uKwmx8yZ9q6IqJFgUQboZRGFeA64J/5tpWLmmjS2aKN3RZYzFizqZQlEv/u/CyrUAO5JBViOTiUbXHmzOWOLNnpXZApjwaJMjqx/fFE+xrNHr3HEQ4DcE9qqBtHx/mymxhZTtoGt3hVZyYpgUUac8zP0F0dcBLB417+9bD1ezH9Limtgq3dFuVsTLKwxLDZWDJ+O3JPjDJHZ/qxFNjB9Ari/2i8rmW/rRrUX5WpNsPLMMZZVxDiKz1RkNnYc8GsuFR1vsqOs3xYcLr3N21Y9L6uClfeyBPZ+P2yyuN7RmIrp06fjanF4tbXxpKQQWqWz39WqelsVLCqsnQ3OyT9YskMwIj3UvuVNmnYPzVTKTafxrRgPGmivuptomXZaFyyEOZTBHv45atod41r+bBXzjrJDuTlC1d1Ey5CWQujmOPjsxNsy5y03uSPXOgl88GFfLqBu11kkypoh8Mk/BtGEn1Dvqv31q9+aaYKVt+4Ea/fuLSYEiRYOEACBBhFo87VvuehdEULrLqGyCwbgFQn8BYEGEZCTbq7Eiig662FR5mK32zkQrfdkIV16jwMEQCBdAvI+77X44Hv5pgiOmumsh0X1pYojAt6R5ZAtCARGgCLaXYoVNdepYFEBcA2JAg4QSJsAxVzZjGhfRMupS6gKhWuoSOAvCKRHoA5XUFFz3sOiguAaKtz4CwLpEZDbS51x7QoqarUIFhUG11Ahx18QSIiA4Ofze7umJtXiEk635eCzu96Tfa7N6c/wGgRAID4C5Aq6ChBdRKO2HpaqQJ8PfyJfY62hAoK/IBAngb0WX3ug7qrXLli3rfd62FK5bjOjPBCwS0BIV9BlgOii2tbuEqqKHFw/cVGGrT6h3uMvCIBAJARkNPvaxtUnfdTWm2BRqENfZHKtIcazfBgeZYKADgEat3Idzb6sXrW7hKoyNA2K8SxFA39BIHwCI7Fae6CuEIYiIt4EiypD41kyQvZMUcXwGQiAQGAEOHvKx7jVNAWvgkUVaa9ffY3JAbzpSuE1CIBAYATkPZrfq56rJXt5YRz7105c4hl7JIzaoBYgAAITAh4H2Sd1GL8IRrAwCD9rGrwHAf8EpEB4HWSfJeDdJVQVUoPwQgJSn+EvCICAPwIjsfI7yD7b+mB6WKpiX+x2u2256Z9831Gf4S8IgEDtBPbkVsdyM76PerWXvKTAYHpYqo40cyife0/Ld3CAAAj4IiDvwdDEilAEJ1hUKVr9LRDuQChwgEDtBOSym6fq3IGhSgODFCxqQL57IcIdqtgS54KAOQF5zx3Z+PiieUZucghuDGu2mQfX7z7HuDg7+znegwAIWCYgxWpt4+NzlnO1ml3wgkWthWhZtTkyA4F5AhGIFVU6CsGiikK0iAIOEHBAIBKxopZHI1hUWUTDEwUcIGCRQEBR7GVaFZVgUYOwj1YZs+IcEFhNQAh2+cjG1dOrzwznjGBnCRchyjcOk13YRd/jcxAAgRIE5D0Um1hRq6LrYSlTYExLkcBfEKhIIKIxq9mWRStY1BCI1qw58R4EVhCIWKyoZVELFjUAokUUcIBACQKRixW1MHrBokbs7979JBfiAr3GAQIgME9ADNmZI8evXpr/Jq5PkhAsQn6we/cWE+JV+RK7PMR1DaK2bgns0WYCoa4NrNr0ZASLGk5b07RE623ZqG5VEDgfBFIjIO8Dufke7WcV1hYxJpyjC2tY1ljammbABw9gE8BllPBdMwiIndTEiuyWlGBRg0i01vjge0xG8NJ7HCDQNAIUENrmw6R6VsqGSbmEqlHqL2YQFQn8bQyBBGYCl9kqacGihvd3T5waCnZBNrS7DAS+A4HICezRMz5DeBSXS47JCxbBw2C8y0sIefsnIHba/EiQWxrbZpPcGFYRIIxrFVHBZ0kQkGO1qY5XFdmnET2s6YaPg0xpB1PEa02DwevYCOzJvdeD3s7YBdDGCRZBhIvo4lJCnvURaI4LOMu0kYKlIGAWUZHA32gIRLbhnm2ujRYsgklLeoQQr0gQXdtwkR8I2CIgr8+e4PxMKktsdLk0YtB9GRy6ACjQlILtlp2H70DAGwHZq2rJa7TpYkX8pXDjUAT2d0+clhHyZyWUrvoMf0HAFwF5HaJXNQO/8T2saR708FYs65kmgtfeCKBXVYgePaxCLJhJXIAFHzsnwLel33Me7l8xaAhWMZfJpxS3JffZekKC6k4+xAsQsE+gkXFVVTFCsEoQy+O2hq1zcq3WIyVOxykgUI0ARatng3N8vbdXLWHzzoZgVbA5CVdbtF9hTGxVSIZTQWABAbh/C8As/BiCtRDN4i8wm7iYDb5ZTUDedJj9W42p8AwIViGWch9CuMpxwlkTAhinmqDQewHB0uN2KBWE6xAOvJknsMcEl+NU/YsYp5qHU+UTCFYVWivOhXCtANS8ryFUlm0OwbIMlLKDcDmAGleWECpH9oJgOQJL2UK4HMINMmu+Lbi4TCsmgqxeApWCYNVgxHxHiKE4jTiuGmB7KQLhCXVhh2DVRVqWowJQ5dKLH0rw3RqLRlH2CcDts890ZY4QrJWI3JxA7iIXXEbOIwjVDWFXufJtzsWLLTbYxoyfK8aL84VgLWZTyzfjXteTstf1MHpdtSDXKWTcm2pfSumx7zogfKeBYPm2wFT5aqwLLuMUFH8vZZAnu8wz/hp2TvBnhNmSIVizRAJ5D/HyYgiIlBfs5QuFYJVn5e3MsXidgtto3wRCruuTu8y+jp6UfbYucoRguaDqMM98zIu1tsYD9puyKDxfsRpvuYUL3xGcvb7G2q9hTKoaPN9nQ7B8W8CwfOp9sSHbonEvOeMIAZvnmQuU7EW9wzK2jfGoeUAxfQLBislaJeqau4+MbXJBAsa6YxErkTKNU8jFywTbHmb8z7IntX1k/S87abQMrSACEKzErwOx2+30WXtT3sipiRj1nHpciB0SJ3kh77RZfwexUWlf0BCstO27sHX7u9/e5Ex0SMjYUHQ559+VJ3dC65FRj4nLMScpTHskTBkTvRZbk8L0UW9h4/BFsgQgWMmaVr9hqldGOQgmxWzIu/JvRz4T7ph8+nCXPpeHFDshBS7vptPf/DW9X3DsSfHZo++kANHf/F8uRIzdoM9EJnqyjL0hy3prrLUHUVpAssEf/z9xIqrq4yICmwAAAABJRU5ErkJggg==") center/contain no-repeat;
-}
-.progress-track {
-  flex: 1; max-width: 220px; height: 3px;
-  background: rgba(18,18,18,0.1); border-radius: 99px; overflow: hidden;
-}
-.slide.dark .progress-track { background: rgba(255,255,255,0.12); }
-.progress-fill { height: 100%; width: 0; background: var(--yellow); transition: width 0.3s ease; }
-.slide-num {
-  font-size: 13px; font-weight: 600; color: var(--muted);
-  font-variant-numeric: tabular-nums; min-width: 48px; text-align: right;
-}
-.slide.dark .slide-num { color: rgba(245,245,240,0.5); }
-
-.slide-body { flex: 1; display: flex; flex-direction: column; min-height: 0; }
-
-.eyebrow {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-size: 12px; font-weight: 700; letter-spacing: 0.08em;
-  text-transform: uppercase; color: var(--green); margin-bottom: 12px;
-}
-.eyebrow::before {
-  content: ""; width: 18px; height: 3px; background: var(--yellow); border-radius: 99px;
-}
-.slide.dark .eyebrow { color: var(--yellow); }
-
-.headline {
-  font-family: var(--font-display); font-weight: 700;
-  font-size: clamp(30px, 3.8vw, 52px); line-height: 1.08;
-  letter-spacing: -0.03em; margin: 0 0 12px; max-width: 18ch;
-}
-.headline.wide { max-width: 28ch; }
-.subhead {
-  margin: 0; font-size: clamp(16px, 1.5vw, 22px); font-weight: 500;
-  line-height: 1.35; color: var(--ink-soft); max-width: 40ch;
-}
-.slide.dark .subhead { color: rgba(245,245,240,0.68); }
-
-.thesis-bar {
-  width: 64px; height: 5px; background: var(--yellow);
-  border-radius: 99px; margin: 18px 0 16px;
+  line-height: 1.25;
 }
 
-.footer-hint {
-  margin-top: auto; padding-top: 16px; flex-shrink: 0;
-  display: flex; justify-content: space-between; align-items: center;
-  font-size: 12px; color: var(--muted); font-weight: 500;
-}
-.slide.dark .footer-hint { color: rgba(245,245,240,0.45); }
-.nav-hint kbd {
-  display: inline-block; padding: 2px 7px; border: 1px solid #c8c8bc;
-  border-radius: 6px; font-size: 11px; margin: 0 2px; background: rgba(255,255,255,0.55);
-}
-.slide.dark .nav-hint kbd {
-  border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.06);
-  color: rgba(245,245,240,0.7);
+.list-4 li:last-child { border-bottom: 1px solid rgba(17, 17, 17, 0.15); }
+
+.list-4 .i {
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--muted);
 }
 
-/* Photo title */
-.slide.photo-bleed { padding: 0; background: #0d0d0d; color: #f5f5f0; }
-.slide.photo-bleed .chrome {
-  position: absolute; top: 0; left: 0; right: 0; z-index: 5; margin: 0;
-  padding: clamp(24px, 3vw, 40px) clamp(28px, 4vw, 56px);
-  background: linear-gradient(180deg, rgba(0,0,0,0.55), transparent);
-}
-.slide.photo-bleed .footer-hint {
-  position: absolute; left: 0; right: 0; bottom: 0; z-index: 5; margin: 0;
-  padding: 18px clamp(28px, 4vw, 56px);
-  background: linear-gradient(0deg, rgba(0,0,0,0.65), transparent);
-  color: rgba(245,245,240,0.7);
-}
-.photo-stage {
-  position: absolute; inset: 0;
-  display: grid; grid-template-columns: 1fr 1.05fr;
-}
-.copy-pane {
-  display: flex; flex-direction: column; justify-content: center;
-  padding: clamp(72px, 10vh, 120px) clamp(36px, 5vw, 72px);
-  background:
-    radial-gradient(ellipse 80% 60% at 80% 20%, rgba(255,234,0,0.14), transparent 55%),
-    linear-gradient(160deg, #121212, #1b1b1b);
-}
-.photo-pane { position: relative; overflow: hidden; }
-.photo-pane img {
-  width: 100%; height: 100%; object-fit: cover; object-position: center 18%;
-  display: block; filter: contrast(1.04) saturate(1.05);
-}
-.photo-pane::after {
-  content: ""; position: absolute; inset: 0;
-  background: linear-gradient(270deg, transparent 45%, rgba(0,0,0,0.45));
-  pointer-events: none;
-}
-.tape {
-  display: inline-block; padding: 5px 11px; background: var(--yellow); color: var(--ink);
-  font-size: 11px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase;
-  transform: rotate(-2deg); margin-bottom: 14px; width: fit-content;
-  box-shadow: 2px 2px 0 rgba(0,0,0,0.15);
+/* Slide 3 — unknowns */
+.big-4 {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  flex: 1;
+  align-content: center;
 }
 
-/* Prerequisites grid */
-.prereq-grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
-  margin-top: 28px; flex: 1; min-height: 0;
-}
-.prereq {
-  background: var(--paper); border: 1px solid var(--line);
-  border-radius: 18px; padding: 22px 20px; box-shadow: var(--shadow);
-  display: flex; flex-direction: column; justify-content: center;
-}
-.prereq .num {
-  font-family: var(--font-display); font-weight: 800; font-size: 28px;
-  color: rgba(18,18,18,0.12); line-height: 1; margin-bottom: 8px;
-}
-.prereq h3 {
-  margin: 0; font-family: var(--font-display); font-size: clamp(18px, 1.7vw, 22px);
-  letter-spacing: -0.02em; line-height: 1.2;
-}
-
-/* Unknowns — 4 big points only */
-.unknowns {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
-  margin-top: 32px; flex: 1; align-content: center;
-}
-.unknown {
-  background: var(--ink); color: #f5f5f0; border-radius: 20px;
-  padding: 28px 24px; min-height: 140px;
-  display: flex; flex-direction: column; justify-content: center; gap: 12px;
-}
-.unknown .idx {
-  width: 36px; height: 36px; border-radius: 50%; background: var(--yellow);
-  color: var(--ink); display: grid; place-items: center;
-  font-family: var(--font-display); font-weight: 800; font-size: 15px;
-}
-.unknown h3 {
-  margin: 0; font-family: var(--font-display);
-  font-size: clamp(20px, 2vw, 26px); letter-spacing: -0.025em; line-height: 1.2;
+.big-4 li {
+  padding: 28px 32px 28px 0;
+  border-top: 1px solid rgba(17, 17, 17, 0.15);
+  font-size: clamp(22px, 2.4vw, 32px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
   max-width: 14ch;
 }
 
-/* Presence ranking */
-.presence {
-  display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 20px;
-  margin-top: 22px; flex: 1; min-height: 0;
-}
-.rank-list { display: flex; flex-direction: column; gap: 10px; }
-.rank {
-  display: grid; grid-template-columns: 48px 1fr auto; gap: 14px; align-items: center;
-  background: var(--paper); border: 1px solid var(--line); border-radius: 14px;
-  padding: 14px 16px; box-shadow: var(--shadow);
-}
-.rank .r {
-  width: 40px; height: 40px; border-radius: 12px; background: var(--yellow);
-  display: grid; place-items: center; font-family: var(--font-display);
-  font-weight: 800; font-size: 15px;
-}
-.rank.cold .r { background: #e8e4d8; color: var(--muted); }
-.rank.hot { border-color: rgba(255,234,0,0.7); background: linear-gradient(180deg,#fff,#fffce6); }
-.rank strong {
-  display: block; font-family: var(--font-display); font-size: 16px;
-  letter-spacing: -0.02em; margin-bottom: 2px;
-}
-.rank span { font-size: 12px; color: var(--muted); line-height: 1.3; }
-.rank .bar {
-  width: 72px; height: 8px; border-radius: 99px; background: var(--line); overflow: hidden;
-}
-.rank .bar i {
-  display: block; height: 100%; background: var(--green); border-radius: 99px;
-}
-.rank.cold .bar i { background: #b8b4a8; }
+.big-4 li:nth-child(odd) { padding-right: 40px; border-right: 1px solid rgba(17, 17, 17, 0.15); }
+.big-4 li:nth-child(even) { padding-left: 40px; }
+.big-4 li:nth-child(n+3) { border-bottom: 1px solid rgba(17, 17, 17, 0.15); }
 
-.read-box {
-  background: var(--ink); color: #f5f5f0; border-radius: 20px;
-  padding: 24px; display: flex; flex-direction: column; justify-content: center;
+.big-4 .i {
+  display: block;
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: 10px;
+  letter-spacing: 0.04em;
 }
-.read-box .lab {
-  font-size: 11px; font-weight: 800; letter-spacing: 0.08em;
-  text-transform: uppercase; color: var(--yellow); margin-bottom: 12px;
+
+/* Slide 4 — presence */
+.rank-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
 }
-.read-box p {
-  margin: 0 0 14px; font-size: 18px; font-weight: 600; line-height: 1.35;
+
+.rank-table th {
+  text-align: left;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 0 16px 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.rank-table td {
+  padding: 16px 16px 16px 0;
+  border-bottom: 1px solid rgba(17, 17, 17, 0.12);
+  vertical-align: baseline;
+  font-size: clamp(16px, 1.5vw, 20px);
+}
+
+.rank-table td:first-child {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  width: 40px;
+}
+
+.rank-table td:nth-child(2) {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  width: 28%;
+}
+
+.rank-table td:nth-child(3) {
+  color: var(--muted);
+  font-size: clamp(14px, 1.3vw, 16px);
+  font-weight: 400;
+}
+
+.rank-table tr.cold td:nth-child(2),
+.rank-table tr.cold td:nth-child(3) {
+  color: #999;
+}
+
+.so-what {
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+  font-size: clamp(16px, 1.5vw, 20px);
+  font-weight: 600;
   letter-spacing: -0.015em;
+  line-height: 1.35;
+  max-width: 42ch;
 }
-.read-box p:last-child { margin-bottom: 0; color: rgba(245,245,240,0.7); font-size: 14px; font-weight: 500; }
 
 .controls {
-  position: fixed; right: 20px; bottom: 20px; display: flex; gap: 8px; z-index: 50;
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  display: flex;
+  gap: 6px;
+  z-index: 50;
 }
-.controls button {
-  width: 42px; height: 42px; border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.15); background: rgba(18,18,18,0.85);
-  color: #fff; font-size: 18px; cursor: pointer;
-}
-.controls button:hover { border-color: var(--yellow); color: var(--yellow); }
 
-@media (max-width: 900px) {
-  .photo-stage, .prereq-grid, .unknowns, .presence { grid-template-columns: 1fr; }
-  .photo-pane { min-height: 36vh; }
+.controls button {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #111;
+  background: #fff;
+  color: #111;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.controls button:hover { background: #111; color: #fff; }
+
+@media (max-width: 800px) {
+  .photo-layout,
+  .big-4 { grid-template-columns: 1fr; }
+  .big-4 li:nth-child(odd) { border-right: 0; padding-right: 0; }
+  .big-4 li:nth-child(even) { padding-left: 0; }
+  .photo-layout img { height: 36vh; }
 }
 </style>
 </head>
 <body>
   <div class="deck">
 
-    <!-- 1. DevRel in action -->
-    <section class="slide dark photo-bleed is-active" data-notes="Open as a builder already in the room — not a strategy consultant. Photo: live talk walking builders through an agent workflow.">
-      <div class="chrome">
-        <div class="brand"><span class="brand-mark" aria-hidden="true"></span> NIMBLE</div>
-        <div class="progress-track"><div class="progress-fill" data-progress></div></div>
-        <div class="slide-num" data-slide-num>01</div>
+    <!-- 1 -->
+    <section class="slide is-active" data-notes="Open as a builder already in the room.">
+      <div class="top">
+        <div class="label">Part 2 · Situational</div>
+        <div class="num" data-slide-num>01 / 04</div>
       </div>
-      <div class="photo-stage">
-        <div class="copy-pane">
-          <div class="tape">Part 2 · Situational first</div>
-          <h1 class="headline">DevRel in action.</h1>
-          <div class="thesis-bar"></div>
-          <p class="subhead">I teach builders live — workflows on screen, receipts in the room.</p>
+      <div class="body photo-layout">
+        <div>
+          <h1>DevRel in action.</h1>
+          <p class="sub">I teach builders live — workflows on screen, receipts in the room.</p>
         </div>
-        <div class="photo-pane">
-          <img src="public/slides/speaker/nehal-talk-hero.jpg" alt="Nehal speaking with an agent workflow on screen" />
-        </div>
+        <img src="public/slides/speaker/nehal-talk-hero.jpg" alt="Speaking with an agent workflow on screen" />
       </div>
-      <div class="footer-hint">
-        <span>Leading Developer Advocacy at Nimble</span>
-        <span class="nav-hint"><kbd>→</kbd> <kbd>Space</kbd> next · <kbd>F</kbd> fullscreen</span>
-      </div>
+      <div class="footer">→ Space · F fullscreen</div>
     </section>
 
-    <!-- 2. Prerequisites -->
-    <section class="slide" data-notes="Before locking strategy: map product truth, developer pain, channel reality, and business motion. These four prerequisites gate everything else.">
-      <div class="chrome">
-        <div class="brand"><span class="brand-mark" aria-hidden="true"></span> NIMBLE</div>
-        <div class="progress-track"><div class="progress-fill" data-progress></div></div>
-        <div class="slide-num" data-slide-num>02</div>
+    <!-- 2 -->
+    <section class="slide" data-notes="Four prerequisites before locking strategy.">
+      <div class="top">
+        <div class="label">Before strategy</div>
+        <div class="num" data-slide-num>02 / 04</div>
       </div>
-      <div class="slide-body">
-        <div class="eyebrow">Before strategy</div>
-        <h1 class="headline wide">Prerequisites I would lock first.</h1>
-        <div class="prereq-grid">
-          <div class="prereq">
-            <div class="num">01</div>
-            <h3>Product truth — what Nimble uniquely wins</h3>
-          </div>
-          <div class="prereq">
-            <div class="num">02</div>
-            <h3>Developer pain — where agents fail without live web</h3>
-          </div>
-          <div class="prereq">
-            <div class="num">03</div>
-            <h3>Channel reality — where trust is actually formed</h3>
-          </div>
-          <div class="prereq">
-            <div class="num">04</div>
-            <h3>Business motion — what converts and expands</h3>
-          </div>
-        </div>
+      <div class="body">
+        <h1 class="wide">Prerequisites.</h1>
+        <hr class="rule" />
+        <ol class="list-4">
+          <li><span class="i">01</span>Product truth — what Nimble uniquely wins</li>
+          <li><span class="i">02</span>Developer pain — where agents fail without live web</li>
+          <li><span class="i">03</span>Channel reality — where trust is actually formed</li>
+          <li><span class="i">04</span>Business motion — what converts and expands</li>
+        </ol>
       </div>
-      <div class="footer-hint"><span>Situational assessment</span><span class="nav-hint"><kbd>←</kbd> <kbd>→</kbd></span></div>
+      <div class="footer">Situational assessment</div>
     </section>
 
-    <!-- 3. Important unknowns -->
-    <section class="slide" data-notes="Four unknowns only. Answer these in the first 30 days before scaling content spend.">
-      <div class="chrome">
-        <div class="brand"><span class="brand-mark" aria-hidden="true"></span> NIMBLE</div>
-        <div class="progress-track"><div class="progress-fill" data-progress></div></div>
-        <div class="slide-num" data-slide-num>03</div>
+    <!-- 3 -->
+    <section class="slide" data-notes="Four unknowns only. No filler.">
+      <div class="top">
+        <div class="label">Critical unknowns</div>
+        <div class="num" data-slide-num>03 / 04</div>
       </div>
-      <div class="slide-body">
-        <div class="eyebrow">Critical unknowns</div>
-        <h1 class="headline wide">Four questions before I scale.</h1>
-        <div class="unknowns">
-          <div class="unknown">
-            <div class="idx">1</div>
-            <h3>Which use cases convert fastest?</h3>
-          </div>
-          <div class="unknown">
-            <div class="idx">2</div>
-            <h3>Where do builders get stuck?</h3>
-          </div>
-          <div class="unknown">
-            <div class="idx">3</div>
-            <h3>Which persona feels the pain most?</h3>
-          </div>
-          <div class="unknown">
-            <div class="idx">4</div>
-            <h3>Which ecosystems set their defaults?</h3>
-          </div>
-        </div>
+      <div class="body">
+        <h1 class="wide">Four questions before I scale.</h1>
+        <hr class="rule" />
+        <ol class="big-4">
+          <li><span class="i">01</span>Which use cases convert fastest?</li>
+          <li><span class="i">02</span>Where do builders get stuck?</li>
+          <li><span class="i">03</span>Which persona feels the pain most?</li>
+          <li><span class="i">04</span>Which ecosystems set their defaults?</li>
+        </ol>
       </div>
-      <div class="footer-hint"><span>Discovery gates</span><span class="nav-hint"><kbd>←</kbd> <kbd>→</kbd></span></div>
+      <div class="footer">Discovery gates</div>
     </section>
 
-    <!-- 4. Media presence ranking -->
-    <section class="slide" data-notes="Research snapshot Jul 2026. LinkedIn ~13.8k followers strongest owned social. YouTube @nimble_search active tutorials. GitHub 26 repos/~74 stars but PyPI nimble_python ~16k downloads/mo. X @nimble_search exists. HN and Reddit near zero for this product. Evidence: public/slides/presence-evidence.md">
-      <div class="chrome">
-        <div class="brand"><span class="brand-mark" aria-hidden="true"></span> NIMBLE</div>
-        <div class="progress-track"><div class="progress-fill" data-progress></div></div>
-        <div class="slide-num" data-slide-num>04</div>
+    <!-- 4 -->
+    <section class="slide" data-notes="LinkedIn strongest. YouTube active. GitHub stars low / PyPI usage real. X quiet. HN + Reddit cold. Evidence in presence-evidence.md">
+      <div class="top">
+        <div class="label">Current presence</div>
+        <div class="num" data-slide-num>04 / 04</div>
       </div>
-      <div class="slide-body">
-        <div class="eyebrow">Current presence</div>
-        <h1 class="headline wide">Where Nimble shows up today.</h1>
-        <div class="presence">
-          <div class="rank-list">
-            <div class="rank hot">
-              <div class="r">1</div>
-              <div>
-                <strong>LinkedIn</strong>
-                <span>~13.8k followers · strongest owned social</span>
-              </div>
-              <div class="bar"><i style="width:92%"></i></div>
-            </div>
-            <div class="rank hot">
-              <div class="r">2</div>
-              <div>
-                <strong>YouTube</strong>
-                <span>@nimble_search · active product tutorials</span>
-              </div>
-              <div class="bar"><i style="width:70%"></i></div>
-            </div>
-            <div class="rank">
-              <div class="r">3</div>
-              <div>
-                <strong>GitHub</strong>
-                <span>26 repos · stars low · PyPI usage stronger</span>
-              </div>
-              <div class="bar"><i style="width:48%"></i></div>
-            </div>
-            <div class="rank">
-              <div class="r">4</div>
-              <div>
-                <strong>X</strong>
-                <span>@nimble_search · present, quieter</span>
-              </div>
-              <div class="bar"><i style="width:32%"></i></div>
-            </div>
-            <div class="rank cold">
-              <div class="r">5</div>
-              <div>
-                <strong>Hacker News</strong>
-                <span>Near-zero product conversation</span>
-              </div>
-              <div class="bar"><i style="width:8%"></i></div>
-            </div>
-            <div class="rank cold">
-              <div class="r">6</div>
-              <div>
-                <strong>Reddit</strong>
-                <span>No visible traction in agent communities</span>
-              </div>
-              <div class="bar"><i style="width:6%"></i></div>
-            </div>
-          </div>
-          <div class="read-box">
-            <div class="lab">So what</div>
-            <p>Brand traction lives on LinkedIn. Builder communities are still cold.</p>
-            <p>DevRel’s job is to move proof into GitHub, HN, Reddit, and framework rooms — not only owned channels.</p>
-          </div>
-        </div>
+      <div class="body">
+        <h1 class="wide">Where Nimble shows up.</h1>
+        <hr class="rule" />
+        <table class="rank-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Channel</th>
+              <th>Signal</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>01</td>
+              <td>LinkedIn</td>
+              <td>~13.8k followers · strongest owned social</td>
+            </tr>
+            <tr>
+              <td>02</td>
+              <td>YouTube</td>
+              <td>@nimble_search · active tutorials</td>
+            </tr>
+            <tr>
+              <td>03</td>
+              <td>GitHub</td>
+              <td>Stars low · PyPI usage stronger</td>
+            </tr>
+            <tr>
+              <td>04</td>
+              <td>X</td>
+              <td>@nimble_search · present, quieter</td>
+            </tr>
+            <tr class="cold">
+              <td>05</td>
+              <td>Hacker News</td>
+              <td>Near-zero product conversation</td>
+            </tr>
+            <tr class="cold">
+              <td>06</td>
+              <td>Reddit</td>
+              <td>No visible traction in agent communities</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="so-what">Brand lives on LinkedIn. Builder communities are still cold.</p>
       </div>
-      <div class="footer-hint"><span>See presence-evidence.md for screenshot links</span><span class="nav-hint"><kbd>←</kbd> <kbd>→</kbd></span></div>
+      <div class="footer">Screenshot links → public/slides/presence-evidence.md</div>
     </section>
 
   </div>
@@ -446,22 +433,18 @@ html, body {
   function show(next) {
     index = Math.max(0, Math.min(slides.length - 1, next));
     slides.forEach((s, i) => s.classList.toggle("is-active", i === index));
-    const pct = ((index + 1) / slides.length) * 100;
-    document.querySelectorAll("[data-progress]").forEach((el) => { el.style.width = `${pct}%`; });
     document.querySelectorAll("[data-slide-num]").forEach((el) => {
       el.textContent = `${String(index + 1).padStart(2, "0")} / ${String(slides.length).padStart(2, "0")}`;
     });
     history.replaceState(null, "", `#${index + 1}`);
   }
-  const next = () => show(index + 1);
-  const prev = () => show(index - 1);
-  document.getElementById("nextBtn")?.addEventListener("click", next);
-  document.getElementById("prevBtn")?.addEventListener("click", prev);
+  const goNext = () => show(index + 1);
+  const goPrev = () => show(index - 1);
+  document.getElementById("nextBtn")?.addEventListener("click", goNext);
+  document.getElementById("prevBtn")?.addEventListener("click", goPrev);
   window.addEventListener("keydown", (e) => {
-    if (["ArrowRight", "PageDown", " ", "Enter"].includes(e.key)) { e.preventDefault(); next(); }
-    else if (["ArrowLeft", "PageUp", "Backspace"].includes(e.key)) { e.preventDefault(); prev(); }
-    else if (e.key === "Home") { e.preventDefault(); show(0); }
-    else if (e.key === "End") { e.preventDefault(); show(slides.length - 1); }
+    if (["ArrowRight", "PageDown", " ", "Enter"].includes(e.key)) { e.preventDefault(); goNext(); }
+    else if (["ArrowLeft", "PageUp", "Backspace"].includes(e.key)) { e.preventDefault(); goPrev(); }
     else if (e.key.toLowerCase() === "f") {
       if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
       else document.exitFullscreen?.();
