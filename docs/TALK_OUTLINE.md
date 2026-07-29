@@ -12,10 +12,12 @@ Nimble turns live web chaos into structured, source-grounded, agent-ready intell
 
 Premium keynote deck (rebuilt from first principles):
 
-- **Present:** open [`/presentation/index.html`](../public/presentation/index.html) or run the app and visit `http://localhost:3001/presentation/`
+- **Present:** with the app running, open **`http://localhost:3001/slides/index.html`**
+  - Or open `http://localhost:3001/` and click **Open keynote deck →**
+  - `/deck` redirects to the same file
 - **Speaker notes:** [`presentation/SPEAKER_NOTES.md`](./presentation/SPEAKER_NOTES.md)
 - **Controls:** arrow keys, on-screen buttons, `F` for fullscreen
-- **Demo video:** place the 4-minute recording at `public/presentation/demo.mp4`
+- **Demo video:** place the 4-minute recording at `public/slides/demo.mp4`
 
 ## Runtime (20 minutes)
 

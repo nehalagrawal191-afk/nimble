@@ -1,8 +1,10 @@
 # Speaker Notes — Morning espresso with Nimble
 
 **Total runtime:** 20 minutes  
-**Deck:** `/presentation/index.html` (or `http://localhost:3001/presentation/` with the app running)  
+**Deck:** `http://localhost:3001/slides/index.html` (with `npm run dev -- -H 0.0.0.0 -p 3001`)  
 **Navigation:** `→` / `←`, swipe, or on-screen controls · `F` fullscreen
+
+Assets live in `public/slides/`. Drop the demo recording at `public/slides/demo.mp4`.
 
 ---
 
