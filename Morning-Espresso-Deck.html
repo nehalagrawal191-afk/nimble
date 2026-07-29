@@ -1245,6 +1245,63 @@ a.video-link:hover .video-play {
   margin-bottom: 18px;
 }
 
+.close-stage.social-stage {
+  max-width: min(920px, 100%);
+  width: 100%;
+}
+
+.close-lead {
+  margin: 0 0 4px;
+  font-size: clamp(22px, 2.4vw, 32px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: #f5f5f0;
+  max-width: none;
+}
+
+.social-qrs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 280px));
+  gap: clamp(28px, 4vw, 56px);
+  margin-top: 36px;
+  width: 100%;
+}
+
+.social-qr {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  text-decoration: none;
+  color: #f5f5f0;
+}
+
+.social-qr img {
+  width: min(220px, 42vw);
+  height: auto;
+  aspect-ratio: 1;
+  border-radius: 18px;
+  background: #fff;
+  padding: 14px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
+}
+
+.social-qr strong {
+  font-family: var(--font-display);
+  font-size: 22px;
+  letter-spacing: -0.02em;
+}
+
+.social-qr span {
+  font-size: 14px;
+  color: rgba(245, 245, 240, 0.62);
+  word-break: break-all;
+}
+
+.social-qr:hover strong {
+  color: var(--yellow);
+}
+
 .slide[data-title="Close"] .footer-hint {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding-top: 18px;
@@ -2090,12 +2147,21 @@ a.video-link:hover .video-play {
         <div class="slide-num" data-slide-num></div>
       </div>
       <div class="slide-body">
-        <div class="close-stage">
-          <h2 class="headline xl">Prove the workflow.<br />Don’t pitch the API.</h2>
+        <div class="close-stage social-stage">
+          <p class="subhead close-lead">Let’s keep the conversation going</p>
           <div class="thesis-bar"></div>
-          <p class="subhead">
-            Nimble turns live web chaos into structured, source-grounded, agent-ready intelligence — before the LLM reasons.
-          </p>
+          <div class="social-qrs">
+            <a class="social-qr" href="https://www.linkedin.com/in/thenehalagrawal" target="_blank" rel="noopener noreferrer">
+              <img src="data:image/png;base64,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" alt="QR code to LinkedIn profile" />
+              <strong>LinkedIn</strong>
+              <span>linkedin.com/in/thenehalagrawal</span>
+            </a>
+            <a class="social-qr" href="https://x.com/NehallAgrawal" target="_blank" rel="noopener noreferrer">
+              <img src="data:image/png;base64,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" alt="QR code to X profile" />
+              <strong>X</strong>
+              <span>x.com/NehallAgrawal</span>
+            </a>
+          </div>
         </div>
       </div>
     </section>
