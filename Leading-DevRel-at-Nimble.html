@@ -15,6 +15,9 @@
     - AI/agent communities: LangChain, Hugging Face, GitHub, Discord/Slack, Reddit (r/LocalLLaMA, r/LangChain, r/AI_Agents), HN, YouTube, newsletters, frameworks
     - DevRel measurement: awareness, activation, product usage, community health, content influence, sales/product feedback, support deflection, developer trust
   -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
 <style>
 :root {
   --ink: #121212;
@@ -29,10 +32,11 @@
   --line: #e2e2d8;
   --line-strong: #c8c8bc;
   --danger: #b42318;
-  --shadow: 0 18px 50px rgba(18, 18, 18, 0.08);
-  --radius: 18px;
-  --font-display: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --font-body: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --shadow: 0 12px 32px rgba(18, 18, 18, 0.07);
+  --radius: 14px;
+  --font-display: "Syne", "Helvetica Neue", sans-serif;
+  --font-body: "Figtree", "Helvetica Neue", sans-serif;
+  --warm: #fff8e7;
 }
 
 * { box-sizing: border-box; }
@@ -59,9 +63,9 @@ html, body {
   display: none;
   padding: clamp(32px, 4.5vw, 64px) clamp(36px, 5.5vw, 88px);
   background:
-    radial-gradient(ellipse 80% 60% at 100% 0%, rgba(255, 234, 0, 0.12), transparent 55%),
-    radial-gradient(ellipse 50% 40% at 0% 100%, rgba(10, 122, 90, 0.06), transparent 50%),
-    linear-gradient(180deg, #fafaf6 0%, var(--canvas) 100%);
+    radial-gradient(ellipse 70% 55% at 95% 0%, rgba(255, 234, 0, 0.18), transparent 55%),
+    radial-gradient(ellipse 45% 40% at 0% 100%, rgba(10, 122, 90, 0.08), transparent 50%),
+    linear-gradient(165deg, #fffdf6 0%, #f3f0e6 100%);
   opacity: 0;
   transform: translateY(12px);
   transition: opacity 0.35s ease, transform 0.35s ease;
@@ -1432,6 +1436,211 @@ html, body {
   line-height: 1.35;
 }
 
+
+/* Photo-led human slides */
+.slide.photo-bleed {
+  padding: 0;
+  background: #0d0d0d;
+  color: #f5f5f0;
+}
+
+.slide.photo-bleed .chrome {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  z-index: 5;
+  margin: 0;
+  padding: clamp(24px, 3vw, 40px) clamp(28px, 4vw, 56px);
+  background: linear-gradient(180deg, rgba(0,0,0,0.55), transparent);
+}
+
+.slide.photo-bleed .footer-hint {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  z-index: 5;
+  margin: 0;
+  padding: 18px clamp(28px, 4vw, 56px);
+  background: linear-gradient(0deg, rgba(0,0,0,0.65), transparent);
+  color: rgba(245,245,240,0.7);
+}
+
+.photo-stage {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+}
+
+.photo-stage.flip { grid-template-columns: 0.9fr 1.1fr; }
+
+.photo-pane {
+  position: relative;
+  overflow: hidden;
+  min-height: 100%;
+}
+
+.photo-pane img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+  display: block;
+  filter: contrast(1.05) saturate(1.05);
+  transform: scale(1.02);
+}
+
+.photo-pane::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 55%, rgba(0,0,0,0.35));
+  pointer-events: none;
+}
+
+.photo-pane.left-fade::after {
+  background: linear-gradient(270deg, transparent 40%, rgba(0,0,0,0.55));
+}
+
+.copy-pane {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(72px, 10vh, 120px) clamp(36px, 5vw, 72px) clamp(56px, 8vh, 88px);
+  background:
+    radial-gradient(ellipse 80% 60% at 80% 20%, rgba(255, 234, 0, 0.16), transparent 55%),
+    linear-gradient(160deg, #121212 0%, #1b1b1b 100%);
+}
+
+.copy-pane .headline.xl { max-width: 14ch; }
+.copy-pane .subhead { max-width: 34ch; }
+
+.photo-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 22px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255, 234, 0, 0.12);
+  border: 1px solid rgba(255, 234, 0, 0.35);
+  color: var(--yellow);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  width: fit-content;
+}
+
+.photo-chip::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--yellow);
+  box-shadow: 0 0 0 4px rgba(255, 234, 0, 0.2);
+}
+
+.human-proof {
+  display: grid;
+  grid-template-columns: 0.95fr 1.05fr;
+  gap: clamp(20px, 3vw, 40px);
+  margin-top: 18px;
+  flex: 1;
+  min-height: 0;
+  align-items: stretch;
+}
+
+.human-shot {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  min-height: 280px;
+  box-shadow: 0 24px 60px rgba(18,18,18,0.18);
+  border: 1px solid rgba(18,18,18,0.08);
+}
+
+.human-shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 15%;
+  display: block;
+}
+
+.human-shot .shot-cap {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  right: 14px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(18,18,18,0.78);
+  color: #f5f5f0;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.3;
+  backdrop-filter: blur(6px);
+}
+
+.human-points {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  justify-content: center;
+}
+
+.h-point {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 16px 18px;
+  box-shadow: var(--shadow);
+}
+
+.h-point strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 16px;
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+}
+
+.h-point span {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.35;
+}
+
+.tape {
+  display: inline-block;
+  padding: 4px 10px;
+  background: var(--yellow);
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transform: rotate(-2deg);
+  margin-bottom: 10px;
+  box-shadow: 2px 2px 0 rgba(18,18,18,0.12);
+}
+
+.inline-portrait {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--yellow);
+  box-shadow: 0 0 0 4px rgba(255,234,0,0.15);
+}
+
+@media (max-width: 900px) {
+  .photo-stage, .photo-stage.flip, .human-proof { grid-template-columns: 1fr; }
+  .photo-pane { min-height: 38vh; }
+  .copy-pane { padding-top: 36px; }
+}
+
+
 .controls {
   position: fixed;
   right: 20px;
@@ -1492,27 +1701,22 @@ html, body {
   <div class="deck" id="deck">
 
     <!-- 1. Title -->
-    <section class="slide dark is-active" data-notes="Open with the leadership thesis: DevRel's job is to make Nimble the default live-web layer for agents—not by volume of content, but by owning developer trust around fresh, structured, source-grounded evidence. Part 1 Morning Signal proved the workflow; Part 2 is how we scale that proof into a system.">
+    <section class="slide dark photo-bleed is-active" data-notes="Open human and direct: DevRel at Nimble should make live-web infrastructure the default for agents. Photo shows me already doing the job — teaching builders live, with real agent workflows on screen. Less corporate theater, more receipts.">
       <div class="chrome">
         <div class="brand"><span class="brand-mark" aria-hidden="true"></span> NIMBLE</div>
         <div class="progress-track"><div class="progress-fill" data-progress></div></div>
         <div class="slide-num" data-slide-num>01</div>
       </div>
-      <div class="slide-body title-stage">
-        <div class="title-copy">
-          <div class="eyebrow">Part 2 · Principal Developer Advocate</div>
-          <h1 class="headline xl">Developer Advocacy should make Nimble the default live-web layer for agents.</h1>
+      <div class="photo-stage">
+        <div class="copy-pane">
+          <div class="tape">Part 2 · Principal DA</div>
+          <h1 class="headline xl">Make Nimble the default live-web layer for agents.</h1>
           <div class="thesis-bar"></div>
-          <p class="subhead">Leading Developer Advocacy at Nimble — from zero to a systematic developer trust engine.</p>
+          <p class="subhead">Not more content volume. A developer trust engine — proof, distribution, feedback.</p>
+          <div class="photo-chip">Builder-led · already on stage</div>
         </div>
-        <div class="title-visual" aria-hidden="true">
-          <div class="signal-field">
-            <div class="signal-line"></div>
-            <div class="signal-line"></div>
-            <div class="signal-line"></div>
-          </div>
-          <div class="pulse-ring"></div>
-          <div class="title-core">Live web<br/>for agents</div>
+        <div class="photo-pane left-fade">
+          <img src="public/slides/speaker/nehal-talk-hero.jpg" alt="Nehal presenting a live agent workflow to developers" />
         </div>
       </div>
       <div class="footer-hint">
@@ -1529,8 +1733,8 @@ html, body {
         <div class="slide-num" data-slide-num>02</div>
       </div>
       <div class="slide-body">
-        <div class="eyebrow">Leadership answer</div>
-        <h1 class="headline wide">My job is not to make noise. It is to turn developer trust into product adoption.</h1>
+        <div class="eyebrow">How I operate</div>
+        <h1 class="headline wide">I am not here to make noise. I turn developer trust into product adoption.</h1>
         <div class="equation">
           <div class="eq-term">
             <strong>Proof</strong>
@@ -1557,6 +1761,40 @@ html, body {
       <div class="footer-hint"><span>Operating thesis</span><span class="nav-hint"><kbd>←</kbd> <kbd>→</kbd></span></div>
     </section>
 
+    <!-- 3. Builder proof -->
+    <section class="slide" data-notes="Credibility without corporate bio. I already teach agent workflows live — office hours energy, meetup stages, runnable diagrams on screen. DevRel at Nimble should feel like this: builders explaining receipts to builders. Photo: live talk walking through an RSS → merge → model → HTTP → message agent pipeline.">
+      <div class="chrome">
+        <div class="brand"><span class="brand-mark" aria-hidden="true"></span> NIMBLE</div>
+        <div class="progress-track"><div class="progress-fill" data-progress></div></div>
+        <div class="slide-num" data-slide-num>03</div>
+      </div>
+      <div class="slide-body">
+        <div class="eyebrow">Why me</div>
+        <h1 class="headline wide">I already do this work in rooms full of builders.</h1>
+        <div class="human-proof">
+          <div class="human-shot">
+            <img src="public/slides/speaker/nehal-talk-portrait.jpg" alt="Nehal on stage explaining an agent workflow" />
+            <div class="shot-cap">Live talk · agent workflow on screen · name tag still crooked</div>
+          </div>
+          <div class="human-points">
+            <div class="h-point">
+              <strong>Teach the plumbing, not the pitch</strong>
+              <span>Walk builders through real graphs: live inputs → model → actions — with failure modes included.</span>
+            </div>
+            <div class="h-point">
+              <strong>Show up where trust is formed</strong>
+              <span>Meetups, Discord office hours, framework rooms — not only a company blog.</span>
+            </div>
+            <div class="h-point">
+              <strong>Ship proof before slogans</strong>
+              <span>Every claim I make for Nimble should arrive with a repo, a demo, or a receipt.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-hint"><span>Builder credibility</span><span class="nav-hint"><kbd>←</kbd> <kbd>→</kbd></span></div>
+    </section>
+
     <!-- 3. Situational assessment -->
     <section class="slide" data-notes="Before locking strategy, map four terrains: Product truth (what Nimble uniquely does well today across Search/Extract/Agent/Crawl/Map), Developer pain (where agent builders fail without fresh structured web data), Community channels (where trust is actually formed), Business motion (which use cases convert and expand). Sources: Nimble docs position API around Extract, Agent, Search, Map, Crawl, Tasks, async, webhooks, structured outputs.">
       <div class="chrome">
@@ -1565,8 +1803,8 @@ html, body {
         <div class="slide-num" data-slide-num>03</div>
       </div>
       <div class="slide-body">
-        <div class="eyebrow">Situational assessment</div>
-        <h1 class="headline wide">Before strategy, I would map the terrain.</h1>
+        <div class="eyebrow">First, listen</div>
+        <h1 class="headline wide">Before I ship a program, I map the terrain.</h1>
         <div class="matrix-2x2">
           <div class="quad accent">
             <div class="q-label">01 · Product truth</div>
@@ -1601,8 +1839,8 @@ html, body {
         <div class="slide-num" data-slide-num>04</div>
       </div>
       <div class="slide-body">
-        <div class="eyebrow">Critical unknowns</div>
-        <h1 class="headline wide">Five questions I would answer before scaling spend.</h1>
+        <div class="eyebrow">What I need to know</div>
+        <h1 class="headline wide">Five questions before I scale spend.</h1>
         <div class="unknown-grid">
           <div class="unknown">
             <div class="idx">1</div>
@@ -1680,7 +1918,7 @@ html, body {
         <div class="slide-num" data-slide-num>06</div>
       </div>
       <div class="slide-body">
-        <div class="eyebrow">Category point of view</div>
+        <div class="eyebrow">Category bet</div>
         <h1 class="headline wide">Nimble should own live-web infrastructure for agents.</h1>
         <div class="wedge-map">
           <div class="wedge" style="min-height:110px"><strong>Generic search</strong><span>Links, not agent-ready structure</span></div>
@@ -1709,7 +1947,7 @@ html, body {
         <div class="slide-num" data-slide-num>07</div>
       </div>
       <div class="slide-body">
-        <div class="eyebrow">Audience map</div>
+        <div class="eyebrow">Who we win first</div>
         <h1 class="headline wide">Several developer audiences. One beachhead.</h1>
         <div class="persona-grid">
           <div class="persona beachhead">
@@ -1753,7 +1991,7 @@ html, body {
         <div class="slide-num" data-slide-num>08</div>
       </div>
       <div class="slide-body">
-        <div class="eyebrow">Channel map</div>
+        <div class="eyebrow">Where they hang out</div>
         <h1 class="headline wide">The audience is distributed. The strategy cannot depend on one community.</h1>
         <div class="eco-map" aria-hidden="true">
           <div class="eco-center">Where agents learn</div>
@@ -1778,8 +2016,8 @@ html, body {
         <div class="slide-num" data-slide-num>09</div>
       </div>
       <div class="slide-body">
-        <div class="eyebrow">Strategic pillars</div>
-        <h1 class="headline wide">I would build DevRel around three operating pillars.</h1>
+        <div class="eyebrow">Operating system</div>
+        <h1 class="headline wide">Three pillars. One loop. No content theater.</h1>
         <div class="pillars">
           <div class="pillar">
             <div class="num">01</div>
@@ -1810,7 +2048,7 @@ html, body {
         <div class="slide-num" data-slide-num>10</div>
       </div>
       <div class="slide-body">
-        <div class="eyebrow">Priority initiative · 01</div>
+        <div class="eyebrow">Campaign · 01</div>
         <div class="campaign-layout">
           <div>
             <p class="campaign-name">Agents Need Receipts</p>
@@ -1836,6 +2074,7 @@ html, body {
           <div class="why-box">
             <div class="wb-lab">Why it works</div>
             <p>It turns Nimble’s source-grounded differentiation into a phrase developers can remember — and demand.</p>
+            <img src="public/slides/speaker/nehal-workflow-screen.jpg" alt="Live agent workflow diagram on stage" style="width:100%; margin-top:16px; border-radius:12px; border:1px solid rgba(255,255,255,0.12); object-fit:cover; max-height:140px;" />
           </div>
         </div>
       </div>
@@ -1850,7 +2089,7 @@ html, body {
         <div class="slide-num" data-slide-num>11</div>
       </div>
       <div class="slide-body">
-        <div class="eyebrow">Priority initiative · 02</div>
+        <div class="eyebrow">Campaign · 02</div>
         <div class="campaign-layout">
           <div>
             <p class="campaign-name">10-Minute Receipt</p>
@@ -1880,7 +2119,7 @@ html, body {
         <div class="slide-num" data-slide-num>12</div>
       </div>
       <div class="slide-body">
-        <div class="eyebrow">Priority initiative · 03</div>
+        <div class="eyebrow">Campaign · 03</div>
         <div class="campaign-layout">
           <div>
             <p class="campaign-name">Native Where Agents Are Built</p>
@@ -1909,7 +2148,7 @@ html, body {
         <div class="slide-num" data-slide-num>13</div>
       </div>
       <div class="slide-body">
-        <div class="eyebrow">Content &amp; community engine</div>
+        <div class="eyebrow">What I ship</div>
         <h1 class="headline wide">Produce the artifacts developers can run — then narrate them.</h1>
         <div class="content-stack">
           <div class="c-type">
@@ -1946,7 +2185,7 @@ html, body {
         <div class="slide-num" data-slide-num>14</div>
       </div>
       <div class="slide-body">
-        <div class="eyebrow">Distribution &amp; partnerships</div>
+        <div class="eyebrow">How it travels</div>
         <h1 class="headline wide">Meet builders where they already decide what to trust.</h1>
         <div class="partner-bands">
           <div class="band">
@@ -1987,7 +2226,7 @@ html, body {
         <div class="slide-num" data-slide-num>15</div>
       </div>
       <div class="slide-body">
-        <div class="eyebrow">Developer experience</div>
+        <div class="eyebrow">DX that earns trust</div>
         <h1 class="headline wide">I would score DX on time-to-receipt, not pageviews.</h1>
         <div class="score-grid">
           <div class="score">
@@ -2040,7 +2279,7 @@ html, body {
         <div class="slide-num" data-slide-num>16</div>
       </div>
       <div class="slide-body">
-        <div class="eyebrow">Highest-leverage DX</div>
+        <div class="eyebrow">DX priorities</div>
         <h1 class="headline wide">Fix the golden path before expanding the map.</h1>
         <div class="leverage-list">
           <div class="lev">
@@ -2098,7 +2337,7 @@ html, body {
         <div class="slide-num" data-slide-num>17</div>
       </div>
       <div class="slide-body">
-        <div class="eyebrow">Metrics &amp; accountability</div>
+        <div class="eyebrow">Scoreboard</div>
         <h1 class="headline wide">Measure trust that turns into usage — not applause.</h1>
         <div class="metric-board">
           <div class="north-star">
@@ -2151,8 +2390,8 @@ html, body {
         <div class="slide-num" data-slide-num>18</div>
       </div>
       <div class="slide-body">
-        <div class="eyebrow">Course-correct triggers</div>
-        <h1 class="headline wide">I would kill or rewrite a priority when the signal flips.</h1>
+        <div class="eyebrow">Kill criteria</div>
+        <h1 class="headline wide">I kill or rewrite a priority when the signal flips.</h1>
         <div class="trigger-grid">
           <div class="trigger">
             <h3>Activation stall</h3>
@@ -2183,7 +2422,7 @@ html, body {
         <div class="slide-num" data-slide-num>19</div>
       </div>
       <div class="slide-body">
-        <div class="eyebrow">90-day roadmap</div>
+        <div class="eyebrow">First 90 days</div>
         <h1 class="headline wide">Learn. Prove. Distribute. Loop.</h1>
         <div class="roadmap">
           <div class="phase">
@@ -2232,7 +2471,7 @@ html, body {
         <div class="slide-num" data-slide-num>20</div>
       </div>
       <div class="slide-body">
-        <div class="eyebrow">Operating model</div>
+        <div class="eyebrow">The loop</div>
         <h1 class="headline wide">From scattered content to a developer trust engine.</h1>
         <div class="flywheel-wrap">
           <div class="flywheel" aria-hidden="true">
@@ -2271,37 +2510,31 @@ html, body {
       <div class="footer-hint"><span>System diagram</span><span class="nav-hint"><kbd>←</kbd> <kbd>→</kbd></span></div>
     </section>
 
-    <!-- 21. Close -->
-    <section class="slide dark" data-notes="Close: commitment as first Principal DA — category POV, beachhead discipline, and an accountable operating system. Invite Q&A on prioritization tradeoffs, resourcing, and how Morning Signal fits as an ongoing proof asset rather than a one-off demo.">
+    <!-- Close -->
+    <section class="slide dark photo-bleed" data-notes="Close human and sharp: I will make Nimble the default live-web layer for agents by running proof × distribution × feedback as a system. Invite Q&A on prioritization, resourcing, and how Morning Signal becomes an ongoing proof asset.">
       <div class="chrome">
         <div class="brand"><span class="brand-mark" aria-hidden="true"></span> NIMBLE</div>
         <div class="progress-track"><div class="progress-fill" data-progress></div></div>
-        <div class="slide-num" data-slide-num>21</div>
+        <div class="slide-num" data-slide-num>22</div>
       </div>
-      <div class="slide-body">
-        <div class="close-stage">
-          <div class="eyebrow">Close</div>
+      <div class="photo-stage flip">
+        <div class="photo-pane">
+          <img src="public/slides/speaker/nehal-talk-hero.jpg" alt="Nehal presenting to developers" />
+        </div>
+        <div class="copy-pane">
+          <div class="tape">Let's build it</div>
           <h1 class="headline xl">Make Nimble the default live-web layer for agents.</h1>
           <div class="thesis-bar"></div>
-          <p class="subhead">By turning developer trust into adoption — with proof, distribution, and feedback as one system.</p>
-        </div>
-        <div class="commitments">
-          <div class="commit">
-            <strong>Point of view</strong>
-            <span>Own live-web infrastructure for agents — receipts before reasoning.</span>
-          </div>
-          <div class="commit">
-            <strong>Focus</strong>
-            <span>Beachhead on builders who already feel the freshness problem.</span>
-          </div>
-          <div class="commit">
-            <strong>Accountability</strong>
-            <span>North star + kill criteria. Course-correct in public.</span>
+          <p class="subhead">Proof. Distribution. Feedback. One trust engine — run by someone who already teaches builders live.</p>
+          <div class="commitments" style="margin-top:22px; max-width:none; grid-template-columns:1fr;">
+            <div class="commit"><strong>Point of view</strong><span>Receipts before reasoning.</span></div>
+            <div class="commit"><strong>Focus</strong><span>Beachhead on builders who feel the freshness problem.</span></div>
+            <div class="commit"><strong>Accountability</strong><span>North star + kill criteria. Course-correct in public.</span></div>
           </div>
         </div>
       </div>
       <div class="footer-hint">
-        <span>Q&amp;A · Leading Developer Advocacy at Nimble</span>
+        <span>Q&amp;A — ask me the hard prioritization questions</span>
         <span class="nav-hint"><kbd>←</kbd> back · <kbd>F</kbd> fullscreen</span>
       </div>
     </section>
