@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "part2": "open Leading-DevRel-at-Nimble.html",
+    "part2": "bash open-part2.sh",
     "part1": "open Morning-Espresso-Deck.html"
   },
   "dependencies": {
