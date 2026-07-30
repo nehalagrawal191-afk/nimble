@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leading DevRel at Nimble — Situational Assessment</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet" />
+  <!--
+    Presence research (Jul 2026) — user screenshots + live capture:
+    - LinkedIn 14,092 followers
+    - X @nimble_search 3,787 followers; paid Kaitee post ~16K views
+    - YouTube @nimble_search 13 subscribers / 38 videos
+    - GitHub Nimbleway 15 followers; agent-skills 50★
+    - Arcade.dev MCP partner docs (with Exa/Tavily/Google)
+    Evidence images: public/slides/presence/
+  -->
+<style>
+:root {
+  --bg: #ffffff;
+  --fg: #111111;
+  --muted: #666666;
+  --line: #111111;
+  --font: "IBM Plex Sans", sans-serif;
+  --mono: "IBM Plex Mono", monospace;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: #000;
+  color: var(--fg);
+  font-family: var(--font);
+}
+
+.deck {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  display: none;
+  padding: clamp(40px, 6vh, 72px) clamp(48px, 7vw, 96px);
+  background: var(--bg);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.slide.is-active {
+  display: flex;
+  flex-direction: column;
+  opacity: 1;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: clamp(28px, 5vh, 48px);
+  flex-shrink: 0;
+}
+
+.label {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.num {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  max-width: 16ch;
+}
+
+h1.wide { max-width: 22ch; }
+
+.rule {
+  width: 100%;
+  height: 1px;
+  background: var(--line);
+  margin: 28px 0;
+  border: 0;
+  opacity: 0.2;
+}
+
+.sub {
+  margin: 16px 0 0;
+  font-size: clamp(18px, 1.8vw, 24px);
+  font-weight: 400;
+  line-height: 1.35;
+  color: var(--muted);
+  max-width: 36ch;
+}
+
+.footer {
+  margin-top: auto;
+  padding-top: 24px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+
+/* Slide 1 — photo */
+.photo-layout {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: clamp(32px, 5vw, 64px);
+  align-items: center;
+  min-height: 0;
+}
+
+.photo-layout img {
+  width: 100%;
+  height: min(62vh, 520px);
+  object-fit: cover;
+  object-position: center 18%;
+  display: block;
+  filter: none;
+}
+
+/* Slide 2 — prerequisites */
+.list-4 {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.list-4 li {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 20px;
+  align-items: baseline;
+  padding: 22px 0;
+  border-top: 1px solid rgba(17, 17, 17, 0.15);
+  font-size: clamp(20px, 2.1vw, 28px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+
+.list-4 li:last-child { border-bottom: 1px solid rgba(17, 17, 17, 0.15); }
+
+.list-4 .i {
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+/* Slide 3 — unknowns */
+.big-4 {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  flex: 1;
+  align-content: center;
+}
+
+.big-4 li {
+  padding: 28px 32px 28px 0;
+  border-top: 1px solid rgba(17, 17, 17, 0.15);
+  font-size: clamp(22px, 2.4vw, 32px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+  max-width: 14ch;
+}
+
+.big-4 li:nth-child(odd) { padding-right: 40px; border-right: 1px solid rgba(17, 17, 17, 0.15); }
+.big-4 li:nth-child(even) { padding-left: 40px; }
+.big-4 li:nth-child(n+3) { border-bottom: 1px solid rgba(17, 17, 17, 0.15); }
+
+.big-4 .i {
+  display: block;
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: 10px;
+  letter-spacing: 0.04em;
+}
+
+/* Slide 4 — presence grid */
+.presence-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px 16px;
+  flex: 1;
+  min-height: 0;
+  align-content: start;
+}
+
+.p-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.p-card img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+  border: 1px solid rgba(17,17,17,0.2);
+  background: #f5f5f5;
+  filter: none;
+}
+
+.p-card .l1 {
+  margin: 8px 0 2px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
+.p-card .l2 {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--muted);
+  line-height: 1.35;
+}
+
+.slide.tight-top .top { margin-bottom: 16px; }
+.slide.tight-top h1 { font-size: clamp(28px, 3.2vw, 40px); }
+.slide.tight-top .rule { margin: 14px 0 16px; }
+
+@media (max-width: 900px) {
+  .presence-grid { grid-template-columns: 1fr 1fr; }
+}
+
+
+/* Section divider */
+.section-mark {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+.funnel-tag {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: 1px solid var(--fg);
+  padding: 4px 10px;
+  margin-bottom: 16px;
+  width: fit-content;
+}
+
+.split-img {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: clamp(24px, 4vw, 48px);
+  align-items: center;
+  min-height: 0;
+  margin-top: 8px;
+}
+
+.split-img img {
+  width: 100%;
+  height: min(52vh, 420px);
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+  border: 1px solid rgba(17,17,17,0.2);
+}
+
+.bullet-plain {
+  list-style: none;
+  margin: 20px 0 0;
+  padding: 0;
+}
+
+.bullet-plain li {
+  padding: 14px 0;
+  border-top: 1px solid rgba(17,17,17,0.15);
+  font-size: clamp(17px, 1.7vw, 22px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+}
+
+.bullet-plain li:last-child { border-bottom: 1px solid rgba(17,17,17,0.15); }
+
+.three-col {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  flex: 1;
+  margin-top: 8px;
+  align-content: stretch;
+}
+
+.three-col .col {
+  padding: 8px 24px 0 0;
+  border-right: 1px solid rgba(17,17,17,0.15);
+}
+
+.three-col .col:last-child {
+  border-right: 0;
+  padding-right: 0;
+  padding-left: 24px;
+}
+
+.three-col .col:nth-child(2) { padding-left: 24px; }
+
+.three-col .phase {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.three-col h3 {
+  margin: 0 0 14px;
+  font-size: clamp(18px, 1.8vw, 24px);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+}
+
+.three-col ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.three-col li {
+  padding: 8px 0;
+  border-top: 1px solid rgba(17,17,17,0.12);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--ink-soft, #2a2a2a);
+}
+
+/* Dense single-slide 30/60/90 operating plan */
+.op-plan .sub { margin: 6px 0 0; font-size: clamp(14px, 1.3vw, 17px); }
+.op-plan .three-col { margin-top: 4px; }
+.op-plan .three-col h3 { margin: 0 0 8px; font-size: clamp(15px, 1.4vw, 18px); }
+.op-plan .three-col .phase { margin-bottom: 6px; font-size: 10px; }
+.op-plan .three-col .phase + ul + .phase { margin-top: 12px !important; }
+.op-plan .three-col li {
+  padding: 5px 0;
+  font-size: 12.5px;
+  line-height: 1.3;
+}
+
+.img-duo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 20px;
+  flex: 1;
+  min-height: 0;
+}
+
+.img-duo figure {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.img-duo img {
+  width: 100%;
+  aspect-ratio: 16/10;
+  object-fit: cover;
+  object-position: top center;
+  border: 1px solid rgba(17,17,17,0.2);
+}
+
+.img-duo figcaption {
+  margin-top: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.img-duo figcaption span {
+  display: block;
+  font-weight: 400;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+@media (max-width: 900px) {
+  .split-img, .three-col, .img-duo { grid-template-columns: 1fr; }
+  .three-col .col, .three-col .col:nth-child(2), .three-col .col:last-child {
+    border-right: 0; border-top: 1px solid rgba(17,17,17,0.15);
+    padding: 16px 0;
+  }
+}
+
+
+.controls {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  display: flex;
+  gap: 6px;
+  z-index: 50;
+}
+
+.controls button {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #111;
+  background: #fff;
+  color: #111;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.controls button:hover { background: #111; color: #fff; }
+
+@media (max-width: 800px) {
+  .photo-layout,
+  .big-4 { grid-template-columns: 1fr; }
+  .big-4 li:nth-child(odd) { border-right: 0; padding-right: 0; }
+  .big-4 li:nth-child(even) { padding-left: 0; }
+  .photo-layout img { height: 36vh; }
+}
+</style>
+</head>
+<body>
+  <div class="deck">
+
+    <!-- 1 -->
+    <section class="slide is-active" data-notes="Open as a builder already in the room.">
+      <div class="top">
+        <div class="label">Part 2 · Situational</div>
+        <div class="num" data-slide-num></div>
+      </div>
+      <div class="body photo-layout">
+        <div>
+          <h1 class="wide">The bottleneck is developer trust.</h1>
+          <p class="sub">DevRel in action — I teach builders live, workflows on screen.</p>
+        </div>
+        <img src="public/slides/speaker/nehal-talk-hero.jpg" alt="Speaking with an agent workflow on screen" />
+      </div>
+      <div class="footer">→ Space · F fullscreen</div>
+    </section>
+
+    <!-- 2 -->
+    <section class="slide" data-notes="Four prerequisites before locking strategy.">
+      <div class="top">
+        <div class="label">Before strategy</div>
+        <div class="num" data-slide-num></div>
+      </div>
+      <div class="body">
+        <h1 class="wide">Prerequisites.</h1>
+        <hr class="rule" />
+        <ol class="list-4">
+          <li><span class="i">01</span>Product truth — what Nimble uniquely wins</li>
+          <li><span class="i">02</span>Developer pain — where agents fail without live web</li>
+          <li><span class="i">03</span>Channel reality — where trust is actually formed</li>
+          <li><span class="i">04</span>Business motion — what converts and expands</li>
+        </ol>
+      </div>
+      <div class="footer">Situational assessment</div>
+    </section>
+
+    <!-- 3 -->
+    <section class="slide" data-notes="Four unknowns only. No filler.">
+      <div class="top">
+        <div class="label">Critical unknowns</div>
+        <div class="num" data-slide-num></div>
+      </div>
+      <div class="body">
+        <h1 class="wide">Four questions before I scale.</h1>
+        <hr class="rule" />
+        <ol class="big-4">
+          <li><span class="i">01</span>Which use cases convert fastest?</li>
+          <li><span class="i">02</span>Where do builders get stuck?</li>
+          <li><span class="i">03</span>Which persona feels the pain most?</li>
+          <li><span class="i">04</span>Which ecosystems set their defaults?</li>
+        </ol>
+      </div>
+      <div class="footer">Discovery gates</div>
+    </section>
+
+    <!-- 4 -->
+    <section class="slide tight-top" data-notes="Presence snapshot from live channels + user screenshots. YouTube 13 subs / 38 videos. LinkedIn 14,092 followers. GitHub 15 followers, agent-skills 50★. X 3,787 followers. Influencer paid post 16K views. Arcade MCP partner docs.">
+      <div class="top">
+        <div class="label">Current presence</div>
+        <div class="num" data-slide-num></div>
+      </div>
+      <div class="body">
+        <h1 class="wide">Where Nimble shows up.</h1>
+        <hr class="rule" />
+        <div class="presence-grid">
+          <div class="p-card">
+            <img src="public/slides/presence/linkedin-card.jpg" alt="LinkedIn company page" />
+            <p class="l1">LinkedIn: 14,092 followers · B2B product + conference posts</p>
+            <p class="l2">Strongest owned channel — buyer/enterprise reach, not builder rooms.</p>
+          </div>
+          <div class="p-card">
+            <img src="public/slides/presence/x-card.jpg" alt="X profile @nimble_search" />
+            <p class="l1">X: 3,787 followers · product launches + agent messaging</p>
+            <p class="l2">Solid owned audience; still mostly broadcast, not community debate.</p>
+          </div>
+          <div class="p-card">
+            <img src="public/slides/presence/influencer-card.jpg" alt="Paid partnership post on X" />
+            <p class="l1">X (paid): influencer demo · 16K views / 162 likes / 128 reposts</p>
+            <p class="l2">Proof that product demos travel when someone else narrates the workflow.</p>
+          </div>
+          <div class="p-card">
+            <img src="public/slides/presence/youtube-card.jpg" alt="YouTube channel Nimble AI" />
+            <p class="l1">YouTube: 13 subscribers · 38 explainer / demo videos</p>
+            <p class="l2">Inventory exists; reach does not — founder-led, almost no distribution.</p>
+          </div>
+          <div class="p-card">
+            <img src="public/slides/presence/github-card.jpg" alt="GitHub org Nimbleway" />
+            <p class="l1">GitHub: 15 followers · agent-skills 50★ / cookbook 17★</p>
+            <p class="l2">Real SDK surface; stars lag usage — not yet a default in agent stacks.</p>
+          </div>
+          <div class="p-card">
+            <img src="public/slides/presence/arcade-card.jpg" alt="Arcade docs Nimble MCP partner" />
+            <p class="l1">Arcade docs: MCP partner · listed with Exa / Tavily / Google</p>
+            <p class="l2">Quiet ecosystem win — native where agent builders already wire tools.</p>
+          </div>
+        </div>
+      </div>
+      <div class="footer">Current presence</div>
+    </section>
+
+
+    <!-- ===== SECTION 2: Priority initiatives ===== -->
+    <section class="slide" data-notes="Section opener. Three initiatives mapped to funnel: events (top), recipe videos (mid), feedback loop (product-led conversion).">
+      <div class="top">
+        <div class="label">Section 02 · Priority initiatives</div>
+        <div class="num" data-slide-num></div>
+      </div>
+      <div class="body">
+        <h1 class="wide">Three bets across the funnel.</h1>
+        <hr class="rule" />
+        <div class="three-col">
+          <div class="col">
+            <div class="phase">Top of funnel</div>
+            <h3>Events</h3>
+            <ul>
+              <li>GTM hackathons</li>
+              <li>Arcade Dev meetups</li>
+              <li>Demos night</li>
+              <li>Nimble Friends (Slack + X)</li>
+            </ul>
+          </div>
+          <div class="col">
+            <div class="phase">Mid funnel</div>
+            <h3>10-min recipes</h3>
+            <ul>
+              <li>Community demos on X</li>
+              <li>YouTube periodically</li>
+              <li>Existing use cases</li>
+              <li>Why Nimble is the go-to</li>
+            </ul>
+          </div>
+          <div class="col">
+            <div class="phase">Product-led</div>
+            <h3>Feedback loop</h3>
+            <ul>
+              <li>What breaks</li>
+              <li>Free → paid blockers</li>
+              <li>Metrics teams want</li>
+              <li>Route into product</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer">Priority initiatives</div>
+    </section>
+
+    <section class="slide" data-notes="Events = top of funnel trust. Live rooms beat posts. Private Nimble Friends community on Slack/X for ongoing warmth.">
+      <div class="top">
+        <div class="label">Section 02 · Priority initiatives</div>
+        <div class="num" data-slide-num></div>
+      </div>
+      <div class="body">
+        <div class="funnel-tag">Top of funnel</div>
+        <h1 class="wide">Events that put Nimble in the room.</h1>
+        <hr class="rule" />
+        <ol class="list-4">
+          <li><span class="i">01</span>GTM hackathons — ship a live-web agent in a day</li>
+          <li><span class="i">02</span>Arcade Dev meetups — meet builders where tools wire up</li>
+          <li><span class="i">03</span>Demos night — short, public, receipt-first showcases</li>
+          <li><span class="i">04</span>Nimble Friends — private Slack + X circle for ongoing trust</li>
+        </ol>
+      </div>
+      <div class="footer">Events</div>
+    </section>
+
+    <section class="slide" data-notes="Mid-funnel: periodic 10-minute recipe videos on X and YouTube. Teach how to drop Nimble into existing workflows; make Nimble the obvious go-to for live web.">
+      <div class="top">
+        <div class="label">Section 02 · Priority initiatives</div>
+        <div class="num" data-slide-num></div>
+      </div>
+      <div class="body">
+        <div class="funnel-tag">Mid funnel</div>
+        <div class="split-img">
+          <div>
+            <h1 class="wide">10-minute recipe videos.</h1>
+            <p class="sub">Community demos on X and YouTube — how to drop Nimble into workflows builders already run.</p>
+            <ul class="bullet-plain">
+              <li>Existing use cases, not greenfield theory</li>
+              <li>Why Nimble is the go-to for live web</li>
+              <li>Ship on a steady public cadence</li>
+            </ul>
+          </div>
+          <img src="public/slides/presence/youtube-card.jpg" alt="Nimble YouTube channel" />
+        </div>
+      </div>
+      <div class="footer">Recipe videos</div>
+    </section>
+
+    <section class="slide" data-notes="Product-led feedback loop: regular conversations with developers and teams. Find breakage, free-to-paid blockers, and the metrics they care about — feed product and DX.">
+      <div class="top">
+        <div class="label">Section 02 · Priority initiatives</div>
+        <div class="num" data-slide-num></div>
+      </div>
+      <div class="body">
+        <div class="funnel-tag">Product-led</div>
+        <h1 class="wide">A feedback loop that changes the product.</h1>
+        <hr class="rule" />
+        <ol class="list-4">
+          <li><span class="i">01</span>Which part breaks when they build for real?</li>
+          <li><span class="i">02</span>Why don’t they convert from free to paid?</li>
+          <li><span class="i">03</span>Which metric are they trying to improve?</li>
+          <li><span class="i">04</span>Route answers into docs, DX, and roadmap weekly</li>
+        </ol>
+      </div>
+      <div class="footer">Feedback loop</div>
+    </section>
+
+    <!-- ===== SECTION 3: Content & community engine ===== -->
+    <section class="slide" data-notes="Section 3 opener. Content engine = runnable artifacts + distribution in trusted rooms + partner surfaces.">
+      <div class="top">
+        <div class="label">Section 03 · Content &amp; community</div>
+        <div class="num" data-slide-num></div>
+      </div>
+      <div class="body">
+        <h1 class="wide">Ship artifacts builders can run.</h1>
+        <p class="sub">Then place them where trust is already formed.</p>
+        <hr class="rule" />
+        <ol class="list-4">
+          <li><span class="i">01</span>Recipes &amp; cookbooks — copy-paste paths to first receipt</li>
+          <li><span class="i">02</span>Short demos — X + YouTube, narrated while it runs</li>
+          <li><span class="i">03</span>Reference patterns — Search → Extract → reason in production</li>
+          <li><span class="i">04</span>Talks &amp; office hours — only when backed by shipped code</li>
+        </ol>
+      </div>
+      <div class="footer">Content engine</div>
+    </section>
+
+    <section class="slide tight-top" data-notes="Distribution surfaces with evidence images: YouTube/X for demos, GitHub cookbook/skills for runnable code, Arcade for ecosystem-native placement.">
+      <div class="top">
+        <div class="label">Section 03 · Content &amp; community</div>
+        <div class="num" data-slide-num></div>
+      </div>
+      <div class="body">
+        <h1 class="wide">Where it travels.</h1>
+        <hr class="rule" />
+        <div class="img-duo">
+          <figure>
+            <img src="public/slides/section23/github-cookbook-card.jpg" alt="Nimble GitHub cookbook" />
+            <figcaption>
+              GitHub cookbook &amp; skills
+              <span>Runnable recipes — the trust transfer layer</span>
+            </figcaption>
+          </figure>
+          <figure>
+            <img src="public/slides/presence/x-card.jpg" alt="Nimble on X" />
+            <figcaption>
+              X + YouTube cadence
+              <span>Mid-funnel demos where attention already is</span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+      <div class="footer">Distribution</div>
+    </section>
+
+    <section class="slide tight-top" data-notes="Partners: Arcade (MCP), LangChain ecosystem, framework communities, GTM/builder meetups. Native placement beats company-blog-only.">
+      <div class="top">
+        <div class="label">Section 03 · Content &amp; community</div>
+        <div class="num" data-slide-num></div>
+      </div>
+      <div class="body">
+        <h1 class="wide">Partners that set defaults.</h1>
+        <hr class="rule" />
+        <div class="img-duo">
+          <figure>
+            <img src="public/slides/section23/arcade-docs-card.jpg" alt="Arcade Nimble MCP docs" />
+            <figcaption>
+              Arcade · MCP partner
+              <span>Listed beside Exa, Tavily, Google — wire-up native</span>
+            </figcaption>
+          </figure>
+          <figure>
+            <img src="public/slides/section23/langchain-card.jpg" alt="LangChain Nimble integration docs" />
+            <figcaption>
+              LangChain · LlamaIndex · agent frameworks
+              <span>Cookbooks and tools where agent builders start</span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+      <div class="footer">Partnerships</div>
+    </section>
+
+    <section class="slide" data-notes="Close section 3 with the operating loop tying initiatives to content engine.">
+      <div class="top">
+        <div class="label">Section 03 · Content &amp; community</div>
+        <div class="num" data-slide-num></div>
+      </div>
+      <div class="body">
+        <h1 class="wide">The loop.</h1>
+        <hr class="rule" />
+        <ol class="list-4">
+          <li><span class="i">01</span>Events create first trust</li>
+          <li><span class="i">02</span>Recipes turn trust into activation</li>
+          <li><span class="i">03</span>Feedback turns friction into product advantage</li>
+          <li><span class="i">04</span>Partners and community rooms compound distribution</li>
+        </ol>
+      </div>
+      <div class="footer">Operating loop</div>
+    </section>
+
+    <!-- ===== SECTION 4: Developer experience ===== -->
+    <section class="slide" data-notes="DX opener. Score on time-to-first-receipt, not pageviews. Audit the golden path before expanding surface area.">
+      <div class="top">
+        <div class="label">Section 04 · Developer experience</div>
+        <div class="num" data-slide-num></div>
+      </div>
+      <div class="body">
+        <h1 class="wide">Score DX on time-to-receipt.</h1>
+        <p class="sub">Not pageviews. Not doc word count.</p>
+        <hr class="rule" />
+        <ol class="list-4">
+          <li><span class="i">01</span>Docs — path clarity by endpoint</li>
+          <li><span class="i">02</span>Onboarding — first cited output in minutes</li>
+          <li><span class="i">03</span>SDK &amp; examples — framework-native patterns</li>
+          <li><span class="i">04</span>Production — async, webhooks, drivers, failure UX</li>
+        </ol>
+      </div>
+      <div class="footer">How I evaluate</div>
+    </section>
+
+    <section class="slide" data-notes="Highest-leverage DX backlog. P0 golden path and driver chooser before breadth.">
+      <div class="top">
+        <div class="label">Section 04 · Developer experience</div>
+        <div class="num" data-slide-num></div>
+      </div>
+      <div class="body">
+        <h1 class="wide">Fix the golden path first.</h1>
+        <hr class="rule" />
+        <ol class="list-4">
+          <li><span class="i">P0</span>First-receipt quickstart — Search → Extract → cite</li>
+          <li><span class="i">P0</span>Endpoint &amp; driver chooser — Agent vs Crawl · JS vs stealth</li>
+          <li><span class="i">P1</span>Framework templates — LangGraph / LlamaIndex / OpenAI</li>
+          <li><span class="i">P1</span>Production guide — async, webhooks, retries, failures</li>
+        </ol>
+      </div>
+      <div class="footer">Highest-leverage DX</div>
+    </section>
+
+    <!-- ===== SECTION 5: Metrics & accountability ===== -->
+    <section class="slide" data-notes="North star and supporting metrics. Trust that turns into usage — not applause.">
+      <div class="top">
+        <div class="label">Section 05 · Metrics</div>
+        <div class="num" data-slide-num></div>
+      </div>
+      <div class="body">
+        <h1 class="wide">Measure trust that turns into usage.</h1>
+        <hr class="rule" />
+        <ol class="list-4">
+          <li><span class="i">★</span>North star — weekly builders who complete a source-grounded workflow</li>
+          <li><span class="i">01</span>Time to first receipt</li>
+          <li><span class="i">02</span>Repeat usage within 7 days</li>
+          <li><span class="i">03</span>Recipe influence — clones, inbound, talk follow-through</li>
+        </ol>
+      </div>
+      <div class="footer">What matters most</div>
+    </section>
+
+    <section class="slide" data-notes="Kill criteria / course-correct triggers. Pre-committed, not post-hoc storytelling.">
+      <div class="top">
+        <div class="label">Section 05 · Metrics</div>
+        <div class="num" data-slide-num></div>
+      </div>
+      <div class="body">
+        <h1 class="wide">What makes me course-correct.</h1>
+        <hr class="rule" />
+        <ol class="list-4">
+          <li><span class="i">01</span>Activation stall — freeze campaigns, repair the golden path</li>
+          <li><span class="i">02</span>Applause without adoption — change format; require a runnable CTA</li>
+          <li><span class="i">03</span>Beachhead miss — retarget examples and partners in 30 days</li>
+          <li><span class="i">04</span>Free → paid stuck — dig with feedback loop before scaling spend</li>
+        </ol>
+      </div>
+      <div class="footer">Kill criteria</div>
+    </section>
+
+    <!-- ===== Operating plan (single close slide) ===== -->
+    <section class="slide tight-top op-plan" data-notes="Single closing operating plan: 30/60/90 with partnerships, KPIs, and metrics. North star = weekly builders completing a source-grounded workflow.">
+      <div class="top">
+        <div class="label">Operating plan · 30 / 60 / 90</div>
+        <div class="num" data-slide-num></div>
+      </div>
+      <div class="body">
+        <h1 class="wide">Learn. Prove. Distribute.</h1>
+        <p class="sub">North star: weekly builders who complete a source-grounded workflow.</p>
+        <hr class="rule" />
+        <div class="three-col">
+          <div class="col">
+            <div class="phase">Days 1–30 · Learn</div>
+            <h3>Plan</h3>
+            <ul>
+              <li>20 builder + stakeholder interviews</li>
+              <li>Timed DX audit → golden path</li>
+              <li>Instrument north star + receipt time</li>
+              <li>Confirm beachhead use case</li>
+            </ul>
+            <div class="phase" style="margin-top:16px">Partnerships</div>
+            <ul>
+              <li>Arcade meetup intro</li>
+              <li>Map LangChain / LlamaIndex owners</li>
+            </ul>
+            <div class="phase" style="margin-top:16px">KPIs</div>
+            <ul>
+              <li>Baseline: time-to-first-receipt</li>
+              <li>Interview insights logged</li>
+            </ul>
+          </div>
+          <div class="col">
+            <div class="phase">Days 31–60 · Prove</div>
+            <h3>Plan</h3>
+            <ul>
+              <li>First GTM hackathon / demos night</li>
+              <li>10-min recipe cadence (X + YT)</li>
+              <li>Ship first-receipt quickstart</li>
+              <li>Nimble Friends v0 (Slack + X)</li>
+            </ul>
+            <div class="phase" style="margin-top:16px">Partnerships</div>
+            <ul>
+              <li>Arcade Dev meetup live</li>
+              <li>1 framework cookbook draft</li>
+            </ul>
+            <div class="phase" style="margin-top:16px">KPIs</div>
+            <ul>
+              <li>↓ time-to-first-receipt</li>
+              <li>Recipe views → API starts</li>
+              <li>Event → activated builders</li>
+            </ul>
+          </div>
+          <div class="col">
+            <div class="phase">Days 61–90 · Distribute</div>
+            <h3>Plan</h3>
+            <ul>
+              <li>Partner cookbooks published</li>
+              <li>Office hours rhythm</li>
+              <li>Top friction → docs / product</li>
+              <li>Kill / double-down review</li>
+            </ul>
+            <div class="phase" style="margin-top:16px">Partnerships</div>
+            <ul>
+              <li>LangChain / LlamaIndex live</li>
+              <li>2+ ecosystem placements</li>
+            </ul>
+            <div class="phase" style="margin-top:16px">KPIs</div>
+            <ul>
+              <li>7-day repeat usage ↑</li>
+              <li>Free → paid signal clarity</li>
+              <li>Support deflection on top topics</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer">Q&amp;A — the bottleneck is developer trust</div>
+    </section>
+
+  </div>
+
+  <div class="controls">
+    <button type="button" id="prevBtn" aria-label="Previous">←</button>
+    <button type="button" id="nextBtn" aria-label="Next">→</button>
+  </div>
+
+  <script>
+(() => {
+  const slides = Array.from(document.querySelectorAll(".slide"));
+  let index = 0;
+  function show(next) {
+    index = Math.max(0, Math.min(slides.length - 1, next));
+    slides.forEach((s, i) => s.classList.toggle("is-active", i === index));
+    document.querySelectorAll("[data-slide-num]").forEach((el) => {
+      el.textContent = `${String(index + 1).padStart(2, "0")} / ${String(slides.length).padStart(2, "0")}`;
+    });
+    history.replaceState(null, "", `#${index + 1}`);
+  }
+  const goNext = () => show(index + 1);
+  const goPrev = () => show(index - 1);
+  document.getElementById("nextBtn")?.addEventListener("click", goNext);
+  document.getElementById("prevBtn")?.addEventListener("click", goPrev);
+  window.addEventListener("keydown", (e) => {
+    if (["ArrowRight", "PageDown", " ", "Enter"].includes(e.key)) { e.preventDefault(); goNext(); }
+    else if (["ArrowLeft", "PageUp", "Backspace"].includes(e.key)) { e.preventDefault(); goPrev(); }
+    else if (e.key.toLowerCase() === "f") {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+      else document.exitFullscreen?.();
+    }
+  });
+  window.addEventListener("hashchange", () => {
+    const n = Number(location.hash.replace("#", ""));
+    if (Number.isFinite(n) && n > 0) show(n - 1);
+  });
+  const fromHash = Number(location.hash.replace("#", ""));
+  show(Number.isFinite(fromHash) && fromHash > 0 ? fromHash - 1 : 0);
+})();
+  </script>
+</body>
+</html>

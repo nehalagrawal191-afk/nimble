@@ -12,7 +12,9 @@ const nextConfig = {
   async rewrites() {
     return [
       { source: "/deck", destination: "/slides/index.html" },
-      { source: "/presentation", destination: "/slides/index.html" }
+      { source: "/presentation", destination: "/slides/index.html" },
+      { source: "/part2", destination: "/Leading-DevRel-at-Nimble.html" },
+      { source: "/leading-devrel", destination: "/Leading-DevRel-at-Nimble.html" }
     ];
   },
   experimental: {
