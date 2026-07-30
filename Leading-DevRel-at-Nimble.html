@@ -385,6 +385,18 @@ h1.wide { max-width: 22ch; }
   color: var(--ink-soft, #2a2a2a);
 }
 
+/* Dense single-slide 30/60/90 operating plan */
+.op-plan .sub { margin: 6px 0 0; font-size: clamp(14px, 1.3vw, 17px); }
+.op-plan .three-col { margin-top: 4px; }
+.op-plan .three-col h3 { margin: 0 0 8px; font-size: clamp(15px, 1.4vw, 18px); }
+.op-plan .three-col .phase { margin-bottom: 6px; font-size: 10px; }
+.op-plan .three-col .phase + ul + .phase { margin-top: 12px !important; }
+.op-plan .three-col li {
+  padding: 5px 0;
+  font-size: 12.5px;
+  line-height: 1.3;
+}
+
 .img-duo {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -840,64 +852,82 @@ h1.wide { max-width: 22ch; }
       <div class="footer">Kill criteria</div>
     </section>
 
-    <!-- ===== 90-day + close ===== -->
-    <section class="slide" data-notes="90-day operating plan for first Principal DA.">
+    <!-- ===== Operating plan (single close slide) ===== -->
+    <section class="slide tight-top op-plan" data-notes="Single closing operating plan: 30/60/90 with partnerships, KPIs, and metrics. North star = weekly builders completing a source-grounded workflow.">
       <div class="top">
-        <div class="label">First 90 days</div>
+        <div class="label">Operating plan · 30 / 60 / 90</div>
         <div class="num" data-slide-num></div>
       </div>
       <div class="body">
         <h1 class="wide">Learn. Prove. Distribute.</h1>
+        <p class="sub">North star: weekly builders who complete a source-grounded workflow.</p>
         <hr class="rule" />
         <div class="three-col">
           <div class="col">
-            <div class="phase">Days 1–30</div>
-            <h3>Learn</h3>
+            <div class="phase">Days 1–30 · Learn</div>
+            <h3>Plan</h3>
             <ul>
-              <li>Builder interviews</li>
-              <li>Timed DX audit</li>
-              <li>Instrument north star</li>
-              <li>Confirm beachhead</li>
+              <li>20 builder + stakeholder interviews</li>
+              <li>Timed DX audit → golden path</li>
+              <li>Instrument north star + receipt time</li>
+              <li>Confirm beachhead use case</li>
+            </ul>
+            <div class="phase" style="margin-top:16px">Partnerships</div>
+            <ul>
+              <li>Arcade meetup intro</li>
+              <li>Map LangChain / LlamaIndex owners</li>
+            </ul>
+            <div class="phase" style="margin-top:16px">KPIs</div>
+            <ul>
+              <li>Baseline: time-to-first-receipt</li>
+              <li>Interview insights logged</li>
             </ul>
           </div>
           <div class="col">
-            <div class="phase">Days 31–60</div>
-            <h3>Prove</h3>
+            <div class="phase">Days 31–60 · Prove</div>
+            <h3>Plan</h3>
             <ul>
-              <li>First events live</li>
-              <li>Recipe cadence starts</li>
-              <li>Golden-path quickstart</li>
-              <li>Nimble Friends v0</li>
+              <li>First GTM hackathon / demos night</li>
+              <li>10-min recipe cadence (X + YT)</li>
+              <li>Ship first-receipt quickstart</li>
+              <li>Nimble Friends v0 (Slack + X)</li>
+            </ul>
+            <div class="phase" style="margin-top:16px">Partnerships</div>
+            <ul>
+              <li>Arcade Dev meetup live</li>
+              <li>1 framework cookbook draft</li>
+            </ul>
+            <div class="phase" style="margin-top:16px">KPIs</div>
+            <ul>
+              <li>↓ time-to-first-receipt</li>
+              <li>Recipe views → API starts</li>
+              <li>Event → activated builders</li>
             </ul>
           </div>
           <div class="col">
-            <div class="phase">Days 61–90</div>
-            <h3>Distribute</h3>
+            <div class="phase">Days 61–90 · Distribute</div>
+            <h3>Plan</h3>
             <ul>
-              <li>Partner cookbooks</li>
+              <li>Partner cookbooks published</li>
               <li>Office hours rhythm</li>
-              <li>Top friction → product</li>
-              <li>Kill / double-down</li>
+              <li>Top friction → docs / product</li>
+              <li>Kill / double-down review</li>
+            </ul>
+            <div class="phase" style="margin-top:16px">Partnerships</div>
+            <ul>
+              <li>LangChain / LlamaIndex live</li>
+              <li>2+ ecosystem placements</li>
+            </ul>
+            <div class="phase" style="margin-top:16px">KPIs</div>
+            <ul>
+              <li>7-day repeat usage ↑</li>
+              <li>Free → paid signal clarity</li>
+              <li>Support deflection on top topics</li>
             </ul>
           </div>
         </div>
       </div>
-      <div class="footer">Operating plan</div>
-    </section>
-
-    <section class="slide" data-notes="Close. Thesis + invite hard Q&A on prioritization.">
-      <div class="top">
-        <div class="label">Close</div>
-        <div class="num" data-slide-num></div>
-      </div>
-      <div class="body photo-layout">
-        <div>
-          <h1 class="wide">The bottleneck is developer trust.</h1>
-          <p class="sub">Events. Recipes. Feedback. Make Nimble the default live-web layer for agents.</p>
-        </div>
-        <img src="public/slides/speaker/nehal-talk-portrait.jpg" alt="Speaking to builders" />
-      </div>
-      <div class="footer">Q&amp;A — ask the hard prioritization questions</div>
+      <div class="footer">Q&amp;A — the bottleneck is developer trust</div>
     </section>
 
   </div>
